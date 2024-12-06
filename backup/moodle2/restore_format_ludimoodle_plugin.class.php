@@ -1,0 +1,208 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Specialised restore for Ludimoodle course format.
+ *
+ * @package     format_ludimoodle
+ * @copyright   2024 Pimenko <support@pimenko.com><pimenko.com>
+ * @author      Jordan Kesraoui
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Specialised restore for Ludimoodle course format.
+ *
+ * @package     format_ludimoodle
+ * @copyright   2024 Pimenko <support@pimenko.com><pimenko.com>
+ * @author      Jordan Kesraoui
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class restore_format_ludimoodle_plugin extends restore_format_plugin {
+
+
+    protected function define_section_plugin_structure(): array {
+        $paths = [];
+
+        // Path to restore ludimoodle_gameelements.
+        $paths[] = new restore_path_element('gameelements', $this->get_pathfor('/gameelements'));
+
+        // Path to restore ludimoodle_attribution.
+        $paths[] = new restore_path_element('attributions', $this->get_pathfor('/attributions'));
+
+        // Path to restore ludimoodle_params.
+        $paths[] = new restore_path_element('params', $this->get_pathfor('/params'));
+
+        // Path to restore ludimoodle_bysection
+        $paths[] = new restore_path_element('bysection', $this->get_pathfor('/bysection'));
+
+        // Path to restore ludimoodle_gameele_user.
+        $paths[] = new restore_path_element('gameele_user', $this->get_pathfor('/gameele_user'));
+
+        return $paths;
+    }
+
+    protected function define_module_plugin_structure(): array {
+        $paths = [];
+
+        // Path to restore ludimoodle_cm_params.
+        $paths[] = new restore_path_element('cm_params', $this->get_pathfor('/cm_params'));
+
+        // Path to restore ludimoodle_cm_user.
+        $paths[] = new restore_path_element('cm_user', $this->get_pathfor('/cm_user'));
+
+        return $paths;
+    }
+
+
+    public function process_gameelements($data) {
+        global $DB;
+        var_dump($data);
+        $data = (object)$data;
+        $data->courseid = $this->task->get_courseid();
+        $data->sectionid = $this->task->get_sectionid();
+
+        var_dump($data);
+
+        // Insert data into the table ludimoodle_gameelements
+        $newitemid = $DB->insert_record('ludimoodle_gameelements', $data);
+        $this->set_mapping('gameelements', $data->id, $newitemid, true);  // Mapping des IDs
+    }
+
+    /**
+     * Process restore ludimoodle_params
+     *
+     * @param $data
+     * @return void
+     */
+    public function process_params($data) {
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of gameelementid.
+        $data->gameelementid = $this->get_mappingid('gameelements', $data->gameelementid);
+
+        if ($data->gameelementid == 0) {
+            return;
+        }
+
+        // Insert data into the table ludimoodle_params
+        $newitemid = $DB->insert_record('ludimoodle_params', $data);
+        $this->set_mapping('params', $data->id, $newitemid, true);
+    }
+
+    /**
+     * Process restore ludimoodle_bysection
+     *
+     * @param $data
+     * @return void
+     */
+    public function process_bysection($data) {
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of gameelementid.
+        $data->courseid = $this->task->get_courseid();
+        $data->gameelementid = $this->get_mappingid('gameelements', $data->gameelementid);
+        $data->sectionid = $this->task->get_sectionid();
+
+        if ($data->gameelementid == 0 || $data->sectionid == 0) {
+            return;
+        }
+
+        // Insert data into the table ludimoodle_bysection
+        $newitemid = $DB->insert_record('ludimoodle_bysection', $data);
+        $this->set_mapping('bysection', $data->id, $newitemid, true);
+    }
+
+    public function process_cm_params($data) {
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of gameelementid.
+        $data->gameelementid = $this->get_mappingid('gameelements', $data->gameelementid);
+        $data->cmid = $this->task->get_moduleid();
+
+        if ($data->gameelementid == 0) {
+            return;
+        }
+
+        // Insert data into the table ludimoodle_cm_params
+        $newitemid = $DB->insert_record('ludimoodle_cm_params', $data);
+        $this->set_mapping('cm_params', $data->id, $newitemid, true);
+    }
+
+    public function process_attributions($data) {
+        // Restaurer les données de la table 'ludimoodle_attribution'
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of ids.
+        $data->gameelementid = $this->get_mappingid('gameelements', $data->gameelementid);
+        $data->userid = $this->get_mappingid('user', $data->userid);
+
+        if ($data->gameelementid == 0 || $data->userid == 0) {
+            return;
+        }
+
+        // Insertion des données restaurées dans la table ludimoodle_attribution
+        $newitemid = $DB->insert_record('ludimoodle_attribution', $data);
+        $this->set_mapping('attributions', $data->id, $newitemid, true);
+    }
+
+    public function process_gameele_user($data) {
+        // Restaurer les données de la table 'ludimoodle_gameele_user'
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of ids.
+        $data->attributionid = $this->get_mappingid('attributions', $data->attributionid);
+
+        if ($data->attributionid == 0) {
+            return;
+        }
+
+        // Insertion des données restaurées dans la table ludimoodle_gameele_user
+        $newitemid = $DB->insert_record('ludimoodle_gameele_user', $data);
+        $this->set_mapping('gameele_user', $data->id, $newitemid, true);
+    }
+
+    public function process_cm_user($data) {
+        // Restaurer les données de la table 'ludimoodle_cm_user'
+        global $DB;
+
+        $data = (object)$data;
+
+        // Mapping of ids.
+        $data->attributionid = $this->get_mappingid('attributions', $data->attributionid);
+        $data->cmid = $this->task->get_moduleid();
+
+        if ($data->attributionid == 0) {
+            return;
+        }
+
+        // Insertion des données restaurées dans la table ludimoodle_cm_user
+        $newitemid = $DB->insert_record('ludimoodle_cm_user', $data);
+        $this->set_mapping('cm_user', $data->id, $newitemid, true);
+    }
+}

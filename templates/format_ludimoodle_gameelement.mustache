@@ -1,0 +1,119 @@
+<div class="ludimoodle-content ludimoodle-world-{{ world }} card mb-3">
+    <div class="card-header">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item mr-1" role="presentation">
+                <a href="{{globals.config.wwwroot}}/course/view.php?id={{ course.id }}">
+                <button class="btn btn-primary"
+                        id="pills-settings-tab"
+                        type="button"
+                        role="tab"
+                        aria-selected="false">
+                    <i class="fa fa-home" style="font-size: 1.5em"></i>
+                </button>
+                </a>
+            </li>
+            <li class="nav-item mr-1" role="presentation">
+                <button class="btn btn-primary {{^cm }}{{^section}}active{{/section}}{{/ cm }}"
+                        id="pills-course-tab"
+                        data-toggle="pill"
+                        data-target="#pills-course"
+                        type="button"
+                        role="tab"
+                        aria-controls="pills-course"
+                        aria-selected="true">
+                    {{#str}}course, core{{/str}}
+                </button>
+            </li>
+            {{# section}}
+                <li class="nav-item mr-1" role="presentation">
+                    <button class="btn btn-primary {{# section}}{{^cm }}active{{/ cm }}{{/section}}"
+                            id="pills-lesson-tab"
+                            data-toggle="pill"
+                            data-target="#pills-lesson"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-lesson"
+                            aria-selected="false">
+                        {{#str}}lesson, format_ludimoodle{{/str}}
+                    </button>
+                </li>
+            {{/section}}
+            {{# cm }}
+                <li class="nav-item" role="presentation">
+                    <button class="btn btn-primary  {{# cm }} active {{/ cm }}"
+                            id="pills-activity-tab"
+                            data-toggle="pill"
+                            data-target="#pills-activity"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-activity"
+                            aria-selected="false">
+                        {{#str}}activity, core{{/str}}
+                    </button>
+                </li>
+            {{/cm}}
+            {{# report}}
+                <li class="nav-item float-right" role="presentation">
+                    <a href="{{globals.config.wwwroot}}/course/format/ludimoodle/report.php?id={{ course.id }}&hideheader=true">
+                    <button class="btn btn-primary"
+                            id="pills-editgameeleements-tab"
+                            type="button"
+                            role="tab"
+                            aria-selected="false">
+                        {{#str}}report, format_ludimoodle{{/str}}
+                    </button>
+                    </a>
+                </li>
+            {{/report}}
+            <li class="nav-item ml-auto float-right explanation-li" role="presentation">
+                <div class="explanation-button">
+                    <img
+                         class="explanation"
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/explanation-icon.svg"
+                         alt="Button reset user tour">
+                </div>
+            </li>
+        </ul>
+        <div class="card-body">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade {{^cm }}{{^section}}show active{{/section}}{{/ cm }}" id="pills-course" role="tabpanel" aria-labelledby="pills-course-tab">
+                    <div class="row">
+                        {{#sections}}
+                            <div class="col-6 col-lg-6">
+                                {{# score}} {{> format_ludimoodle/score/course }} {{/score}}
+                                {{# badge}} {{> format_ludimoodle/badge/course }} {{/badge}}
+                                {{# progress}} {{> format_ludimoodle/progress/course }} {{/progress}}
+                                {{# avatar}} {{> format_ludimoodle/avatar/course }} {{/avatar}}
+                                {{# timer}} {{> format_ludimoodle/timer/course }} {{/timer}}
+                                {{# ranking}} {{> format_ludimoodle/ranking/course }} {{/ranking}}
+                                {{# nogamified}} {{> format_ludimoodle/nogamified/course }} {{/nogamified}}
+                            </div>
+                        {{/sections}}
+                    </div>
+                </div>
+                {{# section}}
+                    <div class="tab-pane fade {{# section}}{{^cm }}show active{{/ cm }}{{/section}}" id="pills-lesson" role="tabpanel" aria-labelledby="pills-lesson-tab">
+                        {{# score}} {{> format_ludimoodle/score/section }} {{/score}}
+                        {{# badge}} {{> format_ludimoodle/badge/section }} {{/badge}}
+                        {{# progress}} {{> format_ludimoodle/progress/section }} {{/progress}}
+                        {{# avatar}} {{> format_ludimoodle/avatar/section }} {{/avatar}}
+                        {{# timer}} {{> format_ludimoodle/timer/section }} {{/timer}}
+                        {{# ranking}} {{> format_ludimoodle/ranking/section }} {{/ranking}}
+                        {{# nogamified}} {{> format_ludimoodle/nogamified/section }} {{/nogamified}}
+                    </div>
+                {{/section}}
+                {{# cm}}
+                    <div class="tab-pane fade {{# cm }}show active{{/cm}}" id="pills-activity" role="tabpanel" aria-labelledby="pills-activity-tab">
+                        {{# score}} {{> format_ludimoodle/score/cm }} {{/score}}
+                        {{# badge}} {{> format_ludimoodle/badge/cm }} {{/badge}}
+                        {{# progress}} {{> format_ludimoodle/progress/cm }} {{/progress}}
+                        {{# avatar}} {{> format_ludimoodle/avatar/cm }} {{/avatar}}
+                        {{# timer}} {{> format_ludimoodle/timer/cm }} {{/timer}}
+                        {{# ranking}} {{> format_ludimoodle/ranking/cm }} {{/ranking}}
+                        {{# nogamified}} {{> format_ludimoodle/nogamified/cm }} {{/nogamified}}
+                    </div>
+                {{/cm}}
+            </div>
+        </div>
+    </div>
+</div>

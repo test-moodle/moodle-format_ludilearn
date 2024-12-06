@@ -1,0 +1,37 @@
+<div class="avatar-inventory">
+    <div class="tabs">
+        {{# inventory}}
+            <button id="tab-slot-{{ slot }}" class="tab-inventory" data-tab="{{ slot }}" role="tab" aria-controls="tab-content-slot-{{ slot }}" aria-selected="false">
+                {{ slotname }}
+            </button>
+        {{/inventory}}
+    </div>
+    {{# inventory}}
+    <div id="tab-content-slot-{{ slot }}" class="tab-content-inventory" role="tabpanel" aria-labelledby="tab-content-slot-{{ slot }}">
+        <h4>{{ slotname }}</h4>
+        <div class="avatar-slot" role="list">
+            {{# items}}
+                <div class="avatar-item
+                {{#equiped}} avatar-item-equiped {{/equiped}}
+                {{#owned}} avatar-item-owned {{/owned}}
+                avatar-slot-{{ slot }}"
+                role="listitem" tabindex="0"
+                data-slot="{{ slot }}" data-theme="{{ theme }}">
+                    {{#owned}}
+                        <div class="alert alert-info alert-equiped" role="alert">
+                            {{#str}} equiped, format_ludimoodle {{/str}}
+                        </div>
+                        <img class="avatar-item-img" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/icons/icon-0{{slot}}-{{theme}}.svg" alt="Image item {{slot}}">
+                        <button class="equip-button" data-slot="{{ slot }}" data-theme="{{ theme }}">
+                            {{#str}} equip, format_ludimoodle {{/str}}
+                        </button>
+                    {{/owned}}
+                    {{^owned}}
+                        <img class="avatar-item-img" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_icon_default.svg" alt="Image item {{slot}}">
+                    {{/owned}}
+                </div>
+            {{/items}}
+        </div>
+    </div>
+    {{/inventory}}
+</div>

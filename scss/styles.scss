@@ -1,0 +1,742 @@
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+
+/**
+ * Styles files for ludimoodle format.
+ *
+ * @package     format_ludimoodle
+ * @copyright   2023 Pimenko <support@pimenko.com><pimenko.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+.format-ludimoodle {
+
+    .btn {
+        min-height: 40px;
+        font-weight: bold;
+    }
+
+    #pills-tab {
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0) 28px, var(--primary), rgba(0, 0, 0, 0) 32px);
+        height: 60px;
+        line-height: 60px;
+
+        .nav-item {
+            flex: none;
+        }
+    }
+
+    .ludimoodle-content {
+        border: none;
+        max-width: 830px;
+        margin: 15px auto auto;
+
+        .card-header {
+            background: transparent;
+        }
+    }
+
+    .scoretext {
+        font-size: 1em;
+        font-weight: 500;
+        color: #5c5854;
+
+        .playerscore {
+            color: var(--primary);
+            filter: brightness(75%);
+            font-size: 1.5em;
+        }
+
+        .cmname, .sectionname {
+            color: black;
+        }
+    }
+
+
+    .bonuscompletion, .penalties {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 5px;
+        background: #fff;
+        color: orange;
+        font-weight: 500;
+        padding: 3px 6px;
+        box-shadow: 4px -4px orange;
+        width: 50%;
+
+        &.bonuscompletion-cm, &.penalties-cm {
+            position: relative;
+            width: 100%;
+            max-width: 200px;
+            margin: auto;
+            box-shadow: 4px 4px orange;
+        }
+
+        span.bonuscompletion-value, span.penalties-value {
+            display: block;
+            text-align: center;
+            font-size: 1em;
+            line-height: 1em;
+        }
+        span.bonuscompletion-str, span.penalties-str {
+            /* width: 60%; */
+            display: block;
+            text-align: center;
+            font-size: 0.8em;
+            line-height: 0.8em;
+        }
+    }
+
+    .badgecompletion {
+        position: absolute;
+        top: -10px;
+        right: 5px;
+        padding: 3px 6px;
+        width: 50px;
+
+        &.badgecompletion-cm {
+            width: 75px;
+            margin: auto;
+            left: 50%;
+            right: unset;
+            top: -65px;
+        }
+    }
+
+    .ranking-text {
+        font-size: 1.2rem;
+        margin-top: -60px;
+    }
+
+    .rightdottedscore {
+        border-right: var(--primary) 5px dotted;
+
+        &.rightdottedscore-notsm {
+            @media (max-width: 576px) {
+                border-right: none;
+            }
+        }
+    }
+
+    .bottomdotted {
+        border-bottom: var(--primary) 5px dotted;
+    }
+
+    .rightlined {
+        border-right: var(--primary) 2px solid;
+        border-color: grey;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+
+        &.restricted.nourl {
+            pointer-events: none;
+            cursor: default;
+        }
+    }
+
+    .ludimoodle-img,
+    #pills-activity .ludimoodle-img {
+        height: 160px;
+
+        &.little-img {
+            height: 55px;
+        }
+    }
+
+    .img-timer {
+        margin-top: 32px;
+    }
+
+    #pills-activity .scoretext {
+        font-size: 1.5em;
+    }
+
+    .restricted {
+        filter: grayscale(1);
+    }
+
+    .maxseriesquare {
+        padding: 0;
+        margin-top: 10%;
+    }
+    .notreached {
+        opacity: 0.5;
+        filter: grayscale(1);
+    }
+
+    .block_section {
+        height: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.block_section_avatar {
+            align-items: end;
+        }
+
+        .progression {
+            font-size: 48px;
+            font-weight: 900;
+            color: #f8b334;
+        }
+    }
+
+    .badge-number {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto auto 0.25rem;
+        border: 2px solid #ddd;
+        color: #ddd;
+
+        &.badge-number-bronze {
+            color: #ffffff;
+            background: linear-gradient(135deg, #cd7f32, #eee, #cd7f32, #eee, #cd7f32);
+            border: 1px solid #cd7f32;
+            font-weight: 900;
+        }
+        &.badge-number-silver {
+            color: #ffffff;
+            background: linear-gradient(135deg, #c0c0c0, #eee, #c0c0c0, #eee, #c0c0c0);
+            border: 1px solid #c0c0c0;
+            font-weight: 900;
+        }
+        &.badge-number-gold {
+            color: #ffffff;
+            background: linear-gradient(135deg, #ffd700, #eee, #ffd700, #eee, #ffd700);
+            border: 1px solid #ffd700;
+            font-weight: 900;
+        }
+
+        &.spinning {
+            animation: spinY 2s linear infinite;
+        }
+    }
+
+    @keyframes spinY {
+        0% {
+            transform: rotateY(0deg);
+        }
+        100% {
+            transform: rotateY(360deg);
+        }
+    }
+
+    .progress-image,
+    .avatar-image {
+        position: relative;
+        background-repeat: no-repeat;
+        overflow: hidden;
+        background-position: center;
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%;
+        background-size: cover;
+
+        .progression-steps-component,
+        .avatar-slot,
+        .avatar-character {
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .avatar-bag {
+        display: block;
+        max-width: 75px;
+        margin: auto;
+        cursor: pointer;
+
+        &.avatar-bag-open {
+            display: none;
+        }
+    }
+    .modal-dialog {
+        max-width: 830px;
+        .avatar-inventory {
+
+            .tab-content-inventory {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
+
+                .avatar-slot {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    flex-direction: row;
+
+                    .alert {
+                        color: white;
+                        padding: 0;
+                    }
+
+                    .avatar-item {
+                        margin: 10px;
+                        text-align: center;
+                        cursor: pointer;
+                        transition: transform 0.2s;
+                        outline: none;
+                        max-width: 100px;
+                        flex: auto;
+
+                        &.avatar-item-owned {
+                            cursor: pointer;
+
+                            &:hover,
+                            &:focus {
+                                transform: scale(1.1);
+                                border: 2px solid #007bff;
+                                border-radius: 10px;
+                            }
+
+                            &.selected {
+                                border: 2px solid #007bff;
+                                padding: 10px;
+                                border-radius: 10px;
+                            }
+                        }
+
+                        .alert-equiped {
+                            display: none;
+                        }
+
+                        &.avatar-item-equiped {
+                            border: 2px solid green;
+                            padding: 10px;
+                            border-radius: 10px;
+
+                            .alert-equiped {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    .equip-button {
+                        display: none;
+                        margin-top: 10px;
+                        padding: 5px 10px;
+                        background: green;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        transition: background 0.3s;
+                        outline: none;
+
+                        &:focus,
+                        &:hover {
+                            background: darkgreen;
+                        }
+                    }
+                    .alert {
+                        margin-top: 10px;
+                    }
+
+                    .sr-only {
+                        position: absolute;
+                        width: 1px;
+                        height: 1px;
+                        padding: 0;
+                        margin: -1px;
+                        overflow: hidden;
+                        clip: rect(0, 0, 0, 0);
+                        border: 0;
+                    }
+                }
+            }
+
+            .tabs {
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 20px;
+
+                .tab-inventory {
+                    padding: 10px 20px;
+                    background: #f0f0f0;
+                    border: 1px solid orange;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    transition: background 0.3s;
+                    outline: none;
+                    width: 100%;
+
+                    &:focus,
+                    &:hover,
+                    &.active {
+                        background: orange;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+
+    .count-items {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        position: relative;
+
+        .numerator {
+            color: #F7B53C;
+            font-size: 48px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 9px;
+            left: 0;
+
+            &.two-digits {
+               left: -24px
+            }
+        }
+
+        .fraction {
+            color: #C9BEB6;
+            font-size: 32px;
+            position: absolute;
+            left: 32px;
+            bottom: 12px;
+        }
+
+        .denumerator {
+            color: #C9BEB6;
+            font-size: 32px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 0;
+            left: 43px;
+        }
+    }
+
+   .ludimoodle-world-professional {
+
+   }
+
+    .progression-text {
+        width: fit-content;
+        border-radius: 8px;
+        background-color: #f8b334;
+        font-size: 30px;
+        font-weight: 900;
+        color: #fff;
+        margin: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        &.progression-cm {
+            font-size: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+            p {
+                margin-bottom: 0.2rem;
+            }
+        }
+    }
+
+    .progression-bar-component {
+        &.rocket {
+            position: absolute;
+            width: 1200px;
+            height: 1200px;
+            max-width: unset;
+            max-height: unset;
+            left: 10%;
+            top: 10%;
+            animation: percentrocket 0.5333s infinite step-end;
+        }
+    }
+
+    .circle-progression.biggest {
+        float: none;
+        margin: auto;
+        font-size: 300px;
+
+        span.show {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        &::after {
+            top: 0.15em;
+            left: 0.15em;
+            width: 0.7em;
+            height: 0.7em;
+        }
+    }
+
+    .ranking-group-view {
+        margin: auto;
+        width: 100%;
+    }
+
+    .chrono {
+        img {
+            width: 100%;
+            max-width: 80px;
+        }
+        .current-time {
+            font-size: 2rem;
+            vertical-align: middle;
+        }
+    }
+
+    .reference-time {
+        font-size: 1.2rem;
+        span {
+            vertical-align: middle;
+        }
+    }
+    .ranking-summary {
+        margin: auto;
+        width: 100%;
+    }
+    .ranking-table {
+        td, tr {
+            border-top: none;
+        }
+    }
+    .ludimoodle-world-school {
+        @keyframes percentrocket {
+            0% {
+                left: 10%;
+                top: 10%;
+            }
+            7.1% {
+                left: calc(10% - 100%);
+                top: 10%;
+            }
+            14.2% {
+                left: calc(10% - 200%);
+                top: 10%;
+            }
+            21.3% {
+                left: calc(10% - 300%);
+                top: 10%;
+            }
+            28.4% {
+                left: 10%;
+                top: calc(10% - 100%);
+            }
+            35.5% {
+                left: calc(10% - 100%);
+                top: calc(10% - 100%);
+            }
+            42.6% {
+                left: calc(10% - 200%);
+                top: calc(10% - 100%);
+            }
+            200% {
+                left: calc(10% - 300%);
+                top: calc(10% - 100%);
+            }
+            57.1% {
+                left: calc(10% - 100%);
+                top: calc(10% - 200%);
+            }
+            64.2% {
+                left: calc(10% - 200%);
+                top: calc(10% - 200%);
+            }
+            71.3% {
+                left: calc(10% - 300%);
+                top: calc(10% - 200%);
+            }
+            78.4% {
+                left: 10%;
+                top: calc(10% - 300%);
+            }
+            85.5% {
+                left: calc(10% - 100%);
+                top: calc(10% - 300%);
+            }
+            92.6% {
+                left: calc(10% - 200%);
+                top: calc(10% - 300%);
+            }
+            100% {
+                left: calc(10% - 300%);
+                top: calc(10% - 300%);
+            }
+        }
+    }
+
+
+    .ludimoodle-world-professional {
+        // Avatar image.
+        .avatar-image {
+            background-size: auto;
+        }
+        .avatar-slot,
+        .avatar-character {
+            top: 15%;
+        }
+
+
+        // Ranking.
+        .ranking-summary {
+            display: block;
+            max-height: 160px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        // Rocket animation for professional world.
+        .section-progress {
+            .asteroids {
+                display: none;
+            }
+        }
+        .circle-progression.biggest span.show {
+            max-width: 210px;
+            max-height: 210px;
+            left: 45px;
+            top: 45px;
+        }
+        .progression-bar-component.rocket {
+            position: absolute;
+            width: 1200px;
+            height: 210px;
+            max-width: unset;
+            max-height: unset;
+            left: 0;
+            top: 0;
+            animation: percentrocketprofessional 0.345s infinite step-end;
+        }
+        @keyframes percentrocketprofessional {
+            0% {
+                left: -75px;
+            }
+            25% {
+                left: calc(-75px - 100%)
+            }
+            50% {
+                left: calc(-75px - 200%)
+            }
+            75% {
+                left: calc(-75px - 300%)
+            }
+            100% {
+                left: calc(-75px - 400%)
+            }
+        }
+    }
+
+    // Style only for the world highschool.
+    .ludimoodle-world-highschool {
+        // Avatar.
+        .avatar-image:has(.item-equiped) {
+            .avatar-character {
+                display: none;
+            }
+        }
+
+        // Ranking.
+        .ranking-summary {
+            display: block;
+            max-height: 175px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: -15px;
+        }
+
+
+        // Progression game element.
+        .progression-planet-inprogress {
+            background-image: url('[[pix:format_ludimoodle|highschool/progress/course-planet-bg]]');
+        }
+        .max {
+            background-image: url('[[pix:format_ludimoodle|highschool/progress/course-planet-max-bg]]');
+        }
+
+        // Hide asteroid image because not exist in highschool world.
+        .section-progress {
+            .asteroids {
+                display: none;
+            }
+        }
+
+        // Disable animation for the rocket because not exist in highschool world.
+        .c100>span {
+            line-height: 0;
+        }
+        .progression-bar-component.rocket {
+            position: relative;
+            width: auto;
+            height: auto;
+            max-width: unset;
+            max-height: unset;
+            left: 0;
+            top: 0;
+            animation: none;
+        }
+    }
+
+    li.explanation-li {
+        height: 50px;
+        margin-top: auto;
+        margin-bottom: auto;
+        .explanation-button {
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            background: orange;
+            border-radius: 50%;
+            cursor: pointer;
+
+            .explanation {
+                vertical-align: top;
+            }
+        }
+    }
+
+    /* Largeur d'écran inférieure à 600px. */
+    @media screen and (max-width: 600px) {
+        table.ranking-table {
+            tr, td {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+
+    /* Settings pages */
+    #ludimoodle-settings {
+        .editsettingssuccess,
+        .editsettingsfailed {
+            display: none;
+        }
+
+        .setting-footer {
+            margin-top: 5em;
+        }
+    }
+
+}
+
+@import 'progress-rocket';

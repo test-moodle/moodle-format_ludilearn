@@ -1,0 +1,27 @@
+<div class="section-nogamified">
+    <div class="row">
+        <div class="col-4 rightdottedscore">
+            <h4 class="text-center">{{ name }}</h4>
+            <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image not gamified">
+        </div>
+        <div class="col-8">
+            <div class="row">
+                {{#cms}}
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-4">
+                        <div class="cm-nogamified">
+                            <a href="{{ url }}" class="{{#parameters.restricted }}restricted{{/parameters.restricted}} {{^url}} nourl {{/url}}">
+                                <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image not gamified">
+                                <p class="text-center scoretext">
+                                    <span class="cmname">{{ name }}</span>
+                                </p>
+                                {{#parameters.restricted }}
+                                    <div class="cmrestrictedinfo text-center small"><i class="fa fa-lock"></i> {{{ parameters.restrictedinfo }}}</div>
+                                {{/parameters.restricted }}
+                            </a>
+                        </div>
+                    </div>
+                {{/cms}}
+            </div>
+        </div>
+    </div>
+</div>

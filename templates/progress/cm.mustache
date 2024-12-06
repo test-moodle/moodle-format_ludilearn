@@ -1,0 +1,25 @@
+<div class="cm-process {{#cm.parameters.restricted }}restricted{{/cm.parameters.restricted }}">
+{{#parameters.gamified }}
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="circle-progression c100 biggest ludimoodle p{{ parameters.progression }}">
+                <span class="show">
+                    <img class="progression-bar-component rocket" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/mod-rocket-sprite.svg">
+                </span>
+                <div class="slice">
+                    <div class="bar"></div><div class="fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="progression-text">
+                <p class="text-center">
+                    <span class="progression">{{ parameters.progression }}%</span>
+                </p>
+            </div>
+        </div>
+    </div>
+{{/parameters.gamified }}
+</div>

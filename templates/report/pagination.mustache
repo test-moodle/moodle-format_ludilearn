@@ -1,0 +1,24 @@
+<ul class="pagination justify-content-center" >
+    <li class="page-item disabled">
+        <a id="page-link-previous" class="page-link" href="#" aria-label="Previous" tabindex="-1">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+        </a>
+    </li>
+    {{#pages}}
+        <li class="page-item page {{# active}}active{{/active}}">
+            <a id="page-link-{{ number }}" class="page-link" data-id="{{ number }}" href="#" tabindex="0">
+                {{ number }}
+                {{# active }}
+                    <span class="sr-only">(current)</span>
+                {{/active}}
+            </a>
+        </li>
+    {{/pages}}
+    <li class="page-item {{# onepage }}disabled{{/onepage}}">
+        <a id="page-link-next" class="page-link" href="#" aria-label="Next" {{# onepage }}tabindex="-1"{{/onepage}}>
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,78 @@
+<div class="cm-avatar {{#cm.parameters.restricted }}restricted{{/cm.parameters.restricted }}">
+{{#parameters.gamified }}
+    <div class="row">
+        <div class="col-6 rightdottedscore">
+            <h4 class="text-center">{{ name }}</h4>
+            <div class="avatar-image"
+                 style="background-image: url({{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/backgrounds/background-1.svg)">
+                <img class="avatar-character" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/avatar.svg" style="z-index:0;" alt="Image avatar">
+                {{#parameters.sectionparameters.item-equiped-1 }}
+                    <img class="avatar-slot slot-1" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-01-{{ parameters.sectionparameters.item-equiped-1 }}.svg" alt="Image item equiped 1">
+                {{/parameters.sectionparameters.item-equiped-1 }}
+                {{^parameters.sectionparameters.item-equiped-1 }}
+                    <img class="avatar-slot slot-1" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 1">
+                {{/parameters.sectionparameters.item-equiped-1 }}
+                {{#parameters.sectionparameters.item-equiped-2 }}
+                    <img class="avatar-slot slot-2" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-02-{{ parameters.sectionparameters.item-equiped-2 }}.svg" alt="Image item equiped 2">
+                {{/parameters.sectionparameters.item-equiped-2 }}
+                {{^parameters.sectionparameters.item-equiped-2 }}
+                    <img class="avatar-slot slot-2" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 2">
+                {{/parameters.sectionparameters.item-equiped-2 }}
+                {{#parameters.sectionparameters.item-equiped-3 }}
+                    <img class="avatar-slot slot-3" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-03-{{ parameters.sectionparameters.item-equiped-3 }}.svg" alt="Image item equiped 3">
+                {{/parameters.sectionparameters.item-equiped-3 }}
+                {{^parameters.sectionparameters.item-equiped-3 }}
+                    <img class="avatar-slot slot-3" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 3">
+                {{/parameters.sectionparameters.item-equiped-3 }}
+                {{#parameters.sectionparameters.item-equiped-4 }}
+                    <img class="avatar-slot slot-4" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-04-{{ parameters.sectionparameters.item-equiped-4 }}.svg" alt="Image item equiped 4">
+                {{/parameters.sectionparameters.item-equiped-4 }}
+                {{^parameters.sectionparameters.item-equiped-4 }}
+                    <img class="avatar-slot slot-4" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 4">
+                {{/parameters.sectionparameters.item-equiped-4 }}
+                {{#parameters.sectionparameters.item-equiped-5 }}
+                    <img class="avatar-slot slot-5" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-05-{{ parameters.sectionparameters.item-equiped-5 }}.svg" alt="Image item equiped 5">
+                {{/parameters.sectionparameters.item-equiped-5 }}
+                {{^parameters.sectionparameters.item-equiped-5 }}
+                    <img class="avatar-slot slot-5" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 5">
+                {{/parameters.sectionparameters.item-equiped-5 }}
+                {{#parameters.sectionparameters.item-equiped-6 }}
+                    <img class="avatar-slot slot-6" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/images/image-06-{{ parameters.sectionparameters.item-equiped-6 }}.svg" alt="Image item equiped 6">
+                {{/parameters.sectionparameters.item-equiped-6 }}
+                {{^parameters.sectionparameters.item-equiped-6 }}
+                    <img class="avatar-slot slot-6" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_img_default.svg"  alt="Image equiment 6">
+                {{/parameters.sectionparameters.item-equiped-6 }}
+            </div>
+        </div>
+        <div class="col-6">
+            <h4>{{#str}} inventory, format_ludimoodle {{/str}}</h4>
+            <div class="row bottomdotted">
+                <div class="col-9">
+                    <div class="pb-3">
+                        <img class="avatar-bag avatar-bag-close" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/bag_close.svg" alt="Image of the inventory bag">
+                        <img class="avatar-bag avatar-bag-open" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/bag_open.svg" alt="Image of the inventory bag">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="count-items">
+                        <span class="numerator {{#parameters.sectionparameters.itemsownedcounttwodigits}} two-digits {{/parameters.sectionparameters.itemsownedcounttwodigits}}">
+                            {{ parameters.sectionparameters.totalitemsowned }}
+                        </span>
+                        <span class="fraction">/</span>
+                        <span class="denumerator">
+                            {{ parameters.sectionparameters.totalitems }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/parameters.gamified }}
+{{^parameters.gamified}}
+    <div class="row">
+        <div class="col-12">
+            <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no gamified">
+        </div>
+    </div>
+{{/parameters.gamified}}
+</div>

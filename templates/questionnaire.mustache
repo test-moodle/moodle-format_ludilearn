@@ -1,0 +1,19 @@
+<div id="ludimoodle-questionnaire">
+    <form id="form-questionnaire" action="#">
+        <h3>{{#str}} questionshexad, format_ludimoodle  {{/str}}</h3>
+        {{#questionsHEXAD}}
+            <div class="form-check mb-1">
+                <div class="form-control-feedback invalid-feedback" id="id_error_{{ number }}"></div>
+                <span class="font-weight-bold">{{{ content }}}</span><br>
+                <input type="hidden" name="questionid-{{ number }}" value="{{ id }}">
+                <input type="radio" id="question-{{ number }}-1" class="" name="question-{{ number }}" value="1">
+                <label class="mr-2" for="question-{{ number }}-1">1</label>
+                {{#answers}}
+                    <input type="radio" id="question-{{ number }}-{{ value }}" class="" name="question-{{ number }}" value="{{ value }}">
+                    <label class="mr-2" for="question-{{ number }}-{{ value }}">{{ value }}</label>
+                {{/answers}}
+            </div>
+        {{/questionsHEXAD}}
+        <input type="submit" class="btn btn-secondary ml-2" value="{{#str}} save {{/str}} ">
+    </form>
+</div>

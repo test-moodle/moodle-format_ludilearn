@@ -1,0 +1,8 @@
+{
+    "avatar": {"achiever": 0.448, "player": 0, "socialiser": 0.599, "freespirit": 0, "disruptor": 0, "philanthropist": -0.88},
+    "badges": {"achiever": 0, "player": 0.22, "socialiser": 0, "freespirit": 0, "disruptor": 0, "philanthropist": 0},
+    "progress": {"achiever": -0.354, "player": 0, "socialiser": 0, "freespirit": 0.223, "disruptor": 0, "philanthropist": 0},
+    "ranking": {"achiever": 0, "player": 0, "socialiser": 0.244, "freespirit": 0, "disruptor": 0, "philanthropist": 0},
+    "score": {"achiever": -0.316, "player": 0, "socialiser": 0, "freespirit": 0, "disruptor": 0.923, "philanthropist": 0},
+    "timer": {"achiever": 0, "player": 0, "socialiser": 0, "freespirit": 0, "disruptor": 0, "philanthropist": 0}
+}

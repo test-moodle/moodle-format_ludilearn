@@ -1,0 +1,72 @@
+<div class="section-progress">
+    <div class="row">
+        <div class="col-6 rightdottedscore">
+            <h4 class="text-center">{{ name }}</h4>
+            {{#parameters.gamified}}
+            <div class="progress-image" style="background-image: url({{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/progression-background.svg)">
+                <img class="progression-steps-component planet"
+                     src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/section-planet-0{{ parameters.planetenumber }}.svg"
+                     alt="Planet of the section"
+                     style="z-index: 0;">
+                <img class="progression-steps-component rocket "
+                     src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/progression-step-{{ parameters.step }}.svg"
+                     alt="Image of progression step"
+                     style="z-index: 2;">
+                <img class="progression-steps-component asteroids asteroid-1"
+                     src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/asteroid-01.svg"
+                     alt="Image of an asteroid"
+                     style="z-index: 3;">
+                <img class="progression-steps-component asteroids asteroid-2"
+                     src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/asteroid-02.svg"
+                     alt="Image of an asteroid"
+                     style="z-index: 4;">
+                <img class="progression-steps-component asteroids asteroid-3"
+                     src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/asteroid-03.svg"
+                     alt="Image of an asteroid"
+                     style="z-index: 4;">
+            </div>
+            {{/parameters.gamified}}
+            {{^parameters.gamified}}
+                <div class="col-12">
+                    <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no gamified">
+                </div>
+            {{/parameters.gamified}}
+            {{#parameters.gamified}}
+            <div class="progression-text">
+                <p class="text-center">
+                    <span class="progression">{{ parameters.progression }}%</span>
+                </p>
+            </div>
+            {{/parameters.gamified}}
+        </div>
+        <div class="col-6">
+            <div class="row">
+                {{#cms}}
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-4">
+                        <div class="cm-progress">
+                            <a href="{{ url }}" class="{{#parameters.restricted }}restricted{{/parameters.restricted}} {{^url}} nourl {{/url}}">
+                                <img class="{{#parameters.restricted }}restricted{{/parameters.restricted }} img-responsive mb-1 d-block mx-auto"
+                                     {{#parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/progress/icon.svg" {{/parameters.gamified }}
+                                     {{^parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" {{/parameters.gamified }}
+                                     alt="Image badge">
+                                {{#parameters.gamified }}
+                                <div class="progression-text progression-cm">
+                                    <p class="text-center">
+                                        <span class="progression">{{ parameters.progression }}%</span>
+                                    </p>
+                                </div>
+                                {{/parameters.gamified }}
+                                <p class="text-center">
+                                    <span class="cmname">{{ name }}</span>
+                                </p>
+                                {{#parameters.restricted }}
+                                    <div class="cmrestrictedinfo text-center small"><i class="fa fa-lock"></i> {{{ parameters.restrictedinfo }}}</div>
+                                {{/parameters.restricted }}
+                            </a>
+                        </div>
+                    </div>
+                {{/cms}}
+            </div>
+        </div>
+    </div>
+</div>

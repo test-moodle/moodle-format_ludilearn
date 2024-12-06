@@ -1,0 +1,45 @@
+<div id="ludimoodle-settings" class="ludimoodle-world-{{ world }}">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="avatar-image"
+                 style="background-image: url({{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/backgrounds/background-1.svg)">
+                <img class="avatar-character" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/avatar.svg" style="z-index:0;" alt="Image avatar">
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success editsettingssuccess" role="alert">
+        {{#str}} editsettingssuccess, format_ludimoodle {{/str}}
+    </div>
+    <div class="alert alert-danger editsettingsfailed" role="alert">
+        {{#str}} editsettingsfailed, format_ludimoodle {{/str}}
+    </div>
+    <p class="align-center">{{#str}} settings:avatardescription, format_ludimoodle {{/str}}</p>
+    <form id="form-parameters" class="form-parameters mform" action="#">
+        <input type="hidden" name="courseid" value="{{ courseid }}">
+        <div class="form-group row">
+            <div class="col-form-label col-md-3 d-flex pb-0 pr-md-0">
+                <label for="input-thresholdtoearn" class="d-inline word-break">{{#str}} settings:thresholdtoearn, format_ludimoodle  {{/str}}</label>
+                <div class="form-label-addon d-flex align-items-center align-self-start">
+                    <div class="text-danger">
+                        <i class="icon fa fa-exclamation-circle text-danger fa-fw " role="img"></i>
+                    </div>
+                    <a class="btn btn-link p-0" role="button" data-container="body" data-toggle="popover" data-placement="right"
+                       data-content="<div class=&quot;no-overflow&quot;><p>{{#str}} settings:thresholdtoearn_help, format_ludimoodle  {{/str}}</p></div>"
+                       data-html="true" tabindex="0" data-trigger="focus">
+                        <i class="icon fa fa-question-circle text-info fa-fw"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input class="form-control" id="input-thresholdtoearn" name="badgegold" type="number" min="0" max="100" value="{{ thresholdtoearn }}">
+                    <div class="input-group-append">
+                        <span class="input-group-text"> % </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">{{#str}} save {{/str}}</button>
+    </form>
+    {{> format_ludimoodle/settings_footer}}
+</div>

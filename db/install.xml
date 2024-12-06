@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="course/format/ludimoodle/db" VERSION="20211018" COMMENT="XMLDB file for Moodle format/ludimoodle"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+    <TABLES>
+        <TABLE NAME="ludimoodle_gameelements" COMMENT="Stores the ludimoodle game elements">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique id"/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Game element type"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course id"/>
+                <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Section id"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of creation"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="course" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+                <KEY NAME="section" TYPE="foreign" FIELDS="sectionid" REFTABLE="course_sections" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_params" COMMENT="Stores the ludimoodle game elements">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="gameelementid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Game element id"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Param name"/>
+                <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Param value"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="gameelement" TYPE="foreign" FIELDS="gameelementid" REFTABLE="ludimoodle_gameelements" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_cm_params" COMMENT="Stores the ludimoodle game elements">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="gameelementid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Game element id"/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course module id"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Param name"/>
+                <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Param value"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="gameelement" TYPE="foreign" FIELDS="gameelementid" REFTABLE="ludimoodle_gameelements" REFFIELDS="id"/>
+                <KEY NAME="cm" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_attribution" COMMENT="Attribution of gameelements to users">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="gameelementid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Game element id"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User id"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of creation"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="gameelement" TYPE="foreign" FIELDS="gameelementid" REFTABLE="ludimoodle_gameelements" REFFIELDS="id"/>
+                <KEY NAME="user" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_gameele_user"  COMMENT="Game element parameters for users">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="attributionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Attribution id"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Section name"/>
+                <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Section value"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="attribution" TYPE="foreign" FIELDS="attributionid" REFTABLE="ludimoodle_attribution" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_cm_user" COMMENT="Game element cm parameters for users">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="attributionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Attribution id"/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Section id"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Cm name"/>
+                <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Cm value"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="attribution" TYPE="foreign" FIELDS="attributionid" REFTABLE="ludimoodle_attribution" REFFIELDS="id"/>
+                <KEY NAME="cm" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_questions" COMMENT="Game element questions">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Question title"/>
+                <FIELD NAME="content" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Question content"/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Question type"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_answers" COMMENT="Game element answers">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Question id"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User id"/>
+                <FIELD NAME="score" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Score"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="ludimoodle_questions" REFFIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_profile" COMMENT="Game element profile">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User id"/>
+                <FIELD NAME="combinedaffinities" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Combined affinities"/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Game element type"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_log" COMMENT="Ludimoodle logs">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time log"/>
+                <FIELD NAME="user" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="User anonymised"/>
+                <FIELD NAME="gameelement" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Game element assigned"/>
+                <FIELD NAME="action" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Action performed"/>
+                <FIELD NAME="info" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log"/>
+                <FIELD NAME="info2" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 1"/>
+                <FIELD NAME="info3" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 2"/>
+                <FIELD NAME="info4" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 3"/>
+                <FIELD NAME="info5" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 4"/>
+                <FIELD NAME="info6" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 5"/>
+                <FIELD NAME="info7" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Info log 6"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="ludimoodle_bysection" COMMENT="Attribution of gameelements by section">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique ID"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course id"/>
+                <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Section id"/>
+                <FIELD NAME="gameelementid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Game element id"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="course" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+                <KEY NAME="section" TYPE="foreign" FIELDS="sectionid" REFTABLE="course_sections" REFFIELDS="id"/>
+                <KEY NAME="gameelement" TYPE="foreign" FIELDS="gameelementid" REFTABLE="ludimoodle_gameelements" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+    </TABLES>
+</XMLDB>

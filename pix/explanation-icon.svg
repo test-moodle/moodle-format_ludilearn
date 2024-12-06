@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.4 19.8">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="Calque_1-2" data-name="Calque 1">
+    <g>
+      <polygon class="cls-2" points="18.65 15.35 9.65 19.05 .75 15.35 .75 4.45 9.65 .75 18.65 4.45 18.65 15.35"/>
+      <polyline class="cls-2" points="18.65 4.45 9.65 8.05 .75 4.45"/>
+      <g>
+        <polyline class="cls-1" points="9.65 8.85 9.65 9.85 9.65 12.05 9.65 12.95"/>
+        <line class="cls-1" x1="9.65" y1="15.25" x2="9.65" y2="15.15"/>
+      </g>
+      <line class="cls-2" x1="4.55" y1="11.75" x2="4.55" y2="11.75"/>
+      <line class="cls-2" x1="9.65" y1="4.25" x2="9.65" y2="4.25"/>
+      <line class="cls-2" x1="6.85" y1="4.25" x2="6.85" y2="4.25"/>
+      <line class="cls-2" x1="12.55" y1="4.25" x2="12.55" y2="4.25"/>
+      <line class="cls-2" x1="15.75" y1="13.05" x2="15.75" y2="13.05"/>
+      <line class="cls-2" x1="12.75" y1="10.15" x2="12.75" y2="10.15"/>
+    </g>
+  </g>
+</svg>

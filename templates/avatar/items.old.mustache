@@ -1,0 +1,21 @@
+<div class="avatar-inventory">
+    {{# inventory}}
+        <h4>{{ slotname }}</h4>
+        <div class="avatar-slot">
+            {{# items}}
+                <div class="avatar-item
+                {{#equiped}} avatar-item-equiped {{/equiped}}
+                    {{#owned}} avatar-item-owned {{/owned}}
+                avatar-slot-{{ slot }}"
+                     data-slot="{{ slot }}" data-theme="{{ theme }}">
+                    {{#owned}}
+                        <img class="avatar-item-img" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/items/icons/icon-0{{slot}}-{{theme}}.svg" alt="Image item {{slot}}">
+                    {{/owned}}
+                    {{^owned}}
+                        <img class="avatar-item-img" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/avatar/item_icon_default.svg" alt="Image item {{slot}}">
+                    {{/owned}}
+                </div>
+            {{/items}}
+        </div>
+    {{/inventory}}
+</div>

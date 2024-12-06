@@ -1,0 +1,22 @@
+<div class="cm-badge {{#cm.parameters.restricted }}restricted{{/cm.parameters.restricted }}">
+    <div class="row">
+{{#parameters.gamified }}
+        <div class="col-12">
+            {{#parameters.completion}}
+                <div class="badgecompletion badgecompletion-cm">
+                    <img class="ludimoodle-img img-responsive d-block mx-auto"
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion.svg"
+                         alt="Image badge">
+                </div>
+            {{/parameters.completion}}
+            <img class="ludimoodle-img img-responsive d-block mx-auto"
+                 src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_{{ parameters.badge }}.svg"
+                 alt="Image badge">
+        </div>
+    </div>
+{{/parameters.gamified }}
+{{^parameters.gamified }}
+    <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no score">
+{{/parameters.gamified}}
+
+</div>

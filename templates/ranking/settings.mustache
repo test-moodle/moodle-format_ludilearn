@@ -1,0 +1,18 @@
+<div id="ludimoodle-settings" class="ludimoodle-world-{{ world }}">
+    <div class="row justify-content-center">
+        <div class="col-6 block_section">
+            {{#school}}
+                {{> format_ludimoodle/ranking/school/summary}}
+            {{/school}}
+            {{#professional}}
+                {{> format_ludimoodle/ranking/professional/summary}}
+            {{/professional}}
+            {{#highschool}}
+                {{> format_ludimoodle/ranking/highschool/summary}}
+            {{/highschool}}
+        </div>
+    </div>
+    <p class="align-center">{{#str}} settings:rankingdescription, format_ludimoodle {{/str}}</p>
+    <p class="align-center"><b>{{#str}} settings:nosetting, format_ludimoodle {{/str}}</b></p>
+    {{> format_ludimoodle/settings_footer}}
+</div>

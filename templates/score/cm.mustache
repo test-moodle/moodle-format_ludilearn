@@ -1,0 +1,20 @@
+<div class="cm-score {{#cm.parameters.restricted }}restricted{{/cm.parameters.restricted }}">
+
+    {{#parameters.gamified }}
+        <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/score/bag.svg" alt="Image score chest">
+        {{#parameters.bonuscompletion}}
+        <div class="bonuscompletion bonuscompletion-cm">
+            <span class="bonuscompletion-value">+ {{ parameters.bonuscompletion }}</span>
+            <span class="bonuscompletion-str">{{#str}} settings:bonuscompletion, format_ludimoodle {{/str}}</span>
+        </div>
+        {{/parameters.bonuscompletion}}
+        {{^parameters.noscore}}
+        <p class="text-center scoretext">
+            <span class="playerscore">{{ cm.parameters.score }}</span> / {{ cm.parameters.maxscore }} pts
+        </p>
+        {{/parameters.noscore}}
+    {{/parameters.gamified }}
+    {{^parameters.gamified }}
+        <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no score">
+    {{/parameters.gamified }}
+</div>

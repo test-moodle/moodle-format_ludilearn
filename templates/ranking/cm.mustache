@@ -1,0 +1,24 @@
+<div class="cm-ranking {{#cm.parameters.restricted }}restricted{{/cm.parameters.restricted }}">
+    {{#parameters.noscore}}
+        <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no score">
+    {{/parameters.noscore}}
+    {{^parameters.noscore}}
+        {{#parameters.gamified }}
+            {{#school}}
+                {{> format_ludimoodle/ranking/school/group_view}}
+            {{/school}}
+            {{#professional}}
+                {{> format_ludimoodle/ranking/professional/group_view}}
+            {{/professional}}
+            {{#highschool}}
+                {{> format_ludimoodle/ranking/highschool/group_view}}
+            {{/highschool}}
+            <p class="text-center ranking-text">
+                <span class="playerscore">{{ cm.parameters.score }} pts</span>
+            </p>
+        {{/parameters.gamified }}
+        {{^parameters.gamified }}
+            <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no score">
+        {{/parameters.gamified }}
+    {{/parameters.noscore}}
+</div>

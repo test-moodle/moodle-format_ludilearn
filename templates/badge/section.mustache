@@ -1,0 +1,102 @@
+<div class="section-badge">
+    <div class="row">
+        <div class="col-sm-12 col-md-6  rightlined">
+            <h4 class="text-center">{{ name }}</h4>
+            <div class="row mr-1">
+                {{#parameters.gamified}}
+                <div class="col-3 mt-0 p-0">
+                    <div class="text-center mb-1 badge-number
+                        {{#parameters.bronzecount }} badge-number-bronze spinning {{/parameters.bronzecount}}">
+                        {{ parameters.bronzecount }}
+                    </div>
+                    <img class="ludimoodle-img little-img img-responsive d-block mx-auto"
+                        {{#parameters.bronzecount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_bronze.svg"
+                        {{/parameters.bronzecount}}
+                        {{^parameters.bronzecount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_bronze_none.svg"
+                        {{/parameters.bronzecount }}
+                         alt="Image badge">
+                </div>
+                <div class="col-3 mt-0 p-0">
+                    <div class="text-center mb-1 badge-number
+                        {{#parameters.silvercount }} badge-number-silver spinning {{/parameters.silvercount}}">
+                        {{ parameters.silvercount }}
+                    </div>
+                    <img class="ludimoodle-img little-img img-responsive d-block mx-auto"
+                        {{#parameters.silvercount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_silver.svg"
+                        {{/parameters.silvercount}}
+                        {{^parameters.silvercount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_silver_none.svg"
+                        {{/parameters.silvercount }}
+                         alt="Image badge">
+                </div>
+                <div class="col-3 mt-0 p-0">
+                    <div class="text-center mb-1 badge-number
+                        {{#parameters.goldcount }} badge-number-gold spinning {{/parameters.goldcount}}">
+                        {{ parameters.goldcount }}
+                    </div>
+                    <img class="ludimoodle-img little-img img-responsive d-block mx-auto"
+                        {{#parameters.goldcount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_gold.svg"
+                        {{/parameters.goldcount}}
+                        {{^parameters.goldcount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_gold_none.svg"
+                        {{/parameters.goldcount }}
+                         alt="Image badge">
+                </div>
+                <div class="col-3 mt-0 p-0">
+                    <div class="text-center mb-1 badge-number
+                    {{#parameters.completioncount }} badge-number-bronze spinning {{/parameters.completioncount}}">
+                        {{ parameters.completioncount }}
+                    </div>
+                    <img class="ludimoodle-img little-img img-responsive d-block mx-auto"
+                        {{#parameters.completioncount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion.svg"
+                        {{/parameters.completioncount}}
+                        {{^parameters.completioncount }}
+                         src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion_none.svg"
+                        {{/parameters.completioncount }}
+                         alt="Image badge">
+                </div>
+                {{/parameters.gamified}}
+                {{^parameters.gamified}}
+                <div class="col-12">
+                    <img class="ludimoodle-img img-responsive d-block mx-auto" src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" alt="Image no gamified">
+                </div>
+                {{/parameters.gamified}}
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="row">
+                {{#cms}}
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-4">
+                        <div class="cm-badge">
+                            <a href="{{ url }}" class="{{#parameters.restricted }}restricted{{/parameters.restricted}} {{^url}} nourl {{/url}}">
+                                <img class="{{#parameters.restricted }}restricted{{/parameters.restricted }} img-responsive mb-1 d-block mx-auto"
+                                    {{#parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_{{ parameters.badge }}.svg" {{/parameters.gamified }}
+                                    {{^parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" {{/parameters.gamified }}
+                                     alt="Image badge">
+
+                                {{#parameters.gamified }}
+                                {{#parameters.completion}}
+                                    <div class="badgecompletion">
+                                        <img src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion.svg" alt="Icon completion">
+                                    </div>
+                                {{/parameters.completion}}
+                                {{/parameters.gamified }}
+                                <p class="text-center scoretext">
+                                    <span class="cmname">{{ name }}</span>
+                                </p>
+                                {{#parameters.restricted }}
+                                    <div class="cmrestrictedinfo text-center small"><i class="fa fa-lock"></i> {{{ parameters.restrictedinfo }}}</div>
+                                {{/parameters.restricted }}
+                            </a>
+                        </div>
+                    </div>
+                {{/cms}}
+            </div>
+        </div>
+    </div>
+</div>
