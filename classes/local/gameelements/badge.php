@@ -28,7 +28,7 @@ require_once($CFG->libdir . '/adminlib.php');
  * Badge game element class.
  *
  * @package          format_ludimoodle
- * @copyright        2023 Pimenko <support@pimenko.com><pimenko.com>
+ * @copyright        2024 Pimenko <support@pimenko.com><pimenko.com>
  * @author           Jordan Kesraoui
  * @license          http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -144,43 +144,47 @@ class badge extends game_element {
                 }
 
                 $cmparameters[$key]['completion'] = false;
-                if (isset($value['progression'])) {
-                    $sumprogression += $value['progression'];
+                // If the module is gradable.
+                if ($gradable) {
                     $maxprogression += 100;
+                    if (isset($value['progression'])) {
+                            $sumprogression += $value['progression'];
 
-                    // Define badge
-                    if ($value['progression'] >= $this->badgegold) {
+                            // Define badge.
+                            if ($value['progression'] >= $this->badgegold) {
+                                $cmparameters[$key]['badge'] = 'gold';
+                                $this->goldcount++;
+                            } else if ($value['progression'] >= $this->badgesilver) {
+                                $cmparameters[$key]['badge'] = 'silver';
+                                $this->silvercount++;
+                            } else if ($value['progression'] >= $this->badgebronze) {
+                                $cmparameters[$key]['badge'] = 'bronze';
+                                $this->bronzecount++;
+                            } else {
+                                $cmparameters[$key]['badge'] = 'none';
+                            }
+                    }
+                }
+
+                $completed = $this->is_completed($key);
+                // If the module is not gradable but completion is enabled.
+                if (!$gradable && $completion) {
+                    // If the module is completed, the progression is 100% and the badge is gold.
+                    if ($completed) {
+                        $cmparameters[$key]['progression'] = 100;
                         $cmparameters[$key]['badge'] = 'gold';
                         $this->goldcount++;
-                    } else if ($value['progression'] >= $this->badgesilver) {
-                        $cmparameters[$key]['badge'] = 'silver';
-                        $this->silvercount++;
-                    } else if ($value['progression'] >= $this->badgebronze) {
-                        $cmparameters[$key]['badge'] = 'bronze';
-                        $this->bronzecount++;
                     } else {
+                        $cmparameters[$key]['progression'] = 0;
                         $cmparameters[$key]['badge'] = 'none';
                     }
-                } else {
-                    $completed = $this->is_completed($key);
-
-                    // If the module is not gradable and completien is enabled.
-                    if (!$gradable && $completion) {
-                        // If the module is completed, the progression is 100% and the badge is gold.
-                        if ($completed) {
-                            $cmparameters[$key]['progression'] = 100;
-                            $cmparameters[$key]['badge'] = 'gold';
-                            $this->goldcount++;
-                        } else {
-                            $cmparameters[$key]['progression'] = 0;
-                            $cmparameters[$key]['badge'] = 'none';
-                        }
-                    } else if ($gradable && $completion) { // If the module is gradable and completien is enabled.
-                        // If the module is completed, we mark it as completed and add a completed count (for the completion badge).
-                        if ($completed) {
-                            $cmparameters[$key]['completion'] = true;
-                            $this->completioncount++;
-                        }
+                }
+                // If completien is enabled.
+                if ($completion) {
+                    // If the module is completed, we mark it as completed and add a completed count (for the completion badge).
+                    if ($completed) {
+                        $cmparameters[$key]['completion'] = true;
+                        $this->completioncount++;
                     }
                 }
             } else {
@@ -193,27 +197,6 @@ class badge extends game_element {
         }
         $this->sectionparameters['progression'] = $this->progression;
         $this->sectionparameters['completioncount'] = $this->completioncount;
-    }
-
-    /**
-     * Get the default parameters for a course module.
-     *
-     * @param string $moduletype The module type.
-     * @param int $cmid The course module ID.
-     * @return array The default parameters.
-     */
-    public static function get_cm_parameters_default(string $moduletype, int $cmid): array {
-        return parent::get_cm_parameters_default($moduletype, $cmid);
-    }
-
-    /**
-     * Get the type of a parameter.
-     *
-     * @param string $name Name of the parameter.
-     * @return string Type of the parameter.
-     */
-    public static function get_cm_parameter_type(string $name): string {
-        return parent::get_cm_parameter_type($name);
     }
 
     /**
@@ -305,6 +288,11 @@ class badge extends game_element {
         return $this->goldcount + $this->silvercount + $this->bronzecount;
     }
 
+    /**
+     * Get the completion count of the user.
+     *
+     * @return int Completion count of the user.
+     */
     public function get_completion_count(): int {
         return $this->completioncount;
     }
@@ -388,7 +376,7 @@ class badge extends game_element {
             [
                 'course' => $quiz->course,
                 'module' => $module->id,
-                'instance' => $quiz->id
+                'instance' => $quiz->id,
             ]
         );
 
@@ -543,12 +531,13 @@ class badge extends game_element {
                     ['gameelementid' => $gameelement->id,
                         'name' => 'badgegold']);
                 // Check value.
-                if ($badgegold < 0)
+                if ($badgegold < 0) {
                     $badgegold = 0;
-                if ($badgegold > 100)
+                }
+                if ($badgegold > 100) {
                     $badgegold = 100;
-
-                // If existing update values, else add value
+                }
+                // If existing update values, else add value.
                 if ($badgegoldrecord) {
                     $badgegoldrecord->value = $badgegold;
                     $DB->update_record('ludimoodle_params', $badgegoldrecord);
@@ -565,12 +554,14 @@ class badge extends game_element {
                     ['gameelementid' => $gameelement->id,
                         'name' => 'badgesilver']);
                 // Check value.
-                if ($badgesilver < 0)
+                if ($badgesilver < 0) {
                     $badgesilver = 0;
-                if ($badgesilver > 100)
+                }
+                if ($badgesilver > 100) {
                     $badgesilver = 100;
+                }
 
-                // If existing update values, else add value
+                // If existing update values, else add value.
                 if ($badgesilverrecord) {
                     $badgesilverrecord->value = $badgesilver;
                     $DB->update_record('ludimoodle_params', $badgesilverrecord);
@@ -587,12 +578,14 @@ class badge extends game_element {
                     ['gameelementid' => $gameelement->id,
                         'name' => 'badgebronze']);
                 // Check value.
-                if ($badgebronze < 0)
+                if ($badgebronze < 0) {
                     $badgebronze = 0;
-                if ($badgebronze > 100)
+                }
+                if ($badgebronze > 100) {
                     $badgebronze = 100;
+                }
 
-                // If existing update values, else add value
+                // If existing update values, else add value.
                 if ($badgebronzerecord) {
                     $badgebronzerecord->value = $badgebronze;
                     $DB->update_record('ludimoodle_params', $badgebronzerecord);
@@ -608,4 +601,3 @@ class badge extends game_element {
         return true;
     }
 }
-
