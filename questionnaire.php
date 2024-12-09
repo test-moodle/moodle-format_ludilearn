@@ -23,11 +23,10 @@
  * @license          http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
 
-global $CFG, $PAGE, $OUTPUT, $USER, $DB;
 require('../../../config.php');
 require_once('lib.php');
+global $CFG, $PAGE, $OUTPUT, $USER, $DB;
 
 $course = get_course(required_param('id', PARAM_INT));
 context_helper::preload_course($course->id);

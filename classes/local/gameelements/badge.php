@@ -148,21 +148,21 @@ class badge extends game_element {
                 if ($gradable) {
                     $maxprogression += 100;
                     if (isset($value['progression'])) {
-                            $sumprogression += $value['progression'];
+                        $sumprogression += $value['progression'];
 
-                            // Define badge.
-                            if ($value['progression'] >= $this->badgegold) {
-                                $cmparameters[$key]['badge'] = 'gold';
-                                $this->goldcount++;
-                            } else if ($value['progression'] >= $this->badgesilver) {
-                                $cmparameters[$key]['badge'] = 'silver';
-                                $this->silvercount++;
-                            } else if ($value['progression'] >= $this->badgebronze) {
-                                $cmparameters[$key]['badge'] = 'bronze';
-                                $this->bronzecount++;
-                            } else {
-                                $cmparameters[$key]['badge'] = 'none';
-                            }
+                        // Define badge.
+                        if ($value['progression'] >= $this->badgegold) {
+                            $cmparameters[$key]['badge'] = 'gold';
+                            $this->goldcount++;
+                        } else if ($value['progression'] >= $this->badgesilver) {
+                            $cmparameters[$key]['badge'] = 'silver';
+                            $this->silvercount++;
+                        } else if ($value['progression'] >= $this->badgebronze) {
+                            $cmparameters[$key]['badge'] = 'bronze';
+                            $this->bronzecount++;
+                        } else {
+                            $cmparameters[$key]['badge'] = 'none';
+                        }
                     }
                 }
 
