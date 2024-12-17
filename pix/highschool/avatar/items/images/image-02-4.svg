@@ -1,1 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300"><defs><style>.cls-1{fill:#ffd66e;}.cls-2{isolation:isolate;}.cls-3{fill:#a384bb;mix-blend-mode:multiply;opacity:.25;}.cls-4{filter:url(#drop-shadow-3);}.cls-5{fill:#42496f;}.cls-6{fill:url(#Dégradé_sans_nom_10);}</style><linearGradient id="Dégradé_sans_nom_10" x1="21.21" y1="44.16" x2="135.32" y2="44.16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9bc8ec" stop-opacity="0"/><stop offset="1" stop-color="#9bc8ec" stop-opacity=".5"/></linearGradient><filter id="drop-shadow-3" x="83.05" y="62.26" width="68.42" height="116.49" filterUnits="userSpaceOnUse"><feOffset dx="-1.22" dy="0"/><feGaussianBlur result="blur" stdDeviation="0"/><feFlood flood-color="#42496f" flood-opacity="1"/><feComposite in2="blur" operator="in"/><feComposite in="SourceGraphic"/></filter></defs><g class="cls-2"><g id="bateau_04"><path class="cls-6" d="M133.87,62.84s4.05-4.77-1.38-7.92-10.33.06-14.94-1.1c-2.28-.57-4.11.84-4.11.84,0,0,2.46-7.61-6.12-6.51-2.28-9.04-11.09-16.52-16.04-16.52s-7.63,2.12-9.6,1.57c-1.97-5.58-5.51-10.7-13.84-9.12-8.34,1.57-21.16,10.62-20.13,12.43,1.02,1.81,3.84,3.41-1.66,3.36s-11.63-8-14.54-4.77c-2.91,3.22-3.15,7.63-8.34,8.57-5.19.94.87,14.71,7.39,12.27,6.53-2.44,6.29-6.37,11.48-3.93,5.19,2.44,4.33.87,6.29.63s2.28,4.8,7.55,3.3c5.27-1.49,5.56-3.46,7.11-.43s.37,8.66,5.01,6.75c4.64-1.91,5.93-3.96,7.09-3.33,1.17.63,3.29,1.49,7.38,1.42s4.61,4.18,4.61,4.18l20.94-.45v-1.03s.36-.65-.67-2.34c1.93.34,6.57.54,6.63,1.84l19.9.29Z"/><g class="cls-4"><polygon class="cls-1" points="151.47 178.74 129.28 178.74 113.97 63.42 136.16 63.42 151.47 178.74"/><polygon class="cls-5" points="138.29 79.41 116.09 79.41 113.97 63.42 136.16 63.42 138.29 79.41"/><rect class="cls-5" x="111.96" y="62.26" width="26.07" height="1.16"/><polygon class="cls-3" points="136.16 63.42 113.97 63.42 114.55 67.79 136.29 64.36 136.16 63.42"/><polygon class="cls-1" points="123.78 178.74 101.59 178.74 86.29 63.42 108.48 63.42 123.78 178.74"/><polygon class="cls-5" points="110.6 79.41 88.41 79.41 86.29 63.42 108.48 63.42 110.6 79.41"/><rect class="cls-5" x="84.27" y="62.26" width="26.07" height="1.16"/><polygon class="cls-3" points="108.48 63.42 86.29 63.42 86.87 67.79 108.6 64.36 108.48 63.42"/></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="b" data-name="Dégradé sans nom 10" x1="21.213" y1="44.161" x2="135.321" y2="44.161" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9bc8ec" stop-opacity="0"/>
+      <stop offset="1" stop-color="#9bc8ec" stop-opacity=".5"/>
+    </linearGradient>
+    <filter id="c" data-name="drop-shadow-3" x="83.052" y="62.257" width="68.415" height="116.487" filterUnits="userSpaceOnUse">
+      <feOffset dx="-1.219" dy="0"/>
+      <feGaussianBlur result="d" stdDeviation="0"/>
+      <feFlood flood-color="#42496f" flood-opacity="1"/>
+      <feComposite in2="d" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g isolation="isolate">
+    <g id="a" data-name="bateau 04">
+      <g>
+        <path d="M133.868,62.839s4.05-4.774-1.376-7.92-10.333.056-14.943-1.101c-2.281-.572-4.108.844-4.108.844,0,0,2.456-7.607-6.116-6.506-2.281-9.045-11.089-16.516-16.044-16.516s-7.629,2.124-9.595,1.573c-1.966-5.584-5.505-10.696-13.842-9.123-8.337,1.573-21.156,10.618-20.134,12.426,1.022,1.809,3.842,3.409-1.658,3.356-5.499-.053-11.634-7.996-14.544-4.772-2.91,3.225-3.146,7.629-8.337,8.573-5.191.944.865,14.707,7.393,12.269,6.528-2.438,6.292-6.371,11.483-3.932,5.191,2.438,4.326.865,6.292.629s2.281,4.798,7.55,3.303c5.269-1.494,5.559-3.464,7.105-.434s.366,8.66,5.006,6.749c4.64-1.911,5.926-3.955,7.092-3.326,1.166.629,3.289,1.494,7.379,1.416s4.606,4.175,4.606,4.175l20.939-.449v-1.033s.359-.652-.674-2.337c1.932.337,6.574.541,6.63,1.842l19.896.295Z" fill="url(#b)"/>
+        <g filter="url(#c)">
+          <g>
+            <polygon points="151.468 178.744 129.276 178.744 113.972 63.421 136.165 63.421 151.468 178.744" fill="#ffd66e"/>
+            <polygon points="138.286 79.411 116.094 79.411 113.972 63.421 136.165 63.421 138.286 79.411" fill="#42496f"/>
+            <rect x="111.956" y="62.257" width="26.068" height="1.164" fill="#42496f"/>
+            <polygon points="136.165 63.421 113.972 63.421 114.552 67.789 136.289 64.36 136.165 63.421" fill="#a384bb" mix-blend-mode="multiply" opacity=".25"/>
+          </g>
+          <g>
+            <polygon points="123.784 178.744 101.592 178.744 86.288 63.421 108.48 63.421 123.784 178.744" fill="#ffd66e"/>
+            <polygon points="110.602 79.411 88.41 79.411 86.288 63.421 108.48 63.421 110.602 79.411" fill="#42496f"/>
+            <rect x="84.272" y="62.257" width="26.068" height="1.164" fill="#42496f"/>
+            <polygon points="108.48 63.421 86.288 63.421 86.868 67.789 108.605 64.36 108.48 63.421" fill="#a384bb" mix-blend-mode="multiply" opacity=".25"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,1 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="bateau_03" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300"><defs><style>.cls-1{filter:url(#drop-shadow-2);}.cls-2{fill:#fff;}.cls-3{fill:#e86170;}.cls-4{stroke:#42496f;stroke-linecap:round;stroke-linejoin:round;stroke-width:.91px;}.cls-4,.cls-5,.cls-6{fill:none;}.cls-6{stroke:#ffd66e;stroke-miterlimit:10;stroke-width:3.66px;}.cls-7{clip-path:url(#clippath);}</style><filter id="drop-shadow-2" x="115.54" y="45.43" width="45.09" height="27.86" filterUnits="userSpaceOnUse"><feOffset dx="-1.22" dy="0"/><feGaussianBlur result="blur" stdDeviation="0"/><feFlood flood-color="#42496f" flood-opacity="1"/><feComposite in2="blur" operator="in"/><feComposite in="SourceGraphic"/></filter><clipPath id="clippath"><path class="cls-5" d="M156.53,69.71c-10.84-1.87-16.25,1.29-27.09,2.32-1.02-8.93-1.53-13.41-2.56-22.4,10.84-.47,16.25-3.73,27.09-2.82,1.02,9.12,1.53,13.69,2.56,22.9Z"/></clipPath></defs><g class="cls-1"><path class="cls-3" d="M156.53,69.71c-10.84-1.87-16.25,1.29-27.09,2.32-1.02-8.93-1.53-13.41-2.56-22.4,10.84-.47,16.25-3.73,27.09-2.82,1.02,9.12,1.53,13.69,2.56,22.9Z"/><g class="cls-7"><path class="cls-6" d="M126.89,49.63c9.91,6.74,20.71,11.95,29.65,20.08"/><path class="cls-6" d="M129.44,72.03c8.11-8.46,15.67-17.5,24.53-25.22"/><path class="cls-2" d="M124.38,68c3.73-2.74,5.6-4.41,9.34-7.8-4.37-2.15-6.56-3.25-10.93-6.36.64,5.68.96,8.51,1.6,14.16Z"/><path class="cls-2" d="M160.63,66.52c-4.37-4.32-6.56-5.84-10.93-8.51,3.73-2.95,5.6-4.28,9.34-6.07.64,5.81.96,8.73,1.6,14.58Z"/></g><path class="cls-4" d="M127.14,53.27c-4.46.34-6.68.32-11.14-1.02"/><path class="cls-4" d="M129.18,71.14c-4.5.64-6.75.83-11.25-.03"/></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="bateau 03" xmlns="http://www.w3.org/2000/svg" width="300" height="300" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
+  <defs>
+    <filter id="b" data-name="drop-shadow-2" x="115.543" y="45.433" width="45.089" height="27.864" filterUnits="userSpaceOnUse">
+      <feOffset dx="-1.219" dy="0"/>
+      <feGaussianBlur result="c" stdDeviation="0"/>
+      <feFlood flood-color="#42496f" flood-opacity="1"/>
+      <feComposite in2="c" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="d">
+      <path d="M156.532,69.714c-10.836-1.872-16.253,1.288-27.089,2.317-1.023-8.933-1.534-13.411-2.557-22.397,10.836-.467,16.252-3.729,27.089-2.822,1.023,9.117,1.534,13.694,2.557,22.902Z" fill="none"/>
+    </clipPath>
+  </defs>
+  <g filter="url(#b)">
+    <g>
+      <path d="M156.532,69.714c-10.836-1.872-16.253,1.288-27.089,2.317-1.023-8.933-1.534-13.411-2.557-22.397,10.836-.467,16.252-3.729,27.089-2.822,1.023,9.117,1.534,13.694,2.557,22.902Z" fill="#e86170"/>
+      <g clip-path="url(#d)">
+        <g>
+          <path d="M126.886,49.634c9.915,6.74,20.707,11.954,29.646,20.08" fill="none" stroke="#ffd66e" stroke-miterlimit="10" stroke-width="3.657"/>
+          <path d="M129.443,72.032c8.115-8.464,15.671-17.501,24.532-25.219" fill="none" stroke="#ffd66e" stroke-miterlimit="10" stroke-width="3.657"/>
+          <path d="M124.381,67.998c3.735-2.74,5.602-4.41,9.336-7.796-4.373-2.154-6.559-3.249-10.932-6.364.638,5.679.958,8.511,1.596,14.16Z" fill="#fff"/>
+          <path d="M160.632,66.517c-4.373-4.32-6.56-5.844-10.933-8.506,3.735-2.951,5.603-4.276,9.337-6.075.638,5.81.958,8.725,1.596,14.581Z" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+    <path d="M127.14,53.27c-4.456.336-6.684.319-11.14-1.02" fill="none" stroke="#42496f" stroke-linecap="round" stroke-linejoin="round" stroke-width=".914"/>
+    <path d="M129.179,71.137c-4.498.642-6.747.829-11.245-.031" fill="none" stroke="#42496f" stroke-linecap="round" stroke-linejoin="round" stroke-width=".914"/>
+  </g>
+</svg>
