@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'format_ludimoodle';
-$plugin->release = '0.1.0';
+$plugin->release = '1.0.0';
 $plugin->version = 2024120600;
 $plugin->requires = 2022041900;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_STABLE;
