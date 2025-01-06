@@ -205,6 +205,7 @@ class format_ludimoodle_gameelement implements renderable, templatable {
         }
 
         // Export the data.
+        $format = course_get_format($this->course->id);
         $contextcourse = context_course::instance($this->course->id, MUST_EXIST);
         $manager = new manager();
         $data = new stdClass();
@@ -219,7 +220,6 @@ class format_ludimoodle_gameelement implements renderable, templatable {
         foreach ($this->course->sections as $section) {
             // Don't show hidden section.
             $sectioninfo = get_fast_modinfo($this->course)->get_section_info($section->section);
-            $format = course_get_format($this->course);
             $uservisible = $format->is_section_visible($sectioninfo);
             if (!$uservisible) {
                 continue;
@@ -264,6 +264,8 @@ class format_ludimoodle_gameelement implements renderable, templatable {
             $data->section = new stdClass();
             $data->section->id = $this->section->id;
             $data->section->name = format_string(get_section_name($this->course, $this->section->section));
+            // Section summary.
+            $data->section->summary = $this->format_summary_text($this->section);
             $type = $this->section->gameelement->get_type();
             $data->section->$type = true;
             $data->section->parameters = new stdClass();
@@ -755,5 +757,22 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                 \core_availability\info::format_info($cminfo->availableinfo, $this->course->id);
         }
         return $parameters;
+    }
+
+    /**
+     * Generate html for a section summary text
+     *
+     * @param stdClass $section The section.
+     * @return string HTML to output.
+     */
+    public function format_summary_text(stdClass $section): string {
+        $context = context_course::instance($section->course);
+        $summarytext = file_rewrite_pluginfile_urls($section->summary, 'pluginfile.php',
+            $context->id, 'course', 'section', $section->id);
+
+        $options = new stdClass();
+        $options->noclean = true;
+        $options->overflowdiv = true;
+        return format_text($summarytext, $section->summaryformat, $options);
     }
 }
