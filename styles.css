@@ -471,8 +471,7 @@
       height: 50px;
       padding: 10px;
       background: orange;
-      border-radius: 50%;
-      cursor: pointer; }
+      border-radius: 50%; }
       .format-ludimoodle li.explanation-li .explanation-button .explanation {
         vertical-align: top; }
   @media screen and (max-width: 600px) {

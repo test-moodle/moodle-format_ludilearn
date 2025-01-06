@@ -71,30 +71,39 @@
         <div class="col-sm-12 col-md-6">
             <div class="row">
                 {{#cms}}
-                    <div class="col-6 col-sm-4 col-md-4 col-lg-4">
-                        <div class="cm-badge">
-                            <a href="{{ url }}" class="{{#parameters.restricted }}restricted{{/parameters.restricted}} {{^url}} nourl {{/url}}">
-                                <img class="{{#parameters.restricted }}restricted{{/parameters.restricted }} img-responsive mb-1 d-block mx-auto"
-                                    {{#parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_{{ parameters.badge }}.svg" {{/parameters.gamified }}
-                                    {{^parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" {{/parameters.gamified }}
-                                     alt="Image badge">
-
-                                {{#parameters.gamified }}
-                                {{#parameters.completion}}
-                                    <div class="badgecompletion">
-                                        <img src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion.svg" alt="Icon completion">
-                                    </div>
-                                {{/parameters.completion}}
-                                {{/parameters.gamified }}
-                                <p class="text-center scoretext">
-                                    <span class="cmname">{{ name }}</span>
-                                </p>
-                                {{#parameters.restricted }}
-                                    <div class="cmrestrictedinfo text-center small"><i class="fa fa-lock"></i> {{{ parameters.restrictedinfo }}}</div>
-                                {{/parameters.restricted }}
-                            </a>
+                    {{#label}}
+                        <div class="col-12 mt-2">
+                            <div class="cm-score">
+                                {{{ labeltext }}}
+                            </div>
                         </div>
-                    </div>
+                    {{/label}}
+                    {{^label}}
+                        <div class="col-6 col-sm-4 col-md-4 col-lg-4">
+                            <div class="cm-badge">
+                                <a href="{{ url }}" class="{{#parameters.restricted }}restricted{{/parameters.restricted}} {{^url}} nourl {{/url}}">
+                                    <img class="{{#parameters.restricted }}restricted{{/parameters.restricted }} img-responsive mb-1 d-block mx-auto"
+                                        {{#parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_{{ parameters.badge }}.svg" {{/parameters.gamified }}
+                                        {{^parameters.gamified }}src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/none.svg" {{/parameters.gamified }}
+                                         alt="Image badge">
+
+                                    {{#parameters.gamified }}
+                                    {{#parameters.completion}}
+                                        <div class="badgecompletion">
+                                            <img src="{{globals.config.wwwroot}}/course/format/ludimoodle/pix/{{ world }}/badge/badge_completion.svg" alt="Icon completion">
+                                        </div>
+                                    {{/parameters.completion}}
+                                    {{/parameters.gamified }}
+                                    <p class="text-center scoretext">
+                                        <span class="cmname">{{ name }}</span>
+                                    </p>
+                                    {{#parameters.restricted }}
+                                        <div class="cmrestrictedinfo text-center small"><i class="fa fa-lock"></i> {{{ parameters.restrictedinfo }}}</div>
+                                    {{/parameters.restricted }}
+                                </a>
+                            </div>
+                        </div>
+                    {{/label}}
                 {{/cms}}
             </div>
         </div>

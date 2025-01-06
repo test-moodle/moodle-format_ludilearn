@@ -298,6 +298,20 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                 $cmdata->parameters = new stdClass();
                 $cmdata->parameters->viewed = $manager->cm_viewed_by_user($cminfo->id, $USER->id);
 
+                // Verify if the cm is a label.
+                if ($cminfo->modname == 'label') {
+                    $cmdata->label = true;
+                    $label = $DB->get_record('label', ['id' => $cminfo->instance]);
+                    if ($label) {
+                        $cmdata->labeltext = $cminfo->get_formatted_content();
+                    }
+
+                    // Add the label to the section.
+                    // And no need to continue because label is not gamified.
+                    $data->section->cms[] = $cmdata;
+                    continue;
+                }
+
                 if (isset($this->section->gameelement)) {
                     // Get the course module parameters.
                     $cmparameters = $this->section->gameelement->get_cm_parameters();
