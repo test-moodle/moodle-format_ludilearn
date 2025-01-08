@@ -153,10 +153,17 @@ class avatar extends game_element {
         $this->itemowned = $paramaters['itemowned'];
 
         // Refresh item owned when we detect an activity is completed.
-        foreach ($cmparameters as $key => $value) {
+        // Or detect a progression greater than the threshold to earn an item.
+        foreach ($this->cmparameters as $key => $value) {
             if ($value['gamified']) {
                 // If the activity is completed but the threshold was not exceeded yet.
-                if (!$value['thresholdexceeded'] && $value['completion']) {
+                if (!$value['thresholdexceeded'] && $value['completion'] && !$this->is_gradable($key)) {
+                    // We refresh mark the trehshold as exceeded and make earn the item.
+                    $this->earn_item($key);
+                }
+
+                // If the progression is greater than the threshold to earn an item.
+                if (!$value['thresholdexceeded'] && $value['progression'] >= $this->thresholdtoearn && $this->is_gradable($key)) {
                     // We refresh mark the trehshold as exceeded and make earn the item.
                     $this->earn_item($key);
                 }
@@ -185,7 +192,7 @@ class avatar extends game_element {
             }
         }
 
-        $sectionparameters['itemequiped'] = $this->itemequiped = $itemequiped;
+        $this->sectionparameters['itemequiped'] = $this->itemequiped = $itemequiped;
     }
 
 
@@ -521,7 +528,7 @@ class avatar extends game_element {
         $itemowned = $DB->get_record('ludimoodle_gameele_user',
             [
                 'attributionid' => $attribution->id,
-                'name' => 'itemowned-' . $lastitemnotowned->theme . '-' . $lastitemnotowned->slot,
+                'name' => 'item_owned-' . $lastitemnotowned->theme . '-' . $lastitemnotowned->slot,
             ]
         );
         if ($itemowned) {
@@ -532,7 +539,7 @@ class avatar extends game_element {
         } else {
             $DB->insert_record('ludimoodle_gameele_user', [
                 'attributionid' => $attribution->id,
-                'name' => 'itemowned-' . $lastitemnotowned->theme . '-' . $lastitemnotowned->slot,
+                'name' => 'item_owned-' . $lastitemnotowned->theme . '-' . $lastitemnotowned->slot,
                 'value' => 1]);
         }
 

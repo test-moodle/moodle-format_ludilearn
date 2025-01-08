@@ -109,7 +109,8 @@ abstract class game_element {
      */
     public function is_completed(int $cmid): bool {
         $info = new completion_info($this->course);
-        if ($info->is_enabled()) {
+        $cminfo = get_fast_modinfo($this->course)->get_cm($cmid);
+        if ($info->is_enabled($cminfo)) {
             $cm = get_coursemodule_from_id('', $cmid);
             $data = $info->get_data($cm, false, $this->userid);
             if ($data->completionstate != COMPLETION_INCOMPLETE) {

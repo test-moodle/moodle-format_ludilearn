@@ -177,6 +177,16 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
 
         upgrade_plugin_savepoint(true, 2024102400, 'format', 'ludimoodle');
     }
+    if ($oldversion < 2025010700) {
+        // Replace all data present the mistake of previous bug.
+        $sql = 'SELECT * FROM {ludimoodle_gameele_user} WHERE name LIKE "itemowned-%"';
+        $gameeleuser = $DB->get_records_sql($sql);
+        foreach ($gameeleuser as $geu) {
+            $geu->name = str_replace('itemowned', 'item_owned', $geu->name);
+            $DB->update_record('ludimoodle_gameele_user', $geu);
+        }
+        upgrade_plugin_savepoint(true, 2025010700, 'format', 'ludimoodle');
+    }
     purge_all_caches();
     return true;
 }
