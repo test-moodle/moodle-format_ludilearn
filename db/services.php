@@ -89,4 +89,11 @@ $functions = [
         'ajax'        => true,
         'loginrequired' => true,
     ],
+    'format_ludimoodle_update_updateprogression_parameters'      => [
+        'classname'   => 'format_ludimoodle\external\parameters\update_updateprogression_parameters',
+        'description' => 'Update course parameters for update progression element',
+        'type'        => 'write',
+        'ajax'        => true,
+        'loginrequired' => true,
+    ],
 ];

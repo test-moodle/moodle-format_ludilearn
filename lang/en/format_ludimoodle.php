@@ -135,6 +135,7 @@ $string['notgamify'] = 'Not gamify';
 $string['seconds'] = 'seconds';
 $string['ofpenalties'] = 'of penalties';
 $string['globalsettings'] = 'Global settings';
+$string['tools'] = 'Tools';
 $string['editsettingssuccess'] = 'The changes made have been applied';
 $string['editsettingsfailed'] = 'Something wrong happening. The changes have not been applied';
 $string['settings:multiplier'] = 'Multiplier';
@@ -197,7 +198,11 @@ $string['settings:rankingdescription'] = '<p>The ranking game element provides a
 2. Activities with only completion have no impact on the ranking.<br>
 3. In the case of activities combining grade and completion, only the grade is taken into account for the ranking.</p>';
 $string['settings:nogamifieddescription'] = '<p>The non-game element appears on all non-game activities and course resources.</p>';
+$string['settings:updateprogression'] = 'Update users progression';
+$string['settings:updateprogressiondescription'] = '<p>Update the progression of all users in the course. This action is irreversible.<br>
+This can be usefull when the game elements assigned is changed because the progression is not updated automatically.</p>';
 $string['gameprofile_desc'] = 'Based on your answers, here\'s your HEXAD-12 player profile :';
+$string['execute'] = 'Execute';
 $string['achiever'] = 'Achiever';
 $string['player'] = 'Player';
 $string['socialiser'] = 'Socialiser';

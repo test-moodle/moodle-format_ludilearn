@@ -82,6 +82,9 @@ class settings implements renderable, templatable {
                 $this->parameterslist[] = 'section_' . $section->id;
             }
             return;
+        } else if ($this->type == 'updateprogression') {
+            $this->parameterslist = [];
+            return;
         }
         $classname = "\\format_ludimoodle\\local\\gameelements\\$type";
         $this->parameterslist = $classname::get_parameters_list();
@@ -104,7 +107,7 @@ class settings implements renderable, templatable {
         $data->world = $world;
         $data->$world = true;
         // If type is real type.
-        if ($this->type != 'assignmentbysection') {
+        if ($this->type != 'assignmentbysection' && $this->type != 'updateprogression') {
             if (!in_array($this->type, game_element::get_all_types())) {
                 throw new coding_exception('Invalid game element type');
             }
@@ -312,6 +315,16 @@ class settings implements renderable, templatable {
             }
             $data->sections[] = $s;
         }
+        return $data;
+    }
+
+    /**
+     * Get data for update progression.
+     *
+     * @param stdClass $data The data for update progression.
+     * @return stdClass The data for update progression.
+     */
+    protected function get_data_updateprogression(stdClass $data): stdClass {
         return $data;
     }
 

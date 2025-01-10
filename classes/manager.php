@@ -850,4 +850,57 @@ class manager {
          WHERE type = :type AND itemid = :itemid AND operation = :operation AND status < :status',
             ['type' => 'course', 'itemid' => $courseid, 'operation' => 'restore', 'status' => backup::STATUS_FINISHED_OK]);
     }
+
+    /**
+     * Refresh the progression of all users in a course.
+     * (That is usefull when a game element of course or a section is changed).
+     *
+     * @param int $courseid
+     * @return void
+     */
+    public function refresh_progression(int $courseid): void {
+        global $DB;
+
+        // Get all the game elements of the course.
+        $gameelementrecords = $DB->get_records('ludimoodle_gameelements', ['courseid' => $courseid]);
+        foreach ($gameelementrecords as $gameelementrecord) {
+            // Get all the attributions of the game element.
+            $attributions = $DB->get_records('ludimoodle_attribution', ['gameelementid' => $gameelementrecord->id]);
+            foreach ($attributions as $attribution) {
+                // Get the game element of the user.
+                $gameelement = game_element::get_element($courseid, $gameelementrecord->sectionid,
+                    $attribution->userid, $gameelementrecord->type);
+
+                // For each course module.
+                $cms = $gameelement->get_cm_parameters();
+                foreach ($cms as $cm) {
+                    if ($gameelement->is_gradable($cm['id']) && $cm['gamified']) {
+                        $coursemodule = $DB->get_record('course_modules', ['id' => $cm['id']]);
+                        $module = $DB->get_record('modules', ['id' => $coursemodule->module]);
+                        // Update the progression of the user.
+                        switch ($gameelement->get_type()) {
+                            case 'score':
+                                score::update_elements($courseid, $coursemodule, $module->name, $attribution->userid);
+                                break;
+                            case 'badge':
+                                badge::update_elements($courseid, $coursemodule, $module->name, $attribution->userid);
+                                break;
+                            case 'progress':
+                                progress::update_elements($courseid, $coursemodule, $module->name, $attribution->userid);
+                                break;
+                            case 'avatar':
+                                avatar::update_elements($courseid, $coursemodule, $module->name, $attribution->userid);
+                                break;
+                            case 'ranking':
+                                ranking::update_elements($courseid, $coursemodule, $module->name, $attribution->userid);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 }

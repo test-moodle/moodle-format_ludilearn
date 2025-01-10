@@ -1,0 +1,13 @@
+<div id="ludimoodle-settings">
+    <div class="alert alert-success editsettingssuccess" role="alert">
+        {{#str}} editsettingssuccess, format_ludimoodle {{/str}}
+    </div>
+    <div class="alert alert-danger editsettingsfailed" role="alert">
+        {{#str}} editsettingsfailed, format_ludimoodle {{/str}}
+    </div>
+    <p class="align-center">{{#str}} settings:updateprogressiondescription, format_ludimoodle {{/str}}</p>
+    <form id="form-parameters" class="form-parameters mform" action="#">
+        <input type="hidden" name="courseid" value="{{ courseid }}">
+        <button class="btn btn-primary" type="submit">{{#str}} execute, format_ludimoodle {{/str}}</button>
+    </form>
+</div>

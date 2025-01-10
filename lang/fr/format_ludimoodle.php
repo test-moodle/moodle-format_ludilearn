@@ -135,6 +135,7 @@ $string['notgamify'] = 'Ne pas ludifier';
 $string['seconds'] = 'secondes';
 $string['ofpenalties'] = 'de pénalités';
 $string['globalsettings'] = 'Réglages globaux';
+$string['tools'] = 'Outils';
 $string['editsettingssuccess'] = 'Les modifications apportées ont bien été appliquées';
 $string['editsettingsfailed'] = 'Une erreur est apparue. Les modifications apportées n\'ont pas été appliquées';
 $string['settings:multiplier'] = 'Multiplicateur';
@@ -197,7 +198,11 @@ $string['settings:rankingdescription'] = '<p> L\'élément de jeu classement off
 2. Les activités avec uniquement de l\'achèvement n\'ont pas d\'impact sur le classement.<br>
 3. Dans le cas des activités combinant note et achèvement, uniquement la note est prise en compte pour le classement.</p>';
 $string['settings:nogamifieddescription'] = '<p>L\'élément de jeu non ludifié apparait sur toutes les activités et les ressources de cours sans ludification.</p>';
+$string['settings:updateprogression'] = 'Mettre à jour de la progression';
+$string['settings:updateprogressiondescription'] = '<p>Cette option permet de mettre à jour manuellement la progression des apprenants dans le cours.<br>
+Cela peut être utile lorsque les éléments de jeu attribués sont modifiés car la progression n\'est pas mise à jour automatiquement.</p>';
 $string['gameprofile_desc'] = 'D\'après vos réponses, voici votre profil de joueur HEXAD-12 :';
+$string['execute'] = 'Executer';
 $string['achiever'] = 'Accomplisseur';
 $string['player'] = 'Joueur';
 $string['socialiser'] = 'Socialiseur';

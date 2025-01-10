@@ -53,6 +53,9 @@ class settings_renderer extends plugin_renderer_base {
         if ($settings->get_type() == 'assignmentbysection') {
             return $rendermenu . $this->render_from_template('format_ludimoodle/settings_assignment_by_section',
                 $settings->export_for_template($this));
+        } elseif ($settings->get_type() == 'updateprogression') {
+            return $rendermenu . $this->render_from_template('format_ludimoodle/settings_update_progression',
+                $settings->export_for_template($this));
         }
 
         return $rendermenu . $this->render_from_template('format_ludimoodle/' . $settings->get_type() . '/settings',
@@ -91,12 +94,15 @@ class settings_renderer extends plugin_renderer_base {
             $settingsview[$url->out(false)] = get_string($type, 'format_ludimoodle');
         }
 
-        // Report part.
-        $reportview = [];
+        // Tools part.
+        $toolsview = [];
+        $params = ['id' => $courseid, 'type' => 'updateprogression', 'hideheader' => 1];
+        $url = new moodle_url("$CFG->wwwroot/course/format/ludimoodle/settings_game_elements.php", $params);
+        $toolsview[$url->out(false)] = get_string('settings:updateprogression', 'format_ludimoodle');
 
         // Render tertiary navigation.
         $menu[][get_string('settings')] = $settingsview;
-        $menu[][get_string('report', 'format_ludimoodle')] = $reportview;
+        $menu[][get_string('tools', 'format_ludimoodle')] = $toolsview;
         $selectmenu = new \core\output\select_menu('settings', $menu, $activeurl);
         $selectmenu->set_label(get_string('settings'), ['class' => 'sr-only']);
         $options = \html_writer::tag(
