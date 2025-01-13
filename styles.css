@@ -32,8 +32,8 @@
       color: var(--primary);
       filter: brightness(75%);
       font-size: 1.5em; }
-    .format-ludimoodle .scoretext .cmname, .format-ludimoodle .scoretext .sectionname {
-      color: black; }
+  .format-ludimoodle .cmname, .format-ludimoodle .sectionname {
+    color: black; }
   .format-ludimoodle .bonuscompletion, .format-ludimoodle .penalties {
     position: absolute;
     top: 0;
