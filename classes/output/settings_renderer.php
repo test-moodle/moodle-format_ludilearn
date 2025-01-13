@@ -56,7 +56,7 @@ class settings_renderer extends plugin_renderer_base {
         if ($settings->get_type() == 'assignmentbysection') {
             return $rendermenu . $this->render_from_template('format_ludimoodle/settings_assignment_by_section',
                     $settings->export_for_template($this));
-        } elseif ($settings->get_type() == 'updateprogression') {
+        } else if ($settings->get_type() == 'updateprogression') {
             return $rendermenu . $this->render_from_template('format_ludimoodle/settings_update_progression',
                     $settings->export_for_template($this));
         }

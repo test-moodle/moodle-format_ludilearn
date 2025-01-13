@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+// phpcs:disable
 /**
  * Plugin strings are defined here.
  *
@@ -243,3 +244,23 @@ $string['privacy:metadata:ludimoodle_cm_user:attributionid'] = 'The attribution 
 $string['privacy:metadata:ludimoodle_cm_user:cmid'] = 'The course module ID.';
 $string['privacy:metadata:ludimoodle_cm_user:name'] = 'The name of the data.';
 $string['privacy:metadata:ludimoodle_cm_user:value'] = 'The value of the data.';
+
+$string['happy_to_help_others'] = 'I am happy to help others';
+$string['enjoy_group_activities'] = 'I enjoy group activities';
+$string['wellbeing_of_others_is_important'] = 'The wellbeing of others is important to me';
+$string['enjoy_being_part_of_a_team'] = 'I enjoy being part of a team';
+$string['enjoy_managing_challenging_tasks'] = 'I enjoy managing challenging tasks';
+$string['enjoy_overcoming_difficult_circumstances'] = 'I enjoy overcoming difficult circumstances';
+$string['independence_is_important_to_me'] = 'Independence is important to me';
+$string['do_not_like_following_rules'] = 'I do not like following rules';
+$string['will_effort_if_reward_is_enough'] = 'If the reward is sufficient, I will make an effort';
+$string['important_to_follow_my_own_path'] = 'It is important for me to follow my own path';
+$string['see_myself_as_rebel'] = 'I see myself as a rebel';
+$string['rewards_are_good_for_motivation'] = 'Rewards are a good way to motivate me';
+
+$string['philanthropist'] = 'Philanthropist';
+$string['socialiser'] = 'Socialiser';
+$string['achiever'] = 'Achiever';
+$string['free_spirit'] = 'Free Spirit';
+$string['disruptor'] = 'Disruptor';
+$string['player'] = 'Player';

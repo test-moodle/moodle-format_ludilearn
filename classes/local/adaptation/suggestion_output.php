@@ -38,7 +38,7 @@ class suggestion_output {
      * @return array An array containing the suggestion and sorted combined scores.
      * @throws \dml_exception
      */
-    public static function generate_suggestion_based_on_affinities(int $userid, int $courseid = null): array {
+    public static function generate_suggestion_based_on_affinities(int $userid, $courseid = null): array {
         global $DB;
 
         // Use static values.
@@ -109,6 +109,7 @@ class suggestion_output {
      *                                  values.
      *
      * @return array The calculated matrix suggestion for each game element.
+     * @throws \Exception
      */
     public static function matrix_suggestion(hexad_scores $hexadscores, array $affinitymatrix): array {
 

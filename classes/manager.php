@@ -205,7 +205,7 @@ class manager {
      * @return array Array of game elements with auto assignements.
      * @throws \dml_exception
      */
-    public function get_gameelements_auto(string $type, int $courseid = null): array {
+    public function get_gameelements_auto(string $type, $courseid = null): array {
         global $DB;
 
         $gameelements = [];
@@ -666,7 +666,7 @@ class manager {
      * @return string The type of game element.
      * @throws \dml_exception
      */
-    public function get_global_user_game_element(int $userid, int $courseid = null): string {
+    public function get_global_user_game_element(int $userid, $courseid = null): string {
         global $DB;
 
         $profile = $DB->get_record('ludimoodle_profile', ['userid' => $userid]);

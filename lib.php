@@ -629,7 +629,7 @@ function format_ludimoodle_inplace_editable($itemtype, $itemid, $newvalue) {
  */
 function format_ludimoodle_extend_navigation_course(navigation_node $navigation, stdClass $course,
     stdClass $context): void {
-    global $PAGE, $USER, $CFG;
+    global $USER, $CFG;
     $context = context_course::instance($course->id);
     if (has_capability('moodle/course:update', $context, $USER) && $course->format == 'ludimoodle') {
         $url = new moodle_url("$CFG->wwwroot/course/format/ludimoodle/settings_game_elements.php",
