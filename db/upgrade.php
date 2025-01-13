@@ -199,6 +199,63 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
         }
         upgrade_plugin_savepoint(true, 2025010700, 'format', 'ludimoodle');
     }
+
+    if ($oldversion < 2025011200) {
+
+        $table = new xmldb_table('ludimoodle_gameelements');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_elements');
+        }
+
+        $table = new xmldb_table('ludimoodle_params');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_params');
+        }
+
+        $table = new xmldb_table('ludimoodle_cm_params');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_cm_params');
+        }
+
+        $table = new xmldb_table('ludimoodle_attribution');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_attributio');
+        }
+
+        $table = new xmldb_table('ludimoodle_gameele_user');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_ele_user');
+        }
+
+        $table = new xmldb_table('ludimoodle_cm_user');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_cm_user');
+        }
+
+        $table = new xmldb_table('ludimoodle_questions');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_questions');
+        }
+
+        $table = new xmldb_table('ludimoodle_answers');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_answers');
+        }
+
+        $table = new xmldb_table('ludimoodle_profile');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_profile');
+        }
+
+        $table = new xmldb_table('ludimoodle_bysection');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_bysection');
+        }
+
+
+        upgrade_plugin_savepoint(true, 2025011200, 'format', 'ludimoodle');
+    }
+
     purge_all_caches();
     return true;
 }

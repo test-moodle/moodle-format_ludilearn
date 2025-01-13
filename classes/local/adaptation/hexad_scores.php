@@ -110,7 +110,7 @@ class hexad_scores {
             $questionidsstring = implode(',', $questionids);
 
             $query = "SELECT questionid, score
-                FROM {ludimoodle_answers}
+                FROM {format_ludimoodle_answers}
                 WHERE userid = :userid
                 AND questionid IN ($questionidsstring)";
             $params = ['userid' => $userid];

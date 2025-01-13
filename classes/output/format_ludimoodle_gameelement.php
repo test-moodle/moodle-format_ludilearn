@@ -87,7 +87,7 @@ class format_ludimoodle_gameelement implements renderable, templatable {
 
         // Verify if the cours is assigned automatically and if the user has answered yet to the questionnaire.
         if ($options['assignment'] == 'automatic') {
-            $profile = $DB->get_record('ludimoodle_profile', ['userid' => $USER->id]);
+            $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $USER->id]);
             if ($profile) {
                 $gameelementtype = $profile->type;
 
@@ -127,8 +127,8 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     $gameelementtype);
             } else {
                 // Get the attributions by section.
-                $sql = "SELECT ge.id, ge.type FROM {ludimoodle_bysection} bs
-                        INNER JOIN {ludimoodle_gameelements} ge ON bs.gameelementid = ge.id
+                $sql = "SELECT ge.id, ge.type FROM {format_ludimoodle_bysection} bs
+                        INNER JOIN {format_ludimoodle_elements} ge ON bs.gameelementid = ge.id
                         WHERE bs.courseid = :courseid AND bs.sectionid = :sectionid";
                 $bysection = $DB->get_record_sql($sql,
                     ['courseid' => $this->course->id, 'sectionid' => $value->id]);
@@ -154,8 +154,8 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     $gameelementtype);
             } else {
                 // Get the attributions by section.
-                $sql = "SELECT ge.id, ge.type FROM {ludimoodle_bysection} bs
-                        INNER JOIN {ludimoodle_gameelements} ge ON bs.gameelementid = ge.id
+                $sql = "SELECT ge.id, ge.type FROM {format_ludimoodle_bysection} bs
+                        INNER JOIN {format_ludimoodle_elements} ge ON bs.gameelementid = ge.id
                         WHERE bs.courseid = :courseid AND bs.sectionid = :sectionid";
                 $bysection = $DB->get_record_sql($sql,
                     ['courseid' => $this->course->id, 'sectionid' => $this->section->id]);

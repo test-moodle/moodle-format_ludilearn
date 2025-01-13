@@ -171,19 +171,19 @@ class format_ludimoodle_observer {
             $users = get_enrolled_users(context_course::instance($course->id));
 
             // Get the default game element.
-            $gameelementbydefault = $DB->get_record('ludimoodle_gameelements',
+            $gameelementbydefault = $DB->get_record('format_ludimoodle_elements',
                 ['courseid' => $course->id, 'sectionid' => $event->objectid, 'type' => $options['default_game_element']]);
 
             foreach ($users as $user) {
                 $type = $options['default_game_element'];
                 if ($options['assignment'] == 'automatic') {
                     // Else if assignment is automatic, we attribute the game element to the user based on his profile.
-                    $profile = $DB->get_record('ludimoodle_profile', ['userid' => $user->id]);
+                    $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $user->id]);
                     if ($profile) {
                         $type = $profile->type;
                     }
                 } else if ($options['assignment'] == 'bysection') {
-                    $bysection = $DB->get_record('ludimoodle_bysection',
+                    $bysection = $DB->get_record('format_ludimoodle_bysection',
                         ['courseid' => $course->id, 'sectionid' => $event->objectid]);
                     if ($bysection) {
                         $type = $bysection->type;
@@ -195,7 +195,7 @@ class format_ludimoodle_observer {
                 // Attribution game element.
                 if (isset($type)) {
                     if ($options['assignment'] != 'bysection') {
-                        $gameelement = $DB->get_record('ludimoodle_gameelements',
+                        $gameelement = $DB->get_record('format_ludimoodle_elements',
                             ['courseid' => $course->id, 'sectionid' => $event->objectid, 'type' => $type]);
                         $manager->attribution_game_element($gameelement->id, $user->id);
                     } else {
@@ -204,7 +204,7 @@ class format_ludimoodle_observer {
                             $manager->attribution_game_element($bysection->gameelementid, $user->id);
                         }
                     }
-                    $gameelement = $DB->get_record('ludimoodle_gameelements',
+                    $gameelement = $DB->get_record('format_ludimoodle_elements',
                         [
                             'sectionid' => $event->objectid,
                             'type' => $type,
@@ -265,7 +265,7 @@ class format_ludimoodle_observer {
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         $cm = $DB->get_record('course_modules', ['id' => $event->objectid]);
         if ($course->format == 'ludimoodle') {
-            $gameelements = $DB->get_records('ludimoodle_gameelements',
+            $gameelements = $DB->get_records('format_ludimoodle_elements',
                 [
                     'courseid' => $course->id,
                     'sectionid' => $cm->section,
@@ -275,7 +275,7 @@ class format_ludimoodle_observer {
                 $cmparameters = game_element::get_cm_parameters_default_by_type($gameelement->type, $event->other['modulename'],
                     $event->objectid);
                 foreach ($cmparameters as $name => $value) {
-                    $DB->insert_record('ludimoodle_cm_params',
+                    $DB->insert_record('format_ludimoodle_cm_params',
                         ['gameelementid' => $gameelement->id, 'cmid' => $cm->id, 'name' => $name, 'value' => $value]);
                 }
             }
@@ -292,8 +292,8 @@ class format_ludimoodle_observer {
      */
     public static function course_module_deleted(course_module_deleted $event): void {
         global $DB;
-        $DB->delete_records('ludimoodle_cm_params', ['cmid' => $event->contextinstanceid]);
-        $DB->delete_records('ludimoodle_cm_user', ['cmid' => $event->contextinstanceid]);
+        $DB->delete_records('format_ludimoodle_cm_params', ['cmid' => $event->contextinstanceid]);
+        $DB->delete_records('format_ludimoodle_cm_user', ['cmid' => $event->contextinstanceid]);
     }
 
     /**
@@ -315,11 +315,11 @@ class format_ludimoodle_observer {
             // If the section has changed, we need to update the game element.
             foreach (game_element::get_all_types() as $type) {
                 // Game element of the next section.
-                $nextgameelement = $DB->get_record('ludimoodle_gameelements',
+                $nextgameelement = $DB->get_record('format_ludimoodle_elements',
                     ['courseid' => $event->courseid, 'sectionid' => $cm->section, 'type' => $type]);
 
-                $previousgameelementsql = 'SELECT ge.id FROM {ludimoodle_cm_params} cmp
-                                    INNER JOIN {ludimoodle_gameelements} ge ON ge.id = cmp.gameelementid
+                $previousgameelementsql = 'SELECT ge.id FROM {format_ludimoodle_cm_params} cmp
+                                    INNER JOIN {format_ludimoodle_elements} ge ON ge.id = cmp.gameelementid
                                     WHERE ge.type = :type
                                     AND cmp.cmid = :cmid';
                 $previsousgameelement = $DB->get_record_sql($previousgameelementsql, ['type' => $type, 'cmid' => $cmid]);
@@ -334,17 +334,17 @@ class format_ludimoodle_observer {
                     continue;
                 }
                 // Update the game element of the course module.
-                $sql = 'UPDATE {ludimoodle_cm_params} SET gameelementid = :nextgameelement
+                $sql = 'UPDATE {format_ludimoodle_cm_params} SET gameelementid = :nextgameelement
                         WHERE id = :id';
                 $DB->execute($sql, ['nextgameelement' => $nextgameelement->id, 'id' => $previsousgameelement->id]);
 
                 // Attributions of the next section.
-                $attributions = $DB->get_records('ludimoodle_attribution',
+                $attributions = $DB->get_records('format_ludimoodle_attributio',
                     ['gameelementid' => $nextgameelement->id]);
 
                 // Update the attribution of the course module.
                 foreach ($attributions as $attribution) {
-                    $sql = 'UPDATE {ludimoodle_cm_user} SET attributionid = :attributionid WHERE cmid = :cmid';
+                    $sql = 'UPDATE {format_ludimoodle_cm_user} SET attributionid = :attributionid WHERE cmid = :cmid';
                     $DB->execute($sql, ['attributionid' => $attribution->id, 'cmid' => $cmid]);
                 }
             }

@@ -295,20 +295,20 @@ class settings implements renderable, templatable {
             }
 
             // Get the game element of the section.
-            $bysection = $DB->get_record('ludimoodle_bysection',
+            $bysection = $DB->get_record('format_ludimoodle_bysection',
                 ['courseid' => $this->courseid, 'sectionid' => $section->id]);
-            $gameelements = $DB->get_records('ludimoodle_gameelements',
+            $gameelements = $DB->get_records('format_ludimoodle_elements',
                 ['courseid' => $this->courseid, 'sectionid' => $section->id]);
 
             if ($bysection) {
                 $s->gameelementid = $bysection->gameelementid;
-                $gameelement = $DB->get_record('ludimoodle_gameelements',
+                $gameelement = $DB->get_record('format_ludimoodle_elements',
                     ['id' => $s->gameelementid]);
                 $s->type = $gameelement->type;
             } else {
                 // If no game element is set, set the default game element.
                 $defaultgameelement = $courseformat->get_format_options()['default_game_element'];
-                $gameelement = $DB->get_record('ludimoodle_gameelements',
+                $gameelement = $DB->get_record('format_ludimoodle_elements',
                     ['courseid' => $this->courseid, 'sectionid' => $section->id, 'type' => $defaultgameelement]);
                 $s->gameelementid = $gameelement->id;
                 $s->type = $gameelement->type;

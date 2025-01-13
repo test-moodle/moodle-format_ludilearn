@@ -72,16 +72,16 @@ if (isset($_POST['element']) && isset($_POST['id'])) {
         die();
     }
 
-    $ludimoodleprofile = $DB->get_record('ludimoodle_profile', ['userid' => $_POST['id']]);
+    $ludimoodleprofile = $DB->get_record('format_ludimoodle_profile', ['userid' => $_POST['id']]);
     if ($ludimoodleprofile) {
-        $DB->delete_records('ludimoodle_profile', ['userid' => $_POST['id']]);
+        $DB->delete_records('format_ludimoodle_profile', ['userid' => $_POST['id']]);
     }
 
     $ludimoodleprofile = new stdClass();
     $ludimoodleprofile->type = $_POST['element'];
     $ludimoodleprofile->userid = $_POST['id'];
     $ludimoodleprofile->combinedaffinities = 'manual';
-    $DB->insert_record('ludimoodle_profile', $ludimoodleprofile);
+    $DB->insert_record('format_ludimoodle_profile', $ludimoodleprofile);
     echo 'L\'élément de jeu a bien été associé à l\'utilisateur';
 }
 echo $OUTPUT->footer();

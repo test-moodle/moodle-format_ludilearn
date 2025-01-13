@@ -54,17 +54,17 @@ class submit_questionnaire extends external_api {
         $success = true;
 
         foreach ($answers as $answer) {
-            $existing = $DB->get_record('ludimoodle_answers',
+            $existing = $DB->get_record('format_ludimoodle_answers',
                 ['userid' => $USER->id, 'questionid' => $answer['id']]);
             if ($existing) {
                 $existing->score = $answer['score'];
-                $success = $success && $DB->update_record('ludimoodle_answers', $existing);
+                $success = $success && $DB->update_record('format_ludimoodle_answers', $existing);
             } else {
                 $notexisting = new stdClass();
                 $notexisting->userid = $USER->id;
                 $notexisting->questionid = $answer['id'];
                 $notexisting->score = $answer['score'];
-                $success = $success && $DB->insert_record('ludimoodle_answers', $notexisting);
+                $success = $success && $DB->insert_record('format_ludimoodle_answers', $notexisting);
             }
         }
 

@@ -78,19 +78,19 @@ class suggestion_output {
         $combinedaffinitiesjson = json_encode($combinedscores);
         $manager = new manager();
         $gameelements = $manager->get_gameelements_auto($suggestion, $courseid);
-        $profile = $DB->get_record('ludimoodle_profile', ['userid' => $userid]);
+        $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $userid]);
 
         if ($profile) {
             $profile->userid = $userid;
             $profile->type = $suggestion;
             $profile->combinedaffinities = $combinedaffinitiesjson;
-            $DB->update_record('ludimoodle_profile', $profile);
+            $DB->update_record('format_ludimoodle_profile', $profile);
         } else {
             $profile = new stdClass();
             $profile->userid = $userid;
             $profile->type = $suggestion;
             $profile->combinedaffinities = $combinedaffinitiesjson;
-            $DB->insert_record('ludimoodle_profile', $profile);
+            $DB->insert_record('format_ludimoodle_profile', $profile);
         }
 
         foreach ($gameelements as $gameelement) {

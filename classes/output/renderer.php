@@ -89,7 +89,7 @@ class renderer extends section_renderer {
     public function render_questionnaire(int $courseid): string {
         global $DB, $CFG;
 
-        $questions = $DB->get_records('ludimoodle_questions');
+        $questions = $DB->get_records('format_ludimoodle_questions');
 
         $data = new stdClass();
         $data->questionsHEXAD = [];

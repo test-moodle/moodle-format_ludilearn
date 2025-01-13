@@ -61,7 +61,7 @@ function xmldb_format_ludimoodle_install() {
     $questions[] = ['content' => 'questionnaire:question12',
         'label' => get_string('player', 'format_ludimoodle'), 'type' => 'HEXAD'];
 
-    $DB->insert_records('ludimoodle_questions', $questions);
+    $DB->insert_records('format_ludimoodle_questions', $questions);
 
     return true;
 }

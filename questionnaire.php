@@ -50,7 +50,7 @@ $renderer = $PAGE->get_renderer('format_ludimoodle');
 echo $OUTPUT->header();
 
 // If user has already answered the questionnaire, redirect to the profile page.
-$profile = $DB->record_exists('ludimoodle_profile', ['userid' => $USER->id]);
+$profile = $DB->record_exists('format_ludimoodle_profile', ['userid' => $USER->id]);
 if ($profile) {
     redirect(new moodle_url("$CFG->wwwroot/course/format/ludimoodle/gameprofile.php", ['id' => $course->id]));
 }

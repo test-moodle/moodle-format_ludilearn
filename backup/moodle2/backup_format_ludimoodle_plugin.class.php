@@ -41,27 +41,27 @@ class backup_format_ludimoodle_plugin extends backup_format_plugin {
     protected function define_section_plugin_structure(): backup_plugin_element {
         $plugin = $this->get_plugin_element(null, $this->get_format_condition(), 'ludimoodle');
 
-        // Table ludimoodle_gameelements.
+        // Table format_ludimoodle_elements.
         $gameelements = new backup_nested_element('gameelements', ['id'], [
             'type', 'courseid', 'sectionid', 'timecreated',
         ]);
 
-        // Table ludimoodle_attribution.
+        // Table format_ludimoodle_attributio.
         $attributions = new backup_nested_element('attributions', ['id'], [
             'gameelementid', 'userid', 'timecreated',
         ]);
 
-        // Table ludimoodle_params.
+        // Table format_ludimoodle_params.
         $params = new backup_nested_element('params', ['id'], [
             'gameelementid', 'name', 'value',
         ]);
 
-        // Table ludimoodle_bysection.
+        // Table format_ludimoodle_bysection.
         $bysection = new backup_nested_element('bysection', ['id'], [
             'courseid', 'gameelementid', 'sectionid',
         ]);
 
-        // Table ludimoodle_gameele_user.
+        // Table format_ludimoodle_ele_user.
         $gameeleuser = new backup_nested_element('gameele_user', ['id'], [
             'attributionid', 'name', 'value',
         ]);
@@ -76,32 +76,32 @@ class backup_format_ludimoodle_plugin extends backup_format_plugin {
         $plugin->add_child($pluginwrapper);
 
         // Filter the data to select only the gameelements of the current section.
-        $gameelements->set_source_table('ludimoodle_gameelements',
+        $gameelements->set_source_table('format_ludimoodle_elements',
             ['courseid' => backup::VAR_COURSEID, 'sectionid' => backup::VAR_SECTIONID]);
 
         $bysection->set_source_sql('
-            SELECT * FROM {ludimoodle_bysection} WHERE gameelementid IN (
-                SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND sectionid = :sectionid)',
+            SELECT * FROM {format_ludimoodle_bysection} WHERE gameelementid IN (
+                SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND sectionid = :sectionid)',
             ['courseid' => backup::VAR_COURSEID, 'sectionid' => backup::VAR_SECTIONID]
         );
 
         $params->set_source_sql('
-            SELECT * FROM {ludimoodle_params} WHERE gameelementid IN (
-                SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND sectionid = :sectionid)',
+            SELECT * FROM {format_ludimoodle_params} WHERE gameelementid IN (
+                SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND sectionid = :sectionid)',
             ['courseid' => backup::VAR_COURSEID, 'sectionid' => backup::VAR_SECTIONID]
         );
 
         if ($this->get_setting_value('users')) {
             $attributions->set_source_sql('
-            SELECT * FROM {ludimoodle_attribution} WHERE gameelementid IN (
-                SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND sectionid = :sectionid)',
+            SELECT * FROM {format_ludimoodle_attributio} WHERE gameelementid IN (
+                SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND sectionid = :sectionid)',
                 ['courseid' => backup::VAR_COURSEID, 'sectionid' => backup::VAR_SECTIONID]
             );
 
             $gameeleuser->set_source_sql('
-            SELECT * FROM {ludimoodle_gameele_user} WHERE attributionid IN (
-                SELECT id FROM {ludimoodle_attribution} WHERE gameelementid IN (
-                    SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND sectionid = :sectionid))',
+            SELECT * FROM {format_ludimoodle_ele_user} WHERE attributionid IN (
+                SELECT id FROM {format_ludimoodle_attributio} WHERE gameelementid IN (
+                    SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND sectionid = :sectionid))',
                 ['courseid' => backup::VAR_COURSEID, 'sectionid' => backup::VAR_SECTIONID]
             );
         } else {
@@ -120,12 +120,12 @@ class backup_format_ludimoodle_plugin extends backup_format_plugin {
     protected function define_module_plugin_structure(): backup_plugin_element {
         $plugin = $this->get_plugin_element(null, $this->get_format_condition(), 'ludimoodle');
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
-        // Table ludimoodle_cm_params.
+        // Table format_ludimoodle_cm_params.
         $cmparams = new backup_nested_element('cm_params', ['id'], [
             'gameelementid', 'cmid', 'name', 'value',
         ]);
 
-        // Table ludimoodle_cm_user.
+        // Table format_ludimoodle_cm_user.
         $cmuser = new backup_nested_element('cm_user', ['id'], [
             'attributionid', 'cmid', 'name', 'value',
         ]);
@@ -136,15 +136,15 @@ class backup_format_ludimoodle_plugin extends backup_format_plugin {
 
         if ($this->get_setting_value('users')) {
             $cmuser->set_source_sql('
-            SELECT * FROM {ludimoodle_cm_user} WHERE attributionid IN (
-                SELECT id FROM {ludimoodle_attribution} WHERE gameelementid IN (
-                    SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND cmid = :cmid))',
+            SELECT * FROM {format_ludimoodle_cm_user} WHERE attributionid IN (
+                SELECT id FROM {format_ludimoodle_attributio} WHERE gameelementid IN (
+                    SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND cmid = :cmid))',
                 ['courseid' => backup::VAR_COURSEID, 'cmid' => backup::VAR_MODID]
             );
 
             $cmparams->set_source_sql('
-            SELECT * FROM {ludimoodle_cm_params} WHERE gameelementid IN (
-                SELECT id FROM {ludimoodle_gameelements} WHERE courseid = :courseid AND cmid = :cmid)',
+            SELECT * FROM {format_ludimoodle_cm_params} WHERE gameelementid IN (
+                SELECT id FROM {format_ludimoodle_elements} WHERE courseid = :courseid AND cmid = :cmid)',
                 ['courseid' => backup::VAR_COURSEID, 'cmid' => backup::VAR_MODID]
             );
         } else {
