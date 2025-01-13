@@ -252,7 +252,6 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
             $dbman->rename_table($table, 'format_ludimoodle_bysection');
         }
 
-
         upgrade_plugin_savepoint(true, 2025011200, 'format', 'ludimoodle');
     }
 
