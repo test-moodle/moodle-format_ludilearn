@@ -100,7 +100,8 @@ class manager {
         $gameelements = $DB->get_records('format_ludimoodle_elements', ['courseid' => $courseid, 'type' => $type]);
         foreach ($gameelements as $gameelement) {
             // Check attribution.
-            $attribution = $DB->get_record('format_ludimoodle_attributio', ['gameelementid' => $gameelement->id, 'userid' => $userid]);
+            $attribution = $DB->get_record('format_ludimoodle_attributio',
+                ['gameelementid' => $gameelement->id, 'userid' => $userid]);
             if (!$attribution) {
                 $this->attribution_game_element($gameelement->id, $userid);
             }
