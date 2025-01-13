@@ -46,7 +46,6 @@ class timer extends game_element {
      */
     protected int $penalties;
 
-
     /**
      * @var int DEFAULT_PENALTIES Penalties by point lost.
      */
@@ -55,12 +54,16 @@ class timer extends game_element {
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $paramaters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $paramaters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $paramaters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $paramaters, $cmparameters);
@@ -178,14 +181,15 @@ class timer extends game_element {
      * Update game elements when quiz has immediate feedback.
      *
      * @param int $attemptid The attempt id.
-     * @param int $quizid The quiz id.
-     * @param int $userid The user id.
+     * @param int $quizid    The quiz id.
+     * @param int $userid    The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $attemptid, int $quizid, int $userid): void {
         global $DB;
 
-        $manager = new manager();
         $quiz = $DB->get_record('quiz', ['id' => $quizid]);
         $module = $DB->get_record('modules', ['name' => 'quiz']);
         $coursemodule = $DB->get_record('course_modules',
@@ -348,14 +352,15 @@ class timer extends game_element {
      * Update game elements when quiz attempt has been submited with immediate feedback.
      *
      * @param int $attemptid The attempt id.
-     * @param int $quizid The quiz id.
-     * @param int $userid The user id.
+     * @param int $quizid    The quiz id.
+     * @param int $userid    The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function submit_quiz_immediate_feedback(int $attemptid, int $quizid, int $userid): void {
         global $DB;
 
-        $manager = new manager();
         $quiz = $DB->get_record('quiz', ['id' => $quizid]);
         $module = $DB->get_record('modules', ['name' => 'quiz']);
         $coursemodule = $DB->get_record('course_modules',
@@ -375,9 +380,6 @@ class timer extends game_element {
         if ($attribution) {
             $gameelement = self::get($quiz->course, $coursemodule->section, $userid);
 
-            $condition = $DB->get_record('ludimoodle_cm_params',
-                ['gameelementid' => $gameelement->get_id(), 'cmid' => $coursemodule->id, 'name' => 'condition']);
-
             // Get quiz questions attempts.
             $attempts = $DB->get_records('quiz_attempts', ['quiz' => $quizid, 'userid' => $userid]);
             if (!$attempts) {
@@ -390,7 +392,6 @@ class timer extends game_element {
             // Search best attempts and the current attempt.
             foreach ($attempts as $attempt) {
                 $penalties = 0;
-                $pointsnotyet = 0;
                 $questionattempts = $DB->get_records('question_attempts', ['questionusageid' => $attempt->uniqueid], 'id');
                 foreach ($questionattempts as $questionattempt) {
                     // Add the max grade of the question to the penalties.
@@ -488,15 +489,18 @@ class timer extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return timer|null The game element if it exists, null otherwise.
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?timer {
         global $DB;
 
-        $gameelement = [];
         $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
                             INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
@@ -572,9 +576,11 @@ class timer extends game_element {
     /**
      * Update the parameters of a course.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $penalties The value for the penalties parameter.
+     *
      * @return bool True if the parameters were updated successfully, false otherwise.
+     * @throws \dml_exception
      */
     public static function update_course_parameters(int $courseid, int $penalties): bool {
         global $DB;

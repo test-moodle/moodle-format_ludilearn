@@ -24,6 +24,7 @@
  */
 
 namespace format_ludimoodle\privacy;
+
 use context;
 use context_course;
 use context_module;
@@ -59,6 +60,7 @@ class provider implements
      * Get the metadata for this plugin.
      *
      * @param collection $collection The initialised collection to add the plugin's metadata to.
+     *
      * @return collection The updated collection.
      */
     public static function get_metadata(collection $collection): collection {
@@ -126,6 +128,7 @@ class provider implements
      * Get the list of contexts that contain user information for the specified user.
      *
      * @param int $userid The user to search.
+     *
      * @return contextlist $contextlist The list of contexts used in this plugin.
      */
     public static function get_contexts_for_userid(int $userid): contextlist {
@@ -175,6 +178,8 @@ class provider implements
      * Export all user data for the specified user, in the specified contexts, using the supplied exporter instance.
      *
      * @param approved_contextlist $contextlist The approved contexts to export information for.
+     *
+     * @throws \dml_exception
      */
     public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
@@ -232,13 +237,15 @@ class provider implements
     /**
      * Export profile data for the specified user, in the specified context.
      *
-     * @param stdClass $profile The profile data to export.
+     * @param stdClass $profile     The profile data to export.
      * @param context_user $context The context to export data in.
+     *
+     * @throws \coding_exception
      */
     public static function export_profile_data(stdClass $profile, context_user $context): void {
 
         // Prepare the data for export.
-        $data = (object) [
+        $data = (object)[
             'combinedaffinities' => $profile->combinedaffinities,
             'type' => get_string($profile->type, 'format_ludimoodle'),
         ];
@@ -251,8 +258,11 @@ class provider implements
     /**
      * Export answers data for the specified user, in the specified context.
      *
-     * @param array $answers The answers data to export.
+     * @param array $answers        The answers data to export.
      * @param context_user $context The context to export data in.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public static function export_answers_data(array $answers, context_user $context): void {
         global $DB;
@@ -262,7 +272,7 @@ class provider implements
         $question = $DB->get_records('ludimoodle_questions');
         foreach ($answers as $answer) {
             $content = $question[$answer->questionid]->content;
-            $data[] = (object) [
+            $data[] = (object)[
                 'question' => get_string($content, 'format_ludimoodle'),
                 'score' => $answer->score,
             ];
@@ -270,14 +280,17 @@ class provider implements
 
         // Export the data.
         writer::with_context($context)
-            ->export_data(['answers'], (object) ['answers' => $data]);
+            ->export_data(['answers'], (object)['answers' => $data]);
     }
 
     /**
      * Export gameelements data for the specified user, in the specified context.
      *
-     * @param array $gameelements The gameelements data to export.
+     * @param array $gameelements     The gameelements data to export.
      * @param context_course $context The context to export data in.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public static function export_gameelements_data(array $gameelements, context_course $context): void {
         global $DB;
@@ -288,12 +301,12 @@ class provider implements
             $userdatas = $DB->get_records('ludimoodle_gameele_user', ['attributionid' => $gameelement->attributionid]);
             $subdatas = [];
             foreach ($userdatas as $userdata) {
-                $subdatas[] = (object) [
+                $subdatas[] = (object)[
                     'name' => $userdata->name,
                     'value' => $userdata->value,
                 ];
             }
-            $data[] = (object) [
+            $data[] = (object)[
                 'gameelementid' => $gameelement->id,
                 'sectionid' => $gameelement->sectionid,
                 'type' => get_string($gameelement->type, 'format_ludimoodle'),
@@ -304,20 +317,20 @@ class provider implements
 
         // Export the data.
         writer::with_context($context)
-            ->export_data(['attributions'], (object) ['game_elements' => $data]);
+            ->export_data(['attributions'], (object)['game_elements' => $data]);
     }
 
     /**
      * Export course module data for the specified user, in the specified context.
      *
-     * @param array $cmusers The course module data to export.
+     * @param array $cmusers          The course module data to export.
      * @param context_module $context The context to export data in.
      */
     public static function export_course_module_data(array $cmusers, context_module $context): void {
         // Prepare the data for export.
         $data = [];
         foreach ($cmusers as $cmuser) {
-            $data[] = (object) [
+            $data[] = (object)[
                 'name' => $cmuser->name,
                 'value' => $cmuser->value,
             ];
@@ -325,20 +338,22 @@ class provider implements
 
         // Export the data.
         writer::with_context($context)
-            ->export_data(['cmuser'], (object) ['cmuser' => $data]);
+            ->export_data(['cmuser'], (object)['cmuser' => $data]);
     }
 
     /**
      * Delete all user data for the specified user, in the specified context.
      *
      * @param context $context Context to delete data from.
+     *
+     * @throws \dml_exception
      */
     public static function delete_data_for_all_users_in_context(context $context): void {
         global $DB;
 
         // Check if the context is a module context.
         if ($context instanceof context_module) {
-            $params = ['instanceid'    => $context->instanceid];
+            $params = ['instanceid' => $context->instanceid];
             $sql = "DELETE cmu
                     FROM {ludimoodle_cm_user} cmu
                     WHERE cmu.cmid = :instanceid";
@@ -347,7 +362,7 @@ class provider implements
 
         // Check if the context is a course context.
         if ($context instanceof context_course) {
-            $params = ['instanceid'    => $context->instanceid];
+            $params = ['instanceid' => $context->instanceid];
             $sql = "DELETE gu
                     FROM {ludimoodle_gameele_user} gu
                     INNER JOIN {ludimoodle_attribution} a ON a.id = gu.attributionid
@@ -377,11 +392,12 @@ class provider implements
         }
     }
 
-
     /**
      * Delete all user data for the specified user, in the specified contexts.
      *
      * @param approved_contextlist $contextlist
+     *
+     * @throws \dml_exception
      */
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
         global $DB;
@@ -395,7 +411,7 @@ class provider implements
         foreach ($contexts as $context) {
             // Check if the context is a module context.
             if ($context instanceof context_module) {
-                $params = ['instanceid'    => $context->instanceid];
+                $params = ['instanceid' => $context->instanceid];
                 $sql = "DELETE cmu
                     FROM {ludimoodle_cm_user} cmu
                     INNER JOIN {ludimoodle_attribution} a ON a.id = cmu.attributionid
@@ -405,7 +421,7 @@ class provider implements
 
             // Check if the context is a course context.
             if ($context instanceof context_course) {
-                $params = ['instanceid'    => $context->instanceid];
+                $params = ['instanceid' => $context->instanceid];
                 $sql = "DELETE gu
                     FROM {ludimoodle_gameele_user} gu
                     INNER JOIN {ludimoodle_attribution} a ON a.id = gu.attributionid
@@ -439,14 +455,15 @@ class provider implements
     /**
      * Get the list of users who have data within a context.
      *
-     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin
+     *                           combination.
      */
     public static function get_users_in_context(userlist $userlist): void {
         $context = $userlist->get_context();
 
         // Check if the context is a module context.
         if ($context instanceof context_module) {
-            $params = ['instanceid'    => $context->instanceid];
+            $params = ['instanceid' => $context->instanceid];
             $sql = "SELECT DISTINCT(a.userid)
                     FROM {ludimoodle_attribution} a
                     INNER JOIN {ludimoodle_cm_user} cmu ON cmu.attributionid = a.id
@@ -456,7 +473,7 @@ class provider implements
 
         // Check if the context is a course context.
         if ($context instanceof context_course) {
-            $params = ['instanceid'    => $context->instanceid];
+            $params = ['instanceid' => $context->instanceid];
             $sql = "SELECT DISTINCT(a.userid)
                     FROM {ludimoodle_attribution} a
                     INNER JOIN {gameelements} g ON g.id = a.gameelementid
@@ -478,6 +495,8 @@ class provider implements
      * Delete multiple users within a single context.
      *
      * @param approved_userlist $userlist The approved context and user information to delete information for.
+     *
+     * @throws \dml_exception
      */
     public static function delete_data_for_users(approved_userlist $userlist): void {
         global $DB;
@@ -489,8 +508,8 @@ class provider implements
             // Check if the context is a module context.
             if ($context instanceof context_module) {
                 $params = [
-                    'instanceid'    => $context->instanceid,
-                    'userid'        => $user->id,
+                    'instanceid' => $context->instanceid,
+                    'userid' => $user->id,
                 ];
                 $sql = "DELETE cmu
                     FROM {ludimoodle_cm_user} cmu
@@ -502,8 +521,8 @@ class provider implements
             // Check if the context is a course context.
             if ($context instanceof context_course) {
                 $params = [
-                    'instanceid'    => $context->instanceid,
-                    'userid'        => $user->id,
+                    'instanceid' => $context->instanceid,
+                    'userid' => $user->id,
                 ];
                 $sql = "DELETE gu
                     FROM {ludimoodle_gameele_user} gu

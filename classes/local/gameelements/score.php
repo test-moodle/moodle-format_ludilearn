@@ -84,7 +84,6 @@ class score extends game_element {
      */
     const DEFAULT_BONUSCOMPLETION = 150;
 
-
     /**
      * Default completion percentage value.
      *
@@ -95,12 +94,16 @@ class score extends game_element {
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $parameters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $parameters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $parameters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $parameters, $cmparameters);
@@ -257,8 +260,10 @@ class score extends game_element {
      * Get the default parameters for a CM.
      *
      * @param string $moduletype The module type.
-     * @param int $cmid The CM ID.
+     * @param int $cmid          The CM ID.
+     *
      * @return array The default parameters for the CM.
+     * @throws \dml_exception
      */
     public static function get_cm_parameters_default(string $moduletype, int $cmid): array {
         global $DB;
@@ -312,15 +317,15 @@ class score extends game_element {
     /**
      * Update score elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
-
-        $manager = new manager();
 
         // Get game element.
         $gameelement = $DB->get_record('ludimoodle_gameelements',
@@ -396,7 +401,9 @@ class score extends game_element {
      *
      * @param int $quizid The quiz id.
      * @param int $userid The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid): void {
         global $DB;
@@ -472,15 +479,18 @@ class score extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return score|null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?score {
         global $DB;
 
-        $gameelement = [];
         $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
                             INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
@@ -556,11 +566,12 @@ class score extends game_element {
     /**
      * Update course parameters.
      *
-     * @param int $courseid The course ID.
-     * @param int $multiplier The multiplier value.
+     * @param int $courseid        The course ID.
+     * @param int $multiplier      The multiplier value.
      * @param int $bonuscompletion The bonus completion value.
      *
      * @return bool Returns true if the course parameters were successfully updated, false otherwise.
+     * @throws \dml_exception
      */
     public static function update_course_parameters(int $courseid, int $multiplier, int $bonuscompletion,
         int $percentagecompletion): bool {

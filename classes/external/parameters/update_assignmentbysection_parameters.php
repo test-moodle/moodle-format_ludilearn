@@ -42,8 +42,9 @@ class update_assignmentbysection_parameters extends external_api {
     /**
      * Execute the webservice.
      *
-     * @param int $courseid Id of the course.
+     * @param int $courseid   Id of the course.
      * @param array $sections Sections to update.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, array $sections): array {
@@ -77,7 +78,7 @@ class update_assignmentbysection_parameters extends external_api {
                 'Course ID',
                 VALUE_REQUIRED
             ),
-            'sections'  => new external_multiple_structure(
+            'sections' => new external_multiple_structure(
                 new external_single_structure(
                     [
                         'id' => new external_value(

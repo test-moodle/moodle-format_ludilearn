@@ -25,6 +25,12 @@
 
 /**
  * Custom code to be run on installing the plugin.
+ *
+ * Function xmldb_format_ludimoodle_install
+ *
+ * @return bool
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function xmldb_format_ludimoodle_install() {
     global $DB;

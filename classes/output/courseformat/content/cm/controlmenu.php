@@ -50,13 +50,15 @@ class controlmenu extends controlmenu_base {
      * from the menu.
      *
      * @return array of edit control items
+     * @throws \coding_exception
+     * @throws \core\exception\moodle_exception
+     * @throws \dml_exception
      */
     protected function cm_control_items(): array {
         $modcontext = context_module::instance($this->mod->id);
         $editactions = parent::cm_control_items();
 
         if (has_capability('moodle/course:manageactivities', $modcontext)) {
-            $course = $this->format->get_course();
             $url = $modcontext->get_url();
             $gamified = game_element::is_gamified($this->mod->id);
             if ($gamified) {

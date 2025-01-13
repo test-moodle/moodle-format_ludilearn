@@ -38,6 +38,7 @@ class format_ludimoodle_gameelement_renderer extends plugin_renderer_base {
      * Render the game element.
      *
      * @param format_ludimoodle_gameelement $formatludimoodlegameelement
+     *
      * @return mixed HTML output
      */
     protected function render_format_ludimoodle_gameelement(format_ludimoodle_gameelement $formatludimoodlegameelement): mixed {

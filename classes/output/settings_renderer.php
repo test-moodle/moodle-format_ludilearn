@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace format_ludimoodle\output;
+
 use core_reportbuilder\external\filters\set;
 use format_ludimoodle\local\gameelements\game_element;
 use moodle_url;
 use plugin_renderer_base;
-use stdClass;
 
 /**
  * Renderer for the Ludimoodle elements settings.
@@ -35,7 +35,10 @@ class settings_renderer extends plugin_renderer_base {
      * Render the settings page.
      *
      * @param settings $settings Settings renderable
+     *
      * @return string HTML to output.
+     * @throws \coding_exception
+     * @throws \core\exception\moodle_exception
      */
     public function render_settings(settings $settings): string {
         global $DB;
@@ -52,22 +55,25 @@ class settings_renderer extends plugin_renderer_base {
         // If the type is not a game element but the assignment by section setting page.
         if ($settings->get_type() == 'assignmentbysection') {
             return $rendermenu . $this->render_from_template('format_ludimoodle/settings_assignment_by_section',
-                $settings->export_for_template($this));
+                    $settings->export_for_template($this));
         } elseif ($settings->get_type() == 'updateprogression') {
             return $rendermenu . $this->render_from_template('format_ludimoodle/settings_update_progression',
-                $settings->export_for_template($this));
+                    $settings->export_for_template($this));
         }
 
         return $rendermenu . $this->render_from_template('format_ludimoodle/' . $settings->get_type() . '/settings',
-            $settings->export_for_template($this));
+                $settings->export_for_template($this));
     }
 
     /**
      * Render the settings menu.
      *
-     * @param int $courseid Course ID.
+     * @param int $courseid     Course ID.
      * @param string $activeurl Active URL.
+     *
      * @return string HTML to output.
+     * @throws \coding_exception
+     * @throws \core\exception\moodle_exception
      */
     public function render_menu(int $courseid, string $activeurl): string {
         global $CFG;

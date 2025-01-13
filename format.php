@@ -61,13 +61,11 @@ if (!empty($displaysection)) {
     $format->set_sectionnum($displaysection);
 }
 
-
 // Check if edition mode is enabled.
 if ($PAGE->user_is_editing()) {
     $outputclass = $format->get_output_classname('content');
     $widget = new $outputclass($format);
     echo $renderer->render($widget);
 }
-
 
 // Include any format js module here using $PAGE->requires->js.

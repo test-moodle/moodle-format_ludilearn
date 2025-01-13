@@ -35,7 +35,12 @@ require_once($CFG->dirroot . '/course/format/lib.php');
  * Custom code to be run on upgrading the plugin.
  *
  * @param int $oldversion The version we are upgrading from.
+ *
  * @return bool Always returns true.
+ * @throws dml_exception
+ * @throws downgrade_exception
+ * @throws moodle_exception
+ * @throws upgrade_exception
  */
 function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
     global $DB;

@@ -44,7 +44,9 @@ class submit_questionnaire extends external_api {
      * Execute the webservice.
      *
      * @param array $answers Array of answers.
+     *
      * @return array The web service return.
+     * @throws \dml_exception
      */
     public static function execute(array $answers): array {
         global $DB, $USER;
@@ -56,19 +58,18 @@ class submit_questionnaire extends external_api {
                 ['userid' => $USER->id, 'questionid' => $answer['id']]);
             if ($existing) {
                 $existing->score = $answer['score'];
-                $success = $success  && $DB->update_record('ludimoodle_answers', $existing);
+                $success = $success && $DB->update_record('ludimoodle_answers', $existing);
             } else {
                 $notexisting = new stdClass();
                 $notexisting->userid = $USER->id;
                 $notexisting->questionid = $answer['id'];
                 $notexisting->score = $answer['score'];
-                $success = $success  && $DB->insert_record('ludimoodle_answers', $notexisting);
+                $success = $success && $DB->insert_record('ludimoodle_answers', $notexisting);
             }
         }
 
         if ($success) {
-            $manager = new manager();
-            $test = suggestion_output::generate_suggestion_based_on_affinities($USER->id);
+            suggestion_output::generate_suggestion_based_on_affinities($USER->id);
         }
 
         return [

@@ -58,10 +58,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_enrolment_created event.
      *
      * @param user_enrolment_created $event The event.
+     *
      * @return void
      */
     public static function user_enrolment_created(user_enrolment_created $event): void {
-        global $DB;
         if (is_enrolled(context_course::instance($event->courseid), $event->relateduserid)) {
             $manager = new manager();
             $course = get_course($event->courseid);
@@ -83,7 +83,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_enrolment_updated event.
      *
      * @param user_enrolment_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function user_enrolment_updated(user_enrolment_updated $event): void {
         global $DB;
@@ -108,10 +110,11 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\role_assigned event.
      *
      * @param role_assigned $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function role_assigned(role_assigned $event): void {
-        global $DB;
         // Only course level roles are interesting.
         if ($parentcontext = context::instance_by_id($event->contextid, IGNORE_MISSING)) {
             if ($parentcontext->contextlevel == CONTEXT_COURSE) {
@@ -140,7 +143,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_section_created event.
      *
      * @param course_section_created $event The event.
+     *
      * @return void
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public static function section_created(course_section_created $event): void {
         global $DB;
@@ -216,7 +222,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_section_deleted event.
      *
      * @param course_section_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function section_deleted(course_section_deleted $event): void {
         $manager = new manager();
@@ -227,7 +235,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_deleted event.
      *
      * @param course_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_deleted(course_deleted $event): void {
         $manager = new manager();
@@ -238,7 +248,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_module_created event.
      *
      * @param course_module_created $event The event.
+     *
      * @return void
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public static function course_module_created(course_module_created $event): void {
         global $DB;
@@ -249,7 +262,6 @@ class format_ludimoodle_observer {
             return;
         }
 
-        $manager = new manager();
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         $cm = $DB->get_record('course_modules', ['id' => $event->objectid]);
         if ($course->format == 'ludimoodle') {
@@ -274,7 +286,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_module_deleted event.
      *
      * @param course_module_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_module_deleted(course_module_deleted $event): void {
         global $DB;
@@ -286,11 +300,12 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_module_updated event.
      *
      * @param course_module_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_module_updated(course_module_updated $event): void {
         global $DB;
-        $manager = new manager();
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         $cm = $DB->get_record('course_modules', ['id' => $event->contextinstanceid]);
         if ($course->format == 'ludimoodle') {
@@ -340,7 +355,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_graded event.
      *
      * @param user_graded $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function user_graded(user_graded $event): void {
         global $DB;
@@ -394,7 +411,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_updated event.
      *
      * @param attempt_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_updated(attempt_updated $event): void {
         global $DB;
@@ -434,7 +453,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_deleted event.
      *
      * @param attempt_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_deleted(attempt_deleted $event) {
         global $DB;
@@ -475,7 +496,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_submitted event.
      *
      * @param attempt_submitted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_submitted(attempt_submitted $event): void {
         global $DB;
@@ -496,7 +519,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_reset_ended event.
      *
      * @param course_reset_ended $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_reset_ended(course_reset_ended $event): void {
         global $DB;
@@ -515,7 +540,9 @@ class format_ludimoodle_observer {
      * Vérify if a restoration is in progress.
      *
      * @param int $courseid The course id.
+     *
      * @return bool True if a restoration is in progress, false otherwise.
+     * @throws dml_exception
      */
     protected static function is_restoring(int $courseid): bool {
         global $DB, $CFG;

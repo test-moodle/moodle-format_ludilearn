@@ -43,7 +43,6 @@ define(['jquery', 'core/ajax', 'core/templates', 'format_ludimoodle/pagination',
                 Loading.load('tbodyReport');
             }
 
-
             // Request.
             Ajax.call([{
                 methodname: 'format_ludimoodle_get_report',

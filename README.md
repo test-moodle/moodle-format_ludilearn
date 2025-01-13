@@ -50,15 +50,12 @@ Ludimoodle is an innovative course format for Moodle that aims to improve learne
 
 The LudiMoodle+ project, led by the University of Lyon, benefits from state aid managed by the French National Research Agency under France 2030 with the reference "ANR-22-FRAN-0005".
 
-
-
 ## License
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
-
 
 About Pimenko
 ===================

@@ -41,11 +41,12 @@ class update_cm_parameters extends external_api {
     /**
      * Execute the webservice.
      *
-     * @param int $courseid Id of the course.
+     * @param int $courseid      Id of the course.
      * @param int $gameelementid Id of the game element.
-     * @param int $cmid Id of the course module.
-     * @param string $name Name of the parameter.
-     * @param string $value Value of the parameter.
+     * @param int $cmid          Id of the course module.
+     * @param string $name       Name of the parameter.
+     * @param string $value      Value of the parameter.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, int $gameelementid, int $cmid, string $name, string $value): array {

@@ -59,7 +59,6 @@ define(['jquery', 'core/ajax', 'core/templates'],
                 page.active = (i === 1);
             }
 
-
             // Render the table of programs.
             Templates.render('format_ludimoodle/report/pagination', template)
                 .then((html) => {
@@ -115,7 +114,6 @@ define(['jquery', 'core/ajax', 'core/templates'],
                         // Change the active link.
                         $('#page-link-' + that.currentpage).parent().removeClass('active');
                         $('#page-link-' + nextCurrentPage).parent().addClass('active');
-
 
                         // If the new current page is mor than 1.
                         let previouslink = $('#page-link-' + 'previous');

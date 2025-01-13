@@ -80,7 +80,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_gameelements.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_gameelements(array $data): void {
         global $DB;
@@ -100,7 +102,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_params.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_params(array $data): void {
         global $DB;
@@ -123,7 +127,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_bysection.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_bysection(array $data): void {
         global $DB;
@@ -148,7 +154,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_cm_params.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_cm_params(array $data): void {
         global $DB;
@@ -172,7 +180,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_attribution.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_attributions(array $data): void {
         global $DB;
@@ -196,7 +206,9 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
      * Process restore ludimoodle_gameele_user.
      *
      * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_gameele_user(array $data): void {
         global $DB;
@@ -218,8 +230,10 @@ class restore_format_ludimoodle_plugin extends restore_format_plugin {
     /**
      * Process restore ludimoodle_cm_user.
      *
-     * @param array $data  Data to restore.
+     * @param array $data Data to restore.
+     *
      * @return void
+     * @throws dml_exception
      */
     public function process_cm_user(array $data): void {
         global $DB;

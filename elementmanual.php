@@ -40,7 +40,6 @@ $PAGE->set_heading(
 );
 $PAGE->add_body_class('limitedwidth');
 
-
 $renderer = $PAGE->get_renderer('format_ludimoodle');
 
 echo $OUTPUT->header();

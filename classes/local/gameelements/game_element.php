@@ -138,6 +138,7 @@ abstract class game_element {
      * @param int $cmid Id of the course module.
      *
      * @return bool True if the course module is a quiz, false otherwise.
+     * @throws \coding_exception
      */
     public function is_quiz(int $cmid): bool {
         $cm = get_coursemodule_from_id('', $cmid, $this->courseid);
@@ -151,7 +152,10 @@ abstract class game_element {
      * Check if the course module is gradable.
      *
      * @param int $cmid Id of the course module.
+     *
      * @return bool Returns true if the course module is gradable, false otherwise.
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public function is_gradable(int $cmid): bool {
         global $CFG, $DB;
@@ -195,12 +199,15 @@ abstract class game_element {
     /**
      * Check if an activity is available for a user.
      *
-     * @param int $cmid The course module ID.
+     * @param int $cmid   The course module ID.
      * @param int $userid The user ID.
+     *
      * @return bool Returns true if the activity is available for the user, false otherwise.
+     * @throws \coding_exception
+     * @throws \moodle_exception
      */
     public function is_activity_available_for_user(int $cmid, int $userid = 0): bool {
-        global $DB, $USER;
+        global $USER;
 
         // If the user ID is not set, use the current user ID.
         if ($userid == 0) {
@@ -236,7 +243,10 @@ abstract class game_element {
      * Get the grade of a course module.
      *
      * @param int $cmid Id of the course module.
+     *
      * @return float Grade of the course module.
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public function get_grademax(int $cmid): float {
         $cm = get_coursemodule_from_id('', $cmid, $this->courseid);
@@ -264,7 +274,9 @@ abstract class game_element {
      * Get the parameters of a game element.
      *
      * @param string $type Type of the game element.
+     *
      * @return array Parameters.
+     * @throws \moodle_exception
      */
     public static function get_parameters_default_by_type(string $type, $courseid = 0): array {
         switch ($type) {
@@ -305,9 +317,11 @@ abstract class game_element {
     /**
      * Get the cm parameters of a game element.
      *
-     * @param string $type Type of the game element.
+     * @param string $type    Type of the game element.
      * @param string $modtype Type of the module.
+     *
      * @return array Parameters.
+     * @throws \moodle_exception
      */
     public static function get_cm_parameters_default_by_type(string $type, string $modtype, int $cmid): array {
         switch ($type) {
@@ -455,8 +469,10 @@ abstract class game_element {
      * Get all game elements of a course.
      *
      * @param $courseid int Course ID.
-     * @param $userid int User ID.
+     * @param $userid   int User ID.
+     *
      * @return array Game elements.
+     * @throws \dml_exception
      */
     public static function get_all(int $courseid, int $userid): array {
         global $DB;
@@ -477,10 +493,13 @@ abstract class game_element {
     /**
      * Create a game element.
      *
-     * @param $type string Type of the game element.
-     * @param $courseid int Course ID.
+     * @param $type      string Type of the game element.
+     * @param $courseid  int Course ID.
      * @param $sectionid int Section ID.
+     *
      * @return int Game element ID.
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function create(string $type, int $courseid, int $sectionid): int {
         global $DB;
@@ -531,9 +550,12 @@ abstract class game_element {
     /**
      * Create all game elements of a section.
      *
-     * @param int $courseid Course ID.
+     * @param int $courseid  Course ID.
      * @param int $sectionid Section ID.
+     *
      * @return array Game elements ID.
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function create_all(int $courseid, int $sectionid): array {
         global $DB;
@@ -553,7 +575,10 @@ abstract class game_element {
      * Create all game elements of a course.
      *
      * @param int $courseid Course ID.
+     *
      * @return array Game elements ID.
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function create_all_for_course(int $courseid): array {
         global $DB;
@@ -587,7 +612,9 @@ abstract class game_element {
      * Return if a course module is gamified.
      *
      * @param int $cmid Cm id.
+     *
      * @return bool true if is gamified.
+     * @throws \dml_exception
      */
     public static function is_gamified(int $cmid): bool {
         global $DB;
@@ -605,8 +632,10 @@ abstract class game_element {
      * Gamify the given course module.
      *
      * @param  int $courseid Course ID.
-     * @param int $cmid Course module ID.
+     * @param int $cmid      Course module ID.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function gamify(int $courseid, int $cmid): void {
         global $DB;
@@ -632,8 +661,10 @@ abstract class game_element {
      * Not gamify the given course module.
      *
      * @param int $courseid Course ID.
-     * @param int $cmid Course module ID.
+     * @param int $cmid     Course module ID.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function not_gamify(int $courseid, int $cmid): void {
         global $DB;
@@ -659,8 +690,10 @@ abstract class game_element {
      * Get the course parameters for a given course ID.
      *
      * @param int $courseid The ID of the course.
-     * @param string $type The type of game elements.
+     * @param string $type  The type of game elements.
+     *
      * @return stdClass The course parameters.
+     * @throws \dml_exception
      */
     public static function get_course_parameters(int $courseid, string $type): stdClass {
         global $DB;
@@ -686,7 +719,9 @@ abstract class game_element {
      * Reset the course progression.
      *
      * @param int $courseid The course ID.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function reset_course(int $courseid): void {
         global $DB;

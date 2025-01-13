@@ -68,8 +68,6 @@ define(['jquery', 'core/ajax', 'core/templates'],
             );
         };
 
-
-
         return {
             load: (parentelementid) => {
                 let load = new Loading(parentelementid);

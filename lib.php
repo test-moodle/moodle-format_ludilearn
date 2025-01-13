@@ -75,7 +75,10 @@ class format_ludimoodle extends core_courseformat\base {
      * Use section name is specified by user. Otherwise use default ("Topic #").
      *
      * @param int|stdClass $section Section object from database or just field section.section
+     *
      * @return string Display name that the course format prefers, e.g. "Topic 2"
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function get_section_name($section): string {
         $section = $this->get_section($section);
@@ -95,7 +98,9 @@ class format_ludimoodle extends core_courseformat\base {
      * the string with the key = 'sectionname' from the course format's lang file + the section number will be used.
      *
      * @param stdClass $section Section object from database or just field course_sections section
+     *
      * @return string The default value for the section name.
+     * @throws coding_exception
      */
     public function get_default_section_name($section) {
         if ($section->section == 0) {
@@ -112,6 +117,7 @@ class format_ludimoodle extends core_courseformat\base {
      * Generate the title for this section page.
      *
      * @return string the page title
+     * @throws coding_exception
      */
     public function page_title(): string {
         return get_string('sectionoutline');
@@ -121,13 +127,16 @@ class format_ludimoodle extends core_courseformat\base {
      * The URL to use for the specified course (with section).
      *
      * @param int|stdClass $section Section object from database or just field course_sections.section
-     *     if omitted the course view page is returned
-     * @param array $options options for view URL. At the moment core uses:
-     *     'navigation' (bool) if true and section has no separate page, the function returns null
-     *     'sr' (int) used by multipage formats to specify to which section to return
+     *                              if omitted the course view page is returned
+     * @param array $options        options for view URL. At the moment core uses:
+     *                              'navigation' (bool) if true and section has no separate page, the function returns null
+     *                              'sr' (int) used by multipage formats to specify to which section to return
+     *
      * @return null|moodle_url
+     * @throws \core\exception\moodle_exception
+     * @throws moodle_exception
      */
-    public function get_view_url($section, $options = []): null|moodle_url {
+    public function get_view_url($section, $options = []): moodle_url {
         $course = $this->get_course();
         if (array_key_exists('sr', $options) && !is_null($options['sr'])) {
             $sectionno = $options['sr'];
@@ -173,7 +182,11 @@ class format_ludimoodle extends core_courseformat\base {
      *
      * @param global_navigation $navigation
      * @param navigation_node $node The course node within the navigation
+     *
      * @return void
+     * @throws \core\exception\moodle_exception
+     * @throws coding_exception
+     * @throws moodle_exception
      */
     public function extend_course_navigation($navigation, navigation_node $node): void {
         global $PAGE, $CFG;
@@ -209,6 +222,7 @@ class format_ludimoodle extends core_courseformat\base {
      * Used in course/rest.php
      *
      * @return array This will be passed in ajax respose
+     * @throws moodle_exception
      */
     public function ajax_section_move() {
         global $PAGE;
@@ -237,7 +251,6 @@ class format_ludimoodle extends core_courseformat\base {
         ];
     }
 
-
     /**
      * Definitions of the additional options that this course format uses for course
      *
@@ -246,7 +259,10 @@ class format_ludimoodle extends core_courseformat\base {
      * - hideallsections
      *
      * @param bool $foreditform
+     *
      * @return array of options
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function course_format_options($foreditform = false) {
         static $courseformatoptions = false;
@@ -324,8 +340,11 @@ class format_ludimoodle extends core_courseformat\base {
      * This function is called from {@link course_edit_form::definition_after_data()}.
      *
      * @param MoodleQuickForm $mform form the elements are added to.
-     * @param bool $forsection 'true' if this is a section edit form, 'false' if this is course edit form.
+     * @param bool $forsection       'true' if this is a section edit form, 'false' if this is course edit form.
+     *
      * @return array array of references to the added form elements.
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function create_edit_form_elements(&$mform, $forsection = false) {
         global $COURSE;
@@ -356,9 +375,12 @@ class format_ludimoodle extends core_courseformat\base {
      * 'coursedisplay' and 'hiddensections' from the previous format.
      *
      * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data
-     * @param stdClass $oldcourse if this function is called from {@link update_course()}
-     *     this object contains information about the course before update
+     * @param stdClass $oldcourse  if this function is called from {@link update_course()}
+     *                             this object contains information about the course before update
+     *
      * @return bool whether there were any changes to the options values
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function update_course_format_options($data, $oldcourse = null) {
         $data = (array)$data;
@@ -482,7 +504,9 @@ class format_ludimoodle extends core_courseformat\base {
      * @param section_info|stdClass $section
      * @param string $action
      * @param int $sr
+     *
      * @return null|array any data for the Javascript post-processor (must be json-encodeable)
+     * @throws moodle_exception
      */
     public function section_action($section, $action, $sr) {
         global $PAGE;
@@ -545,6 +569,8 @@ class format_ludimoodle extends core_courseformat\base {
      * See course_format::course_header() for usage
      *
      * @return null|renderable null for no output or object with data for plugin renderer
+     * @throws coding_exception
+     * @throws dml_exception
      */
     public function course_content_header() {
         global $PAGE, $DB;
@@ -576,7 +602,9 @@ class format_ludimoodle extends core_courseformat\base {
  * @param string $itemtype
  * @param int $itemid
  * @param mixed $newvalue
+ *
  * @return inplace_editable
+ * @throws dml_exception
  */
 function format_ludimoodle_inplace_editable($itemtype, $itemid, $newvalue) {
     global $DB, $CFG;
@@ -593,8 +621,11 @@ function format_ludimoodle_inplace_editable($itemtype, $itemid, $newvalue) {
  * This function extends the navigation.
  *
  * @param navigation_node $navigation The navigation node to extend
- * @param stdClass $course The course to object for the report
- * @param stdClass $context The context of the course
+ * @param stdClass $course            The course to object for the report
+ * @param stdClass $context           The context of the course
+ *
+ * @throws \core\exception\moodle_exception
+ * @throws coding_exception
  */
 function format_ludimoodle_extend_navigation_course(navigation_node $navigation, stdClass $course,
     stdClass $context): void {

@@ -52,12 +52,16 @@ class ranking extends game_element {
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $paramaters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $paramaters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $paramaters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $paramaters, $cmparameters);
@@ -220,16 +224,16 @@ class ranking extends game_element {
     /**
      * Update score elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
-     * @param int $attemptid The attempt id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     * @param int $attemptid         The attempt id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
-
-        $manager = new manager();
 
         // Get game element.
         $gameelement = $DB->get_record('ludimoodle_gameelements',
@@ -239,7 +243,6 @@ class ranking extends game_element {
         $attribution = $DB->get_record('ludimoodle_attribution',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
-            $gameelement = self::get($courseid, $coursemodule->section, $userid);
 
             // Get grade.
             $grades = grade_get_grades($courseid, 'mod', $modulename, $coursemodule->instance, $userid);
@@ -276,10 +279,12 @@ class ranking extends game_element {
     /**
      * Update game elements when quiz has immediate feedback.
      *
-     * @param int $quizid The quiz id.
-     * @param int $userid The user id.
+     * @param int $quizid    The quiz id.
+     * @param int $userid    The user id.
      * @param int $attemptid The attempt id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid, int $attemptid = 0): void {
         global $DB;
@@ -302,7 +307,6 @@ class ranking extends game_element {
         $attribution = $DB->get_record('ludimoodle_attribution',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
-            $gameelement = self::get($quiz->course, $coursemodule->section, $userid);
 
             // Get max score.
             $maxscore = $quiz->grade;
@@ -341,15 +345,18 @@ class ranking extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return ranking|null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?ranking {
         global $DB;
 
-        $gameelement = [];
         $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
                             INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
@@ -436,7 +443,9 @@ class ranking extends game_element {
      * Get the ranking of the user.
      *
      * @param int $cmid The cm id.
+     *
      * @return mixed The ranking of the user.
+     * @throws \dml_exception
      */
     protected function search_ranking(int $cmid): mixed {
         global $DB;
@@ -626,11 +635,11 @@ class ranking extends game_element {
         return $ranking;
     }
 
-
     /**
      * Get the global ranking of the user.
      *
      * @return mixed The ranking of the user.
+     * @throws \dml_exception
      */
     protected function search_global_ranking(): mixed {
         global $DB;
@@ -818,4 +827,3 @@ class ranking extends game_element {
         return $ranking;
     }
 }
-

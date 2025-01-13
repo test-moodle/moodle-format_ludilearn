@@ -44,20 +44,22 @@ class get_report extends external_api {
     /**
      * Execute the webservice.
      *
-     * @param int $courseid Id of the course.
+     * @param int $courseid   Id of the course.
      * @param string $contain Contain string in firstname or lastname.
-     * @param int $limit Result limit.
-     * @param int $offset Resultat limit offset.
-     * @param string $sort Field sort.
+     * @param int $limit      Result limit.
+     * @param int $offset     Resultat limit offset.
+     * @param string $sort    Field sort.
+     *
      * @return array The web service return.
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public static function execute(int $courseid, string $contain, int $limit, int $offset, string $sort): array {
-        global $DB, $USER, $CFG;
+        global $DB;
 
         $context = context_course::instance($courseid);
         self::validate_context($context);
         $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
-        $manager = new manager();
         $users = [];
 
         $sql = "SELECT u.id, u.firstname, u.lastname, u.username

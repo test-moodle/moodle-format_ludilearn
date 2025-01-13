@@ -34,8 +34,6 @@ require_once($CFG->libdir . '/adminlib.php');
  */
 class nogamified extends game_element {
 
-
-
     /**
      * Constructor.
      *
@@ -55,15 +53,16 @@ class nogamified extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return nogamified|null
+     * @throws \dml_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?nogamified {
         global $DB;
 
-        $gameelement = [];
         $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
                             INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
@@ -151,4 +150,3 @@ class nogamified extends game_element {
             $cmparameters);
     }
 }
-

@@ -46,6 +46,7 @@ class section extends section_base {
      * Export the section for template.
      *
      * @param renderer_base $output the renderer
+     *
      * @return stdClass the data to be used in the template
      */
     public function export_for_template(renderer_base $output): stdClass {

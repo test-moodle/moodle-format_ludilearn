@@ -39,16 +39,19 @@ class progress extends game_element {
      */
     protected int $progression;
 
-
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $paramaters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $paramaters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $paramaters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $paramaters, $cmparameters);
@@ -108,15 +111,15 @@ class progress extends game_element {
     /**
      * Update progress elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
-
-        $manager = new manager();
 
         // Get game element.
         $gameelement = $DB->get_record('ludimoodle_gameelements',
@@ -172,7 +175,9 @@ class progress extends game_element {
      *
      * @param int $quizid The quiz id.
      * @param int $userid The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid): void {
         global $DB;
@@ -232,15 +237,18 @@ class progress extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return progress|null The game element.
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?progress {
         global $DB;
 
-        $gameelement = [];
         $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
                             INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid

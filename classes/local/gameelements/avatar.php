@@ -195,7 +195,6 @@ class avatar extends game_element {
         $this->sectionparameters['itemequiped'] = $this->itemequiped = $itemequiped;
     }
 
-
     /**
      * Get the score.
      *
@@ -564,8 +563,6 @@ class avatar extends game_element {
         $this->sectionparameters['itemowned'] = $this->itemowned;
         $this->itemownedcount++;
     }
-
-
 
     /**
      * Get status of items owned.
