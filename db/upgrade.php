@@ -54,6 +54,8 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
             $data['world'] = 'school';
             $format->update_course_format_options($data);
         }
+
+        upgrade_plugin_savepoint(true, 2024081902, 'format', 'ludimoodle');
     }
 
     if ($oldversion < 2024090600) {
@@ -72,7 +74,10 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
                 }
             }
         }
+
+        upgrade_plugin_savepoint(true, 2024090600, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2024101400) {
         // Add new table ludimoodle_bysection.
         $dbman = $DB->get_manager();
@@ -103,6 +108,7 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
         }
         upgrade_plugin_savepoint(true, 2024101400, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2024102400) {
         // Replaces questions texts by string identifier in the database.
         $compare = $DB->sql_compare_text('content', 255);
@@ -180,9 +186,9 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
         $question->content = 'questionnaire:question12';
         $DB->update_record('ludimoodle_questions', $question);
 
-
         upgrade_plugin_savepoint(true, 2024102400, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2025010700) {
         // Replace all data present the mistake of previous bug.
         $sql = 'SELECT * FROM {ludimoodle_gameele_user} WHERE name LIKE "itemowned-%"';
