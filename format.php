@@ -45,7 +45,7 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
 course_create_sections_if_missing($course, 0);
 
 if ($options['assignment'] == 'automatic') {
-    $profile = $DB->get_record('format_format_ludimoodle_profile', ['userid' => $USER->id]);
+    $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $USER->id]);
     if (!$profile) {
         // Verify if the user is a teacher or a manager.
         if (!has_capability('moodle/course:update', $context)) {
