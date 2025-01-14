@@ -160,7 +160,6 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str', 'core/modal_factory
             });
         };
 
-
         return {
             init: (courseid, sectionid, urlimages) => {
                 COURSE_ID = courseid;

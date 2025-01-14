@@ -52,12 +52,16 @@ class ranking extends game_element {
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $paramaters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $paramaters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $paramaters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $paramaters, $cmparameters);
@@ -220,26 +224,25 @@ class ranking extends game_element {
     /**
      * Update score elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
-     * @param int $attemptid The attempt id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     * @param int $attemptid         The attempt id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
 
-        $manager = new manager();
-
         // Get game element.
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section, 'type' => 'ranking']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
-            $gameelement = self::get($courseid, $coursemodule->section, $userid);
 
             // Get grade.
             $grades = grade_get_grades($courseid, 'mod', $modulename, $coursemodule->instance, $userid);
@@ -252,7 +255,7 @@ class ranking extends game_element {
             }
 
             // Update the score or create it if it does not exist.
-            $cmuser = $DB->get_record('ludimoodle_cm_user',
+            $cmuser = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'score']);
             if ($cmuser) {
                 // If the score is different from the previous one.
@@ -261,10 +264,10 @@ class ranking extends game_element {
                     $param = new stdClass();
                     $param->id = $cmuser->id;
                     $param->value = $score;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'score',
                     'cmid' => $coursemodule->id,
@@ -276,10 +279,12 @@ class ranking extends game_element {
     /**
      * Update game elements when quiz has immediate feedback.
      *
-     * @param int $quizid The quiz id.
-     * @param int $userid The user id.
+     * @param int $quizid    The quiz id.
+     * @param int $userid    The user id.
      * @param int $attemptid The attempt id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid, int $attemptid = 0): void {
         global $DB;
@@ -295,14 +300,13 @@ class ranking extends game_element {
             ]
         );
 
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section, 'type' => 'ranking']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
-            $gameelement = self::get($quiz->course, $coursemodule->section, $userid);
 
             // Get max score.
             $maxscore = $quiz->grade;
@@ -317,7 +321,7 @@ class ranking extends game_element {
                 $score = intval($grade * $maxscore / $grademax);
             }
             // Update the score or create it if it does not exist.
-            $cmuser = $DB->get_record('ludimoodle_cm_user',
+            $cmuser = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'score']);
             if ($cmuser) {
                 // If the score is different from the previous one.
@@ -326,10 +330,10 @@ class ranking extends game_element {
                     $param = new stdClass();
                     $param->id = $cmuser->id;
                     $param->value = $score;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'score',
                     'cmid' => $coursemodule->id,
@@ -341,17 +345,20 @@ class ranking extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return ranking|null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?ranking {
         global $DB;
 
-        $gameelement = [];
-        $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
-                            INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
+        $gameelementsql = 'SELECT * FROM {format_ludimoodle_elements} g
+                            INNER JOIN {format_ludimoodle_attributio} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
                             AND a.userid = :userid AND g.type = :type';
 
@@ -372,15 +379,15 @@ class ranking extends game_element {
 
         // Get game element parameters.
         $parameters = [];
-        $sqlparameters = 'SELECT * FROM {ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
+        $sqlparameters = 'SELECT * FROM {format_ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
         $parametersreq = $DB->get_records_sql($sqlparameters, $params);
         foreach ($parametersreq as $parameterreq) {
             $parameters[$parameterreq->name] = $parameterreq->value;
         }
 
         $sqlgameeleuser = 'SELECT s.id, s.name, s.value
-                    FROM {ludimoodle_gameele_user} s
-                    INNER JOIN {ludimoodle_attribution} a ON s.attributionid = a.id
+                    FROM {format_ludimoodle_ele_user} s
+                    INNER JOIN {format_ludimoodle_attributio} a ON s.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $gameleuserreq = $DB->get_records_sql($sqlgameeleuser, $params);
@@ -394,7 +401,7 @@ class ranking extends game_element {
             $cmparameters[$cm->id] = [];
             $cmparameters[$cm->id]['id'] = $cm->id;
         }
-        $sqlcmparameters = 'SELECT * FROM {ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
+        $sqlcmparameters = 'SELECT * FROM {format_ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
         $cmparametersreq = $DB->get_records_sql($sqlcmparameters, $params);
         foreach ($cmparametersreq as $cmparameterreq) {
             if (key_exists($cmparameterreq->cmid, $cmparameters)) {
@@ -403,8 +410,8 @@ class ranking extends game_element {
         }
 
         $sqlcms = 'SELECT cm.id, cm.cmid, cm.name, cm.value
-                    FROM {ludimoodle_cm_user} cm
-                    INNER JOIN {ludimoodle_attribution} a ON cm.attributionid = a.id
+                    FROM {format_ludimoodle_cm_user} cm
+                    INNER JOIN {format_ludimoodle_attributio} a ON cm.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $cmsreq = $DB->get_records_sql($sqlcms, $params);
@@ -436,7 +443,9 @@ class ranking extends game_element {
      * Get the ranking of the user.
      *
      * @param int $cmid The cm id.
+     *
      * @return mixed The ranking of the user.
+     * @throws \dml_exception
      */
     protected function search_ranking(int $cmid): mixed {
         global $DB;
@@ -447,9 +456,9 @@ class ranking extends game_element {
                 SELECT
                     a.userid,
                     cmu.value as score
-                FROM {ludimoodle_attribution} a
+                FROM {format_ludimoodle_attributio} a
                 INNER JOIN {user} u ON a.userid = u.id
-                INNER JOIN {ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
+                INNER JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                 WHERE a.gameelementid = :gameelementid
                 AND cmu.name = 'score'
                 AND cmu.cmid = :cmid
@@ -546,9 +555,9 @@ class ranking extends game_element {
                     SELECT
                         a.userid,
                         cmu.value as score
-                    FROM {ludimoodle_attribution} a
+                    FROM {format_ludimoodle_attributio} a
                     INNER JOIN {user} u ON a.userid = u.id
-                    INNER JOIN {ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
+                    INNER JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                     WHERE a.gameelementid = :gameelementid
                     AND cmu.name = 'score'
                     AND cmu.cmid = :cmid
@@ -626,11 +635,11 @@ class ranking extends game_element {
         return $ranking;
     }
 
-
     /**
      * Get the global ranking of the user.
      *
      * @return mixed The ranking of the user.
+     * @throws \dml_exception
      */
     protected function search_global_ranking(): mixed {
         global $DB;
@@ -640,8 +649,8 @@ class ranking extends game_element {
                     SELECT
                         a.userid,
                         SUM(cmu.value) as total_score
-                    FROM {ludimoodle_attribution} a
-                    LEFT JOIN {ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
+                    FROM {format_ludimoodle_attributio} a
+                    LEFT JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                     WHERE a.gameelementid = :gameelementid
                     AND cmu.name = 'score'
                     GROUP BY a.userid
@@ -742,8 +751,8 @@ class ranking extends game_element {
                         SELECT
                             a.userid,
                             SUM(cmu.value) as total_score
-                        FROM {ludimoodle_attribution} a
-                        LEFT JOIN {ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
+                        FROM {format_ludimoodle_attributio} a
+                        LEFT JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                         WHERE a.gameelementid = :gameelementid
                         AND cmu.name = 'score'
                         GROUP BY a.userid
@@ -818,4 +827,3 @@ class ranking extends game_element {
         return $ranking;
     }
 }
-

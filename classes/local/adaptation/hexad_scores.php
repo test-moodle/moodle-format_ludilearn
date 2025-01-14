@@ -85,7 +85,9 @@ class hexad_scores {
      * Retrieve Hexad scores from the database based on the user's questionnaire responses.
      *
      * @param int $userid User ID.
+     *
      * @return hexad_scores Hexad scores.
+     * @throws \dml_exception
      */
     public static function from_database(int $userid): hexad_scores {
         global $DB;
@@ -108,7 +110,7 @@ class hexad_scores {
             $questionidsstring = implode(',', $questionids);
 
             $query = "SELECT questionid, score
-                FROM {ludimoodle_answers}
+                FROM {format_ludimoodle_answers}
                 WHERE userid = :userid
                 AND questionid IN ($questionidsstring)";
             $params = ['userid' => $userid];
@@ -136,7 +138,9 @@ class hexad_scores {
      * Get the score for a specific Hexad type.
      *
      * @param string $typename Hexad type name.
+     *
      * @return float Hexad score.
+     * @throws Exception
      */
     public function get_value(string $typename): float {
         $typename = strtolower($typename);

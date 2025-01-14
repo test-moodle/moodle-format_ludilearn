@@ -35,7 +35,12 @@ require_once($CFG->dirroot . '/course/format/lib.php');
  * Custom code to be run on upgrading the plugin.
  *
  * @param int $oldversion The version we are upgrading from.
+ *
  * @return bool Always returns true.
+ * @throws dml_exception
+ * @throws downgrade_exception
+ * @throws moodle_exception
+ * @throws upgrade_exception
  */
 function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
     global $DB;
@@ -49,6 +54,8 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
             $data['world'] = 'school';
             $format->update_course_format_options($data);
         }
+
+        upgrade_plugin_savepoint(true, 2024081902, 'format', 'ludimoodle');
     }
 
     if ($oldversion < 2024090600) {
@@ -67,7 +74,10 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
                 }
             }
         }
+
+        upgrade_plugin_savepoint(true, 2024090600, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2024101400) {
         // Add new table ludimoodle_bysection.
         $dbman = $DB->get_manager();
@@ -98,85 +108,87 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
         }
         upgrade_plugin_savepoint(true, 2024101400, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2024102400) {
         // Replaces questions texts by string identifier in the database.
         $compare = $DB->sql_compare_text('content', 255);
         $sql = 'SELECT * FROM {ludimoodle_questions} WHERE ' . $compare . ' = :content';
 
         // Question 1.
-        $content = 'Cela me rend heureux de pouvoir aider les autres';
+        $content = get_string('happy_to_help_others', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question1';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 2.
-        $content = 'J\'apprécie les activités de groupe';
+        $content = get_string('enjoy_group_activities', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question2';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 3.
-        $content = 'Le bien-être des autres m\'est important';
+        $content = get_string('wellbeing_of_others_is_important', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question3';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 4.
-        $content = 'J\'aime faire partie d\'une équipe';
+        $content = get_string('enjoy_being_part_of_a_team', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question4';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 5.
-        $content = 'J\'aime gérer des tâches difficiles';
+        $content = get_string('enjoy_managing_challenging_tasks', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question5';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 6.
-        $content = 'J\'aime sortir victorieux de circonstances difficiles';
+        $content = get_string('enjoy_overcoming_difficult_circumstances', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question6';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 7.
-        $content = 'Être indépendant est une chose importante pour moi';
+        $content = get_string('independence_is_important_to_me', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question7';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 8.
-        $content = 'Je n\'aime pas suivre les règles';
+        $content = get_string('do_not_like_following_rules', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question8';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 9.
-        $content = 'Si la récompense est suffisante, je ferai des efforts';
+        $content = get_string('will_effort_if_reward_is_enough', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question9';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 10.
-        $content = 'Il est important pour moi de suivre ma propre voie';
+        $content = get_string('important_to_follow_my_own_path', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question10';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 11.
-        $content = 'Je me perçois comme étant rebelle';
+        $content = get_string('see_myself_as_rebel', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question11';
         $DB->update_record('ludimoodle_questions', $question);
 
         // Question 12.
-        $content = 'Les récompenses sont un bon moyen de me motiver';
+        $content = get_string('rewards_are_good_for_motivation', 'format_ludimoodle');
         $question = $DB->get_record_sql($sql, ['content' => $content]);
         $question->content = 'questionnaire:question12';
         $DB->update_record('ludimoodle_questions', $question);
 
         upgrade_plugin_savepoint(true, 2024102400, 'format', 'ludimoodle');
     }
+
     if ($oldversion < 2025010700) {
         // Replace all data present the mistake of previous bug.
         $sql = 'SELECT * FROM {ludimoodle_gameele_user} WHERE name LIKE "itemowned-%"';
@@ -187,6 +199,62 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
         }
         upgrade_plugin_savepoint(true, 2025010700, 'format', 'ludimoodle');
     }
+
+    if ($oldversion < 2025011200) {
+
+        $table = new xmldb_table('ludimoodle_gameelements');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_elements');
+        }
+
+        $table = new xmldb_table('ludimoodle_params');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_params');
+        }
+
+        $table = new xmldb_table('ludimoodle_cm_params');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_cm_params');
+        }
+
+        $table = new xmldb_table('ludimoodle_attribution');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_attributio');
+        }
+
+        $table = new xmldb_table('ludimoodle_gameele_user');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_ele_user');
+        }
+
+        $table = new xmldb_table('ludimoodle_cm_user');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_cm_user');
+        }
+
+        $table = new xmldb_table('ludimoodle_questions');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_questions');
+        }
+
+        $table = new xmldb_table('ludimoodle_answers');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_answers');
+        }
+
+        $table = new xmldb_table('ludimoodle_profile');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_profile');
+        }
+
+        $table = new xmldb_table('ludimoodle_bysection');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'format_ludimoodle_bysection');
+        }
+
+        upgrade_plugin_savepoint(true, 2025011200, 'format', 'ludimoodle');
+    }
+
     purge_all_caches();
     return true;
 }

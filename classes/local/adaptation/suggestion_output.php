@@ -32,11 +32,13 @@ class suggestion_output {
     /**
      * Generate a suggestion based on affinities.
      *
-     * @param int $userid The user for whom the suggestion is generated.
+     * @param int $userid          The user for whom the suggestion is generated.
      * @param int | null $courseid The course for which the suggestion is generated. Default is null.
+     *
      * @return array An array containing the suggestion and sorted combined scores.
+     * @throws \dml_exception
      */
-    public static function generate_suggestion_based_on_affinities(int $userid, int $courseid = null): array {
+    public static function generate_suggestion_based_on_affinities(int $userid, $courseid = null): array {
         global $DB;
 
         // Use static values.
@@ -76,19 +78,19 @@ class suggestion_output {
         $combinedaffinitiesjson = json_encode($combinedscores);
         $manager = new manager();
         $gameelements = $manager->get_gameelements_auto($suggestion, $courseid);
-        $profile = $DB->get_record('ludimoodle_profile', ['userid' => $userid]);
+        $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $userid]);
 
         if ($profile) {
             $profile->userid = $userid;
             $profile->type = $suggestion;
             $profile->combinedaffinities = $combinedaffinitiesjson;
-            $DB->update_record('ludimoodle_profile', $profile);
+            $DB->update_record('format_ludimoodle_profile', $profile);
         } else {
             $profile = new stdClass();
             $profile->userid = $userid;
             $profile->type = $suggestion;
             $profile->combinedaffinities = $combinedaffinitiesjson;
-            $DB->insert_record('ludimoodle_profile', $profile);
+            $DB->insert_record('format_ludimoodle_profile', $profile);
         }
 
         foreach ($gameelements as $gameelement) {
@@ -103,8 +105,11 @@ class suggestion_output {
      * Calculate the matrix suggestion based on user profiles and affinity matrix.
      *
      * @param hexad_scores $hexadscores The user's HEXAD scores.
-     * @param array $affinitymatrix The affinity matrix containing the static rules for game elements and profile values.
+     * @param array $affinitymatrix     The affinity matrix containing the static rules for game elements and profile
+     *                                  values.
+     *
      * @return array The calculated matrix suggestion for each game element.
+     * @throws \Exception
      */
     public static function matrix_suggestion(hexad_scores $hexadscores, array $affinitymatrix): array {
 
@@ -142,9 +147,11 @@ class suggestion_output {
     /**
      * Get the profile value for a given profile value and HEXAD scores.
      *
-     * @param string $profilevalue The profile value for which the score is calculated.
+     * @param string $profilevalue     The profile value for which the score is calculated.
      * @param hexad_scores $hexadscore The user's HEXAD scores.
+     *
      * @return float The calculated profile score.
+     * @throws \Exception
      */
     public static function get_profile_value(string $profilevalue, hexad_scores $hexadscore): float {
         $hexadvalues = ["achiever", "player", "socialiser", "freespirit", "disruptor", "philanthropist"];

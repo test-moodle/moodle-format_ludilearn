@@ -41,8 +41,9 @@ class update_timer_parameters extends external_api {
     /**
      * Execute the webservice.
      *
-     * @param int $courseid The ID of the course to update.
+     * @param int $courseid  The ID of the course to update.
      * @param int $penalties The penalties to set.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, int $penalties): array {

@@ -61,7 +61,6 @@ module.exports = function(grunt) {
             }
         },
 
-
         terser: {
             options: {
                 mangle: {

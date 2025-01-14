@@ -34,8 +34,6 @@ require_once($CFG->libdir . '/adminlib.php');
  */
 class nogamified extends game_element {
 
-
-
     /**
      * Constructor.
      *
@@ -55,17 +53,18 @@ class nogamified extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return nogamified|null
+     * @throws \dml_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?nogamified {
         global $DB;
 
-        $gameelement = [];
-        $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
-                            INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
+        $gameelementsql = 'SELECT * FROM {format_ludimoodle_elements} g
+                            INNER JOIN {format_ludimoodle_attributio} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
                             AND a.userid = :userid AND g.type = :type';
 
@@ -76,7 +75,7 @@ class nogamified extends game_element {
                 'type' => 'nogamified']);
 
         if (!$gameelementreq) {
-            $nogamifiedelement = $DB->get_record('ludimoodle_gameelements',
+            $nogamifiedelement = $DB->get_record('format_ludimoodle_elements',
                 ['courseid' => $courseid,
                     'sectionid' => $sectionid,
                     'type' => 'nogamified']);
@@ -101,15 +100,15 @@ class nogamified extends game_element {
 
         // Get game element parameters.
         $parameters = [];
-        $sqlparameters = 'SELECT * FROM {ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
+        $sqlparameters = 'SELECT * FROM {format_ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
         $parametersreq = $DB->get_records_sql($sqlparameters, $params);
         foreach ($parametersreq as $parameterreq) {
             $parameters[$parameterreq->name] = $parameterreq->value;
         }
 
         $sqlgameeleuser = 'SELECT s.id, s.name, s.value
-                    FROM {ludimoodle_gameele_user} s
-                    INNER JOIN {ludimoodle_attribution} a ON s.attributionid = a.id
+                    FROM {format_ludimoodle_ele_user} s
+                    INNER JOIN {format_ludimoodle_attributio} a ON s.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $gameleuserreq = $DB->get_records_sql($sqlgameeleuser, $params);
@@ -123,7 +122,7 @@ class nogamified extends game_element {
             $cmparameters[$cm->id] = [];
             $cmparameters[$cm->id]['id'] = $cm->id;
         }
-        $sqlcmparameters = 'SELECT * FROM {ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
+        $sqlcmparameters = 'SELECT * FROM {format_ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
         $cmparametersreq = $DB->get_records_sql($sqlcmparameters, $params);
         foreach ($cmparametersreq as $cmparameterreq) {
             if (key_exists($cmparameterreq->cmid, $cmparameters)) {
@@ -132,8 +131,8 @@ class nogamified extends game_element {
         }
 
         $sqlcms = 'SELECT cm.id, cm.cmid, cm.name, cm.value
-                    FROM {ludimoodle_cm_user} cm
-                    INNER JOIN {ludimoodle_attribution} a ON cm.attributionid = a.id
+                    FROM {format_ludimoodle_cm_user} cm
+                    INNER JOIN {format_ludimoodle_attributio} a ON cm.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $cmsreq = $DB->get_records_sql($sqlcms, $params);
@@ -151,4 +150,3 @@ class nogamified extends game_element {
             $cmparameters);
     }
 }
-

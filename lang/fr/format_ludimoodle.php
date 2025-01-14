@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+// phpcs:disable
 /**
  * Plugin strings are defined here.
  *
@@ -222,24 +223,24 @@ Pour les retours techniques, merci d\'utiliser le <a href="https://github.com/Di
 Le projet LudiMoodle+, porté par l\'Université de Lyon, bénéficie d\'une aide de l\'État gérée par l\'Agence nationale de la recherche au titre de France 2030 portant la référence « ANR-22-FRAN-0005 »</p>';
 $string['partner_text2'] = '<p><b>Les partenaires du projet</b></p>';
 // String for privacy provider.
-$string['privacy:metadata:ludimoodle_profile'] = 'La table ludimoodle_profile stocke le profil de joueur HEXAD-12 de chaque utilisateur.';
-$string['privacy:metadata:ludimoodle_profile:userid'] = 'L\'identifiant de l\'utilisateur';
-$string['privacy:metadata:ludimoodle_profile:combinedaffinities'] = 'Le profil de joueur HEXAD-12 de l\'utilisateur.';
-$string['privacy:metadata:ludimoodle_profile:type'] = 'Type d\'élément de jeu attribué à l\'utilisateur.';
-$string['privacy:metadata:ludimoodle_answers'] = 'La table ludimoodle_answers stocke les réponses au questionnaire HEXAD-12.';
-$string['privacy:metadata:ludimoodle_answers:questionid'] = 'L\'ID de la question';
-$string['privacy:metadata:ludimoodle_answers:userid'] = 'L\'ID de l\'utilisateur.';
-$string['privacy:metadata:ludimoodle_answers:score'] = 'Le score obtenu par l\'utilisateur pour la question.';
-$string['privacy:metadata:ludimoodle_attribution'] = 'Le tableau ludimoodle_attribution stocke les éléments de jeu attribués à chaque utilisateur.';
-$string['privacy:metadata:ludimoodle_attribution:gameelementid'] = 'L\'ID de l\'élément de jeu.';
-$string['privacy:metadata:ludimoodle_attribution:userid'] = 'L\'ID de l\'utilisateur.';
-$string['privacy:metadata:ludimoodle_attribution:timecreated'] = 'Heure à laquelle l\'élément de jeu a été attribué à l\'utilisateur.';
+$string['privacy:metadata:format_ludimoodle_profile'] = 'La table format_ludimoodle_profile stocke le profil de joueur HEXAD-12 de chaque utilisateur.';
+$string['privacy:metadata:format_ludimoodle_profile:userid'] = 'L\'identifiant de l\'utilisateur';
+$string['privacy:metadata:format_ludimoodle_profile:combinedaffinities'] = 'Le profil de joueur HEXAD-12 de l\'utilisateur.';
+$string['privacy:metadata:format_ludimoodle_profile:type'] = 'Type d\'élément de jeu attribué à l\'utilisateur.';
+$string['privacy:metadata:format_ludimoodle_answers'] = 'La table format_ludimoodle_answers stocke les réponses au questionnaire HEXAD-12.';
+$string['privacy:metadata:format_ludimoodle_answers:questionid'] = 'L\'ID de la question';
+$string['privacy:metadata:format_ludimoodle_answers:userid'] = 'L\'ID de l\'utilisateur.';
+$string['privacy:metadata:format_ludimoodle_answers:score'] = 'Le score obtenu par l\'utilisateur pour la question.';
+$string['privacy:metadata:format_ludimoodle_attributio'] = 'Le tableau format_ludimoodle_attributio stocke les éléments de jeu attribués à chaque utilisateur.';
+$string['privacy:metadata:format_ludimoodle_attributio:gameelementid'] = 'L\'ID de l\'élément de jeu.';
+$string['privacy:metadata:format_ludimoodle_attributio:userid'] = 'L\'ID de l\'utilisateur.';
+$string['privacy:metadata:format_ludimoodle_attributio:timecreated'] = 'Heure à laquelle l\'élément de jeu a été attribué à l\'utilisateur.';
 $string['privacy:metadata:ludimoodle_gameeele_user'] = 'La table ludimoodle_gameeele_user stocke toutes les données relatives aux éléments de jeu attribués à chaque utilisateur.';
 $string['privacy:metadata:ludimoodle_gameeele_user:attributionid'] = 'L\'ID d\'attribution.';
 $string['privacy:metadata:ludimoodle_gameeele_user:name'] = 'Le nom de la donnée.';
 $string['privacy:metadata:ludimoodle_gameeele_user:value'] = 'La valeur de la donnée.';
-$string['privacy:metadata:ludimoodle_cm_user'] = 'La table ludimoodle_cm_user stocke les données relatives aux éléments de jeu dans un module de cours attribué à chaque utilisateur.';
-$string['privacy:metadata:ludimoodle_cm_user:attributionid'] = 'L\'ID lié à l\'attribution';
-$string['privacy:metadata:ludimoodle_cm_user:cmid'] = 'L\'ID du cours.';
-$string['privacy:metadata:ludimoodle_cm_user:name'] = 'Le nom de la donnée.';
-$string['privacy:metadata:ludimoodle_cm_user:value'] = 'La valeur de la donnée.';
+$string['privacy:metadata:format_ludimoodle_cm_user'] = 'La table format_ludimoodle_cm_user stocke les données relatives aux éléments de jeu dans un module de cours attribué à chaque utilisateur.';
+$string['privacy:metadata:format_ludimoodle_cm_user:attributionid'] = 'L\'ID lié à l\'attribution';
+$string['privacy:metadata:format_ludimoodle_cm_user:cmid'] = 'L\'ID du cours.';
+$string['privacy:metadata:format_ludimoodle_cm_user:name'] = 'Le nom de la donnée.';
+$string['privacy:metadata:format_ludimoodle_cm_user:value'] = 'La valeur de la donnée.';

@@ -45,7 +45,7 @@ if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context
 course_create_sections_if_missing($course, 0);
 
 if ($options['assignment'] == 'automatic') {
-    $profile = $DB->get_record('ludimoodle_profile', ['userid' => $USER->id]);
+    $profile = $DB->get_record('format_format_ludimoodle_profile', ['userid' => $USER->id]);
     if (!$profile) {
         // Verify if the user is a teacher or a manager.
         if (!has_capability('moodle/course:update', $context)) {
@@ -61,13 +61,11 @@ if (!empty($displaysection)) {
     $format->set_sectionnum($displaysection);
 }
 
-
 // Check if edition mode is enabled.
 if ($PAGE->user_is_editing()) {
     $outputclass = $format->get_output_classname('content');
     $widget = new $outputclass($format);
     echo $renderer->render($widget);
 }
-
 
 // Include any format js module here using $PAGE->requires->js.

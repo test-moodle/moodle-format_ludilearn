@@ -42,7 +42,7 @@ $PAGE->set_title(get_string('coursetitle', 'moodle', ['course' => $course->fulln
 $PAGE->set_heading(
     $course->fullname . ' : ' .
     get_string('editgameeleements', 'format_ludimoodle')
-    );
+);
 $PAGE->add_body_class('limitedwidth');
 $format = course_get_format($course);
 $course->format = $format->get_format();

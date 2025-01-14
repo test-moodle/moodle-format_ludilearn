@@ -84,7 +84,6 @@ class score extends game_element {
      */
     const DEFAULT_BONUSCOMPLETION = 150;
 
-
     /**
      * Default completion percentage value.
      *
@@ -95,12 +94,16 @@ class score extends game_element {
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $parameters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $parameters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $parameters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $parameters, $cmparameters);
@@ -257,8 +260,10 @@ class score extends game_element {
      * Get the default parameters for a CM.
      *
      * @param string $moduletype The module type.
-     * @param int $cmid The CM ID.
+     * @param int $cmid          The CM ID.
+     *
      * @return array The default parameters for the CM.
+     * @throws \dml_exception
      */
     public static function get_cm_parameters_default(string $moduletype, int $cmid): array {
         global $DB;
@@ -312,22 +317,22 @@ class score extends game_element {
     /**
      * Update score elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
 
-        $manager = new manager();
-
         // Get game element.
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section, 'type' => 'score']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
 
@@ -349,7 +354,7 @@ class score extends game_element {
             }
 
             // Update the score or create it if it does not exist.
-            $userscore = $DB->get_record('ludimoodle_cm_user',
+            $userscore = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'score']);
 
             if ($userscore) {
@@ -359,10 +364,10 @@ class score extends game_element {
                     $param = new stdClass();
                     $param->id = $userscore->id;
                     $param->value = $score;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'score',
                     'cmid' => $coursemodule->id,
@@ -370,7 +375,7 @@ class score extends game_element {
             }
 
             // Update the maxscore or create it if it does not exist.
-            $usermaxscore = $DB->get_record('ludimoodle_cm_user',
+            $usermaxscore = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'maxscore']);
             if ($usermaxscore) {
                 // If the score is different from the previous one.
@@ -379,10 +384,10 @@ class score extends game_element {
                     $param = new stdClass();
                     $param->id = $usermaxscore->id;
                     $param->value = $maxscore;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'maxscore',
                     'cmid' => $coursemodule->id,
@@ -396,7 +401,9 @@ class score extends game_element {
      *
      * @param int $quizid The quiz id.
      * @param int $userid The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid): void {
         global $DB;
@@ -413,12 +420,12 @@ class score extends game_element {
         );
 
         // Get score game element.
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section,
                 'type' => 'score']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
 
@@ -428,7 +435,7 @@ class score extends game_element {
             // Get grade.
             $score = $manager->calculate_quiz_grade($quiz, $userid);
             // Update the score or create it if it does not exist.
-            $userscore = $DB->get_record('ludimoodle_cm_user',
+            $userscore = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'score']);
             if ($userscore) {
                 // If the score is different from the previous one.
@@ -437,10 +444,10 @@ class score extends game_element {
                     $param = new stdClass();
                     $param->id = $userscore->id;
                     $param->value = $score;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'score',
                     'cmid' => $coursemodule->id,
@@ -448,7 +455,7 @@ class score extends game_element {
             }
 
             // Update the maxscore or create it if it does not exist.
-            $usermaxscore = $DB->get_record('ludimoodle_cm_user',
+            $usermaxscore = $DB->get_record('format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'maxscore']);
             if ($usermaxscore) {
                 // If the score is different from the previous one.
@@ -457,10 +464,10 @@ class score extends game_element {
                     $param = new stdClass();
                     $param->id = $userscore->id;
                     $param->value = $maxscore;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'maxscore',
                     'cmid' => $coursemodule->id,
@@ -472,17 +479,20 @@ class score extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return score|null
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?score {
         global $DB;
 
-        $gameelement = [];
-        $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
-                            INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
+        $gameelementsql = 'SELECT * FROM {format_ludimoodle_elements} g
+                            INNER JOIN {format_ludimoodle_attributio} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
                             AND a.userid = :userid AND g.type = :type';
 
@@ -503,15 +513,15 @@ class score extends game_element {
 
         // Get game element parameters.
         $parameters = [];
-        $sqlparameters = 'SELECT * FROM {ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
+        $sqlparameters = 'SELECT * FROM {format_ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
         $parametersreq = $DB->get_records_sql($sqlparameters, $params);
         foreach ($parametersreq as $parameterreq) {
             $parameters[$parameterreq->name] = $parameterreq->value;
         }
 
         $sqlgameeleuser = 'SELECT s.id, s.name, s.value
-                    FROM {ludimoodle_gameele_user} s
-                    INNER JOIN {ludimoodle_attribution} a ON s.attributionid = a.id
+                    FROM {format_ludimoodle_ele_user} s
+                    INNER JOIN {format_ludimoodle_attributio} a ON s.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $gameleuserreq = $DB->get_records_sql($sqlgameeleuser, $params);
@@ -525,7 +535,7 @@ class score extends game_element {
             $cmparameters[$cm->id] = [];
             $cmparameters[$cm->id]['id'] = $cm->id;
         }
-        $sqlcmparameters = 'SELECT * FROM {ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
+        $sqlcmparameters = 'SELECT * FROM {format_ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
         $cmparametersreq = $DB->get_records_sql($sqlcmparameters, $params);
         foreach ($cmparametersreq as $cmparameterreq) {
             if (key_exists($cmparameterreq->cmid, $cmparameters)) {
@@ -534,8 +544,8 @@ class score extends game_element {
         }
 
         $sqlcms = 'SELECT cm.id, cm.cmid, cm.name, cm.value
-                    FROM {ludimoodle_cm_user} cm
-                    INNER JOIN {ludimoodle_attribution} a ON cm.attributionid = a.id
+                    FROM {format_ludimoodle_cm_user} cm
+                    INNER JOIN {format_ludimoodle_attributio} a ON cm.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $cmsreq = $DB->get_records_sql($sqlcms, $params);
@@ -556,69 +566,70 @@ class score extends game_element {
     /**
      * Update course parameters.
      *
-     * @param int $courseid The course ID.
-     * @param int $multiplier The multiplier value.
+     * @param int $courseid        The course ID.
+     * @param int $multiplier      The multiplier value.
      * @param int $bonuscompletion The bonus completion value.
      *
      * @return bool Returns true if the course parameters were successfully updated, false otherwise.
+     * @throws \dml_exception
      */
     public static function update_course_parameters(int $courseid, int $multiplier, int $bonuscompletion,
         int $percentagecompletion): bool {
         global $DB;
 
         // Retrieve all game elements of the course.
-        $gameelements = $DB->get_records('ludimoodle_gameelements', ['courseid' => $courseid, 'type' => 'score']);
+        $gameelements = $DB->get_records('format_ludimoodle_elements', ['courseid' => $courseid, 'type' => 'score']);
 
         if (!$gameelements) {
             return false;
         } else {
             foreach ($gameelements as $gameelement) {
                 // Retrieve existing values for multiplier parameter.
-                $multiplierrecord = $DB->get_record('ludimoodle_params',
+                $multiplierrecord = $DB->get_record('format_ludimoodle_params',
                     ['gameelementid' => $gameelement->id,
                     'name' => 'multiplier']);
                 // If existing update values, else add value.
                 if ($multiplierrecord) {
                     $multiplierrecord->value = $multiplier;
-                    $DB->update_record('ludimoodle_params', $multiplierrecord);
+                    $DB->update_record('format_ludimoodle_params', $multiplierrecord);
                 } else {
                     $multiplierrecord = new stdClass();
                     $multiplierrecord->gameelementid = $gameelement->id;
                     $multiplierrecord->name = 'multiplier';
                     $multiplierrecord->value = $multiplier;
-                    $DB->insert_record('ludimoodle_params', $multiplierrecord);
+                    $DB->insert_record('format_ludimoodle_params', $multiplierrecord);
                 }
 
                 // Retrieve existing values for bonus completion parameter.
-                $bonuscompletionrecord = $DB->get_record('ludimoodle_params',
+                $bonuscompletionrecord = $DB->get_record('format_ludimoodle_params',
                     ['gameelementid' => $gameelement->id,
                         'name' => 'bonuscompletion']);
                 // If existing update values, else add value.
                 if ($bonuscompletionrecord) {
                     $bonuscompletionrecord->value = $bonuscompletion;
-                    $DB->update_record('ludimoodle_params', $bonuscompletionrecord);
+                    $DB->update_record('format_ludimoodle_params', $bonuscompletionrecord);
                 } else {
                     $bonuscompletionrecord = new stdClass();
                     $bonuscompletionrecord->gameelementid = $gameelement->id;
                     $bonuscompletionrecord->name = 'bonuscompletion';
                     $bonuscompletionrecord->value = $bonuscompletion;
-                    $DB->insert_record('ludimoodle_params', $bonuscompletionrecord);
+                    $DB->insert_record('format_ludimoodle_params', $bonuscompletionrecord);
                 }
 
                 // Retrieve existing values for percentage completion parameter.
-                $percentagecompletionrecord = $DB->get_record('ludimoodle_params',
+                $percentagecompletionrecord = $DB->get_record('format_ludimoodle_params',
                     ['gameelementid' => $gameelement->id,
                         'name' => 'percentagecompletion']);
                 // If existing update values, else add value.
                 if ($percentagecompletionrecord) {
                     $percentagecompletionrecord->value = $percentagecompletion;
-                    $DB->update_record('ludimoodle_params', $percentagecompletionrecord);
+                    $DB->update_record('format_ludimoodle_params', $percentagecompletionrecord);
                 } else {
                     $percentagecompletionrecord = new stdClass();
                     $percentagecompletionrecord->gameelementid = $gameelement->id;
                     $percentagecompletionrecord->name = 'percentagecompletion';
                     $percentagecompletionrecord->value = $percentagecompletion;
-                    $DB->insert_record('ludimoodle_params', $percentagecompletionrecord);
+                    $DB->insert_record('format_ludimoodle_params', $percentagecompletionrecord);
                 }
             }
         }

@@ -39,16 +39,19 @@ class progress extends game_element {
      */
     protected int $progression;
 
-
     /**
      * Constructor.
      *
-     * @param int $id Id of the game element.
-     * @param int $courseid Id of the course.
-     * @param int $sectionid Id of the section.
-     * @param int $userid Id of the user.
-     * @param array $paramaters Array of parameters.
+     * @param int $id             Id of the game element.
+     * @param int $courseid       Id of the course.
+     * @param int $sectionid      Id of the section.
+     * @param int $userid         Id of the user.
+     * @param array $paramaters   Array of parameters.
      * @param array $cmparameters Array of cm parameters.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function __construct(int $id, int $courseid, int $sectionid, int $userid, array $paramaters, array $cmparameters) {
         parent::__construct($id, $courseid, $sectionid, $userid, $paramaters, $cmparameters);
@@ -108,22 +111,22 @@ class progress extends game_element {
     /**
      * Update progress elements.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid          The course id.
      * @param stdClass $coursemodule The course module.
-     * @param string $modulename The module name.
-     * @param int $userid The user id.
+     * @param string $modulename     The module name.
+     * @param int $userid            The user id.
+     *
+     * @throws \dml_exception
      */
     public static function update_elements(int $courseid, stdClass $coursemodule, string $modulename, int $userid): void {
         global $DB;
 
-        $manager = new manager();
-
         // Get game element.
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section, 'type' => 'progress']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
 
@@ -146,7 +149,7 @@ class progress extends game_element {
             }
 
             // Update the score or create it if it does not exist.
-            $cmuser = $DB->get_record('ludimoodle_cm_user',
+            $cmuser = $DB->get_record('format_format_format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'progression']);
             if ($cmuser) {
                 // If the score is different from the previous one.
@@ -155,10 +158,10 @@ class progress extends game_element {
                     $param = new stdClass();
                     $param->id = $cmuser->id;
                     $param->value = $progression;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_format_format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_format_format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'progression',
                     'cmid' => $coursemodule->id,
@@ -172,7 +175,9 @@ class progress extends game_element {
      *
      * @param int $quizid The quiz id.
      * @param int $userid The user id.
+     *
      * @return void
+     * @throws \dml_exception
      */
     public static function update_quiz_immediate_feedback(int $quizid, int $userid): void {
         global $DB;
@@ -189,12 +194,12 @@ class progress extends game_element {
         );
 
         // Get badge game element.
-        $gameelement = $DB->get_record('ludimoodle_gameelements',
+        $gameelement = $DB->get_record('format_format_ludimoodle_elements',
             ['sectionid' => $coursemodule->section,
                 'type' => 'progress']);
 
         // Verify attribution.
-        $attribution = $DB->get_record('ludimoodle_attribution',
+        $attribution = $DB->get_record('format_format_ludimoodle_attributio',
             ['gameelementid' => $gameelement->id, 'userid' => $userid]);
         if ($attribution) {
             // Calculate the progression.
@@ -208,7 +213,7 @@ class progress extends game_element {
                 $progression = intval($grade * 100 / $grademax);
             }
             // Update the score or create it if it does not exist.
-            $cmuser = $DB->get_record('ludimoodle_cm_user',
+            $cmuser = $DB->get_record('format_format_ludimoodle_cm_user',
                 ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'progression']);
             if ($cmuser) {
                 // If the progression is different from the previous one.
@@ -217,10 +222,10 @@ class progress extends game_element {
                     $param = new stdClass();
                     $param->id = $cmuser->id;
                     $param->value = $progression;
-                    $DB->update_record('ludimoodle_cm_user', $param);
+                    $DB->update_record('format_format_ludimoodle_cm_user', $param);
                 }
             } else {
-                $DB->insert_record('ludimoodle_cm_user', [
+                $DB->insert_record('format_format_ludimoodle_cm_user', [
                     'attributionid' => $attribution->id,
                     'name' => 'progression',
                     'cmid' => $coursemodule->id,
@@ -232,17 +237,20 @@ class progress extends game_element {
     /**
      * Get a game element.
      *
-     * @param int $courseid The course ID.
+     * @param int $courseid  The course ID.
      * @param int $sectionid The section ID.
-     * @param int $userid The user ID.
+     * @param int $userid    The user ID.
+     *
      * @return progress|null The game element.
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public static function get(int $courseid, int $sectionid, int $userid): ?progress {
         global $DB;
 
-        $gameelement = [];
-        $gameelementsql = 'SELECT * FROM {ludimoodle_gameelements} g
-                            INNER JOIN {ludimoodle_attribution} a ON g.id = a.gameelementid
+        $gameelementsql = 'SELECT * FROM {format_format_ludimoodle_elements} g
+                            INNER JOIN {format_format_ludimoodle_attributio} a ON g.id = a.gameelementid
                             WHERE g.courseid = :courseid AND g.sectionid = :sectionid
                             AND a.userid = :userid AND g.type = :type';
 
@@ -263,15 +271,15 @@ class progress extends game_element {
 
         // Get game element parameters.
         $parameters = [];
-        $sqlparameters = 'SELECT * FROM {ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
+        $sqlparameters = 'SELECT * FROM {format_format_ludimoodle_params} section_params WHERE gameelementid = :gameelementid';
         $parametersreq = $DB->get_records_sql($sqlparameters, $params);
         foreach ($parametersreq as $parameterreq) {
             $parameters[$parameterreq->name] = $parameterreq->value;
         }
 
         $sqlgameeleuser = 'SELECT s.id, s.name, s.value
-                    FROM {ludimoodle_gameele_user} s
-                    INNER JOIN {ludimoodle_attribution} a ON s.attributionid = a.id
+                    FROM {format_format_ludimoodle_ele_user} s
+                    INNER JOIN {format_format_ludimoodle_attributio} a ON s.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $gameleuserreq = $DB->get_records_sql($sqlgameeleuser, $params);
@@ -285,7 +293,7 @@ class progress extends game_element {
             $cmparameters[$cm->id] = [];
             $cmparameters[$cm->id]['id'] = $cm->id;
         }
-        $sqlcmparameters = 'SELECT * FROM {ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
+        $sqlcmparameters = 'SELECT * FROM {format_format_ludimoodle_cm_params} cm_params WHERE gameelementid = :gameelementid';
         $cmparametersreq = $DB->get_records_sql($sqlcmparameters, $params);
         foreach ($cmparametersreq as $cmparameterreq) {
             if (key_exists($cmparameterreq->cmid, $cmparameters)) {
@@ -294,8 +302,8 @@ class progress extends game_element {
         }
 
         $sqlcms = 'SELECT cm.id, cm.cmid, cm.name, cm.value
-                    FROM {ludimoodle_cm_user} cm
-                    INNER JOIN {ludimoodle_attribution} a ON cm.attributionid = a.id
+                    FROM {format_format_ludimoodle_cm_user} cm
+                    INNER JOIN {format_format_ludimoodle_attributio} a ON cm.attributionid = a.id
                     WHERE a.gameelementid = :gameelementid
                     AND a.userid = :userid';
         $cmsreq = $DB->get_records_sql($sqlcms, $params);

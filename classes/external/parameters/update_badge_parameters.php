@@ -42,10 +42,11 @@ class update_badge_parameters extends external_api {
     /**
      * Executes the webservice.
      *
-     * @param int $courseid The ID of the course to update.
-     * @param int $badgegold The gold badge value.
+     * @param int $courseid    The ID of the course to update.
+     * @param int $badgegold   The gold badge value.
      * @param int $badgesilver The silver badge value.
      * @param int $badgebronze The bronze badge value.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, int $badgegold, int $badgesilver, int $badgebronze): array {

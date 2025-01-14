@@ -66,9 +66,12 @@ class format_ludimoodle_gameelement implements renderable, templatable {
     /**
      * Constructor.
      *
-     * @param int $courseid The course id.
+     * @param int $courseid  The course id.
      * @param int $sectionid |null The section id.
-     * @param int $cmid |null The course module id.
+     * @param int $cmid      |null The course module id.
+     *
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public function __construct(int $courseid, int $sectionid = -1, int $cmid = -1) {
         global $DB, $USER;
@@ -84,7 +87,7 @@ class format_ludimoodle_gameelement implements renderable, templatable {
 
         // Verify if the cours is assigned automatically and if the user has answered yet to the questionnaire.
         if ($options['assignment'] == 'automatic') {
-            $profile = $DB->get_record('ludimoodle_profile', ['userid' => $USER->id]);
+            $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $USER->id]);
             if ($profile) {
                 $gameelementtype = $profile->type;
 
@@ -124,8 +127,8 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     $gameelementtype);
             } else {
                 // Get the attributions by section.
-                $sql = "SELECT ge.id, ge.type FROM {ludimoodle_bysection} bs
-                        INNER JOIN {ludimoodle_gameelements} ge ON bs.gameelementid = ge.id
+                $sql = "SELECT ge.id, ge.type FROM {format_ludimoodle_bysection} bs
+                        INNER JOIN {format_ludimoodle_elements} ge ON bs.gameelementid = ge.id
                         WHERE bs.courseid = :courseid AND bs.sectionid = :sectionid";
                 $bysection = $DB->get_record_sql($sql,
                     ['courseid' => $this->course->id, 'sectionid' => $value->id]);
@@ -151,8 +154,8 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     $gameelementtype);
             } else {
                 // Get the attributions by section.
-                $sql = "SELECT ge.id, ge.type FROM {ludimoodle_bysection} bs
-                        INNER JOIN {ludimoodle_gameelements} ge ON bs.gameelementid = ge.id
+                $sql = "SELECT ge.id, ge.type FROM {format_ludimoodle_bysection} bs
+                        INNER JOIN {format_ludimoodle_elements} ge ON bs.gameelementid = ge.id
                         WHERE bs.courseid = :courseid AND bs.sectionid = :sectionid";
                 $bysection = $DB->get_record_sql($sql,
                     ['courseid' => $this->course->id, 'sectionid' => $this->section->id]);
@@ -194,7 +197,12 @@ class format_ludimoodle_gameelement implements renderable, templatable {
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param renderer_base $output Renderer base.
+     *
      * @return stdClass
+     * @throws \coding_exception
+     * @throws \core\exception\moodle_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     public function export_for_template(renderer_base $output): stdClass {
         global $DB, $USER, $PAGE, $CFG;
@@ -327,7 +335,7 @@ class format_ludimoodle_gameelement implements renderable, templatable {
 
                 $contextactivity = context_module::instance($cminfo->id);
                 if (has_capability('moodle/course:viewhiddenactivities', $contextactivity)
-                || has_capability('moodle/course:update', $contextcourse) || $cminfo->available) {
+                    || has_capability('moodle/course:update', $contextcourse) || $cminfo->available) {
                     if ($cminfo->get_url()) {
                         $cmdata->url = $cminfo->get_url()->out(false);
                     }
@@ -404,9 +412,11 @@ class format_ludimoodle_gameelement implements renderable, templatable {
      * Populate the course module parameters.
      *
      * @param stdClass $parameters Parameters to populate.
-     * @param stdClass $section Section of the course module.
-     * @param string $type Type of the section.
+     * @param stdClass $section    Section of the course module.
+     * @param string $type         Type of the section.
+     *
      * @return stdClass Populated parameters.
+     * @throws \moodle_exception
      */
     protected function populate_section(stdClass $parameters, stdClass $section, string $type): stdClass {
         global $USER;
@@ -443,7 +453,7 @@ class format_ludimoodle_gameelement implements renderable, templatable {
 
                 // Step of the progress bar.
                 $parameters->step = 0;
-                if ($section->gameelement->get_progression() != 0 ) {
+                if ($section->gameelement->get_progression() != 0) {
                     $parameters->step = intval($section->gameelement->get_progression() / 10);
                 }
 
@@ -511,7 +521,6 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     }
                 } else if ($parameters->rank == 2) {
                     // Case when user is not first.
-                    $rank = new stdClass();
                     $parameters->ranked = true;
 
                     // First user.
@@ -544,7 +553,6 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     }
                 } else {
                     // Case when user is last.
-                    $rank = new stdClass();
                     $parameters->ranked = true;
 
                     // First user.
@@ -606,14 +614,18 @@ class format_ludimoodle_gameelement implements renderable, templatable {
     /**
      * Populate the course module parameters.
      *
-     * @param stdClass $parameters  Parameters to populate.
-     * @param stdClass $cm Course module.
+     * @param stdClass $parameters    Parameters to populate.
+     * @param stdClass $cm            Course module.
      * @param stdClass $parentsection Section of the course module.
-     * @param string $type Type of the section.
+     * @param string $type            Type of the section.
+     *
      * @return stdClass Populated parameters.
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     protected function populate_cm(stdClass $parameters, stdClass $cm, stdClass $parentsection, string $type): stdClass {
-        global $PAGE, $DB, $USER;
+        global $PAGE, $DB;
         $cminfo = get_fast_modinfo($this->course->id)->get_cm($cm->id);
         $manager = new manager();
 
@@ -763,7 +775,9 @@ class format_ludimoodle_gameelement implements renderable, templatable {
      * Generate html for a section summary text
      *
      * @param stdClass $section The section.
+     *
      * @return string HTML to output.
+     * @throws \coding_exception
      */
     public function format_summary_text(stdClass $section): string {
         $context = context_course::instance($section->course);

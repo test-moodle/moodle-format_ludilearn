@@ -58,10 +58,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_enrolment_created event.
      *
      * @param user_enrolment_created $event The event.
+     *
      * @return void
      */
     public static function user_enrolment_created(user_enrolment_created $event): void {
-        global $DB;
         if (is_enrolled(context_course::instance($event->courseid), $event->relateduserid)) {
             $manager = new manager();
             $course = get_course($event->courseid);
@@ -83,7 +83,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_enrolment_updated event.
      *
      * @param user_enrolment_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function user_enrolment_updated(user_enrolment_updated $event): void {
         global $DB;
@@ -108,10 +110,11 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\role_assigned event.
      *
      * @param role_assigned $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function role_assigned(role_assigned $event): void {
-        global $DB;
         // Only course level roles are interesting.
         if ($parentcontext = context::instance_by_id($event->contextid, IGNORE_MISSING)) {
             if ($parentcontext->contextlevel == CONTEXT_COURSE) {
@@ -140,7 +143,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_section_created event.
      *
      * @param course_section_created $event The event.
+     *
      * @return void
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public static function section_created(course_section_created $event): void {
         global $DB;
@@ -165,19 +171,19 @@ class format_ludimoodle_observer {
             $users = get_enrolled_users(context_course::instance($course->id));
 
             // Get the default game element.
-            $gameelementbydefault = $DB->get_record('ludimoodle_gameelements',
+            $gameelementbydefault = $DB->get_record('format_ludimoodle_elements',
                 ['courseid' => $course->id, 'sectionid' => $event->objectid, 'type' => $options['default_game_element']]);
 
             foreach ($users as $user) {
                 $type = $options['default_game_element'];
                 if ($options['assignment'] == 'automatic') {
                     // Else if assignment is automatic, we attribute the game element to the user based on his profile.
-                    $profile = $DB->get_record('ludimoodle_profile', ['userid' => $user->id]);
+                    $profile = $DB->get_record('format_ludimoodle_profile', ['userid' => $user->id]);
                     if ($profile) {
                         $type = $profile->type;
                     }
                 } else if ($options['assignment'] == 'bysection') {
-                    $bysection = $DB->get_record('ludimoodle_bysection',
+                    $bysection = $DB->get_record('format_ludimoodle_bysection',
                         ['courseid' => $course->id, 'sectionid' => $event->objectid]);
                     if ($bysection) {
                         $type = $bysection->type;
@@ -189,7 +195,7 @@ class format_ludimoodle_observer {
                 // Attribution game element.
                 if (isset($type)) {
                     if ($options['assignment'] != 'bysection') {
-                        $gameelement = $DB->get_record('ludimoodle_gameelements',
+                        $gameelement = $DB->get_record('format_ludimoodle_elements',
                             ['courseid' => $course->id, 'sectionid' => $event->objectid, 'type' => $type]);
                         $manager->attribution_game_element($gameelement->id, $user->id);
                     } else {
@@ -198,7 +204,7 @@ class format_ludimoodle_observer {
                             $manager->attribution_game_element($bysection->gameelementid, $user->id);
                         }
                     }
-                    $gameelement = $DB->get_record('ludimoodle_gameelements',
+                    $gameelement = $DB->get_record('format_ludimoodle_elements',
                         [
                             'sectionid' => $event->objectid,
                             'type' => $type,
@@ -216,7 +222,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_section_deleted event.
      *
      * @param course_section_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function section_deleted(course_section_deleted $event): void {
         $manager = new manager();
@@ -227,7 +235,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_deleted event.
      *
      * @param course_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_deleted(course_deleted $event): void {
         $manager = new manager();
@@ -238,7 +248,10 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_module_created event.
      *
      * @param course_module_created $event The event.
+     *
      * @return void
+     * @throws dml_exception
+     * @throws moodle_exception
      */
     public static function course_module_created(course_module_created $event): void {
         global $DB;
@@ -249,11 +262,10 @@ class format_ludimoodle_observer {
             return;
         }
 
-        $manager = new manager();
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         $cm = $DB->get_record('course_modules', ['id' => $event->objectid]);
         if ($course->format == 'ludimoodle') {
-            $gameelements = $DB->get_records('ludimoodle_gameelements',
+            $gameelements = $DB->get_records('format_ludimoodle_elements',
                 [
                     'courseid' => $course->id,
                     'sectionid' => $cm->section,
@@ -263,7 +275,7 @@ class format_ludimoodle_observer {
                 $cmparameters = game_element::get_cm_parameters_default_by_type($gameelement->type, $event->other['modulename'],
                     $event->objectid);
                 foreach ($cmparameters as $name => $value) {
-                    $DB->insert_record('ludimoodle_cm_params',
+                    $DB->insert_record('format_ludimoodle_cm_params',
                         ['gameelementid' => $gameelement->id, 'cmid' => $cm->id, 'name' => $name, 'value' => $value]);
                 }
             }
@@ -274,23 +286,26 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_module_deleted event.
      *
      * @param course_module_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_module_deleted(course_module_deleted $event): void {
         global $DB;
-        $DB->delete_records('ludimoodle_cm_params', ['cmid' => $event->contextinstanceid]);
-        $DB->delete_records('ludimoodle_cm_user', ['cmid' => $event->contextinstanceid]);
+        $DB->delete_records('format_ludimoodle_cm_params', ['cmid' => $event->contextinstanceid]);
+        $DB->delete_records('format_ludimoodle_cm_user', ['cmid' => $event->contextinstanceid]);
     }
 
     /**
      * Triggered via \core\event\course_module_updated event.
      *
      * @param course_module_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_module_updated(course_module_updated $event): void {
         global $DB;
-        $manager = new manager();
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         $cm = $DB->get_record('course_modules', ['id' => $event->contextinstanceid]);
         if ($course->format == 'ludimoodle') {
@@ -300,11 +315,11 @@ class format_ludimoodle_observer {
             // If the section has changed, we need to update the game element.
             foreach (game_element::get_all_types() as $type) {
                 // Game element of the next section.
-                $nextgameelement = $DB->get_record('ludimoodle_gameelements',
+                $nextgameelement = $DB->get_record('format_ludimoodle_elements',
                     ['courseid' => $event->courseid, 'sectionid' => $cm->section, 'type' => $type]);
 
-                $previousgameelementsql = 'SELECT ge.id FROM {ludimoodle_cm_params} cmp
-                                    INNER JOIN {ludimoodle_gameelements} ge ON ge.id = cmp.gameelementid
+                $previousgameelementsql = 'SELECT ge.id FROM {format_ludimoodle_cm_params} cmp
+                                    INNER JOIN {format_ludimoodle_elements} ge ON ge.id = cmp.gameelementid
                                     WHERE ge.type = :type
                                     AND cmp.cmid = :cmid';
                 $previsousgameelement = $DB->get_record_sql($previousgameelementsql, ['type' => $type, 'cmid' => $cmid]);
@@ -319,17 +334,17 @@ class format_ludimoodle_observer {
                     continue;
                 }
                 // Update the game element of the course module.
-                $sql = 'UPDATE {ludimoodle_cm_params} SET gameelementid = :nextgameelement
+                $sql = 'UPDATE {format_ludimoodle_cm_params} SET gameelementid = :nextgameelement
                         WHERE id = :id';
                 $DB->execute($sql, ['nextgameelement' => $nextgameelement->id, 'id' => $previsousgameelement->id]);
 
                 // Attributions of the next section.
-                $attributions = $DB->get_records('ludimoodle_attribution',
+                $attributions = $DB->get_records('format_ludimoodle_attributio',
                     ['gameelementid' => $nextgameelement->id]);
 
                 // Update the attribution of the course module.
                 foreach ($attributions as $attribution) {
-                    $sql = 'UPDATE {ludimoodle_cm_user} SET attributionid = :attributionid WHERE cmid = :cmid';
+                    $sql = 'UPDATE {format_ludimoodle_cm_user} SET attributionid = :attributionid WHERE cmid = :cmid';
                     $DB->execute($sql, ['attributionid' => $attribution->id, 'cmid' => $cmid]);
                 }
             }
@@ -340,7 +355,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\user_graded event.
      *
      * @param user_graded $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function user_graded(user_graded $event): void {
         global $DB;
@@ -394,7 +411,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_updated event.
      *
      * @param attempt_updated $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_updated(attempt_updated $event): void {
         global $DB;
@@ -434,7 +453,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_deleted event.
      *
      * @param attempt_deleted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_deleted(attempt_deleted $event) {
         global $DB;
@@ -475,7 +496,9 @@ class format_ludimoodle_observer {
      * Triggered via \mod_quiz\event\attempt_submitted event.
      *
      * @param attempt_submitted $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function attempt_submitted(attempt_submitted $event): void {
         global $DB;
@@ -496,7 +519,9 @@ class format_ludimoodle_observer {
      * Triggered via \core\event\course_reset_ended event.
      *
      * @param course_reset_ended $event The event.
+     *
      * @return void
+     * @throws dml_exception
      */
     public static function course_reset_ended(course_reset_ended $event): void {
         global $DB;
@@ -515,7 +540,9 @@ class format_ludimoodle_observer {
      * Vérify if a restoration is in progress.
      *
      * @param int $courseid The course id.
+     *
      * @return bool True if a restoration is in progress, false otherwise.
+     * @throws dml_exception
      */
     protected static function is_restoring(int $courseid): bool {
         global $DB, $CFG;

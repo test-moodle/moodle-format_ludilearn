@@ -52,6 +52,4 @@ echo $OUTPUT->header();
 
 echo $renderer->render_report($course->id);
 
-
 echo $OUTPUT->footer();
-

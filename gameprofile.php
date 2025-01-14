@@ -23,7 +23,6 @@
  * @license          http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 require('../../../config.php');
 require_once('lib.php');
 global $CFG, $PAGE, $OUTPUT, $USER, $DB;
@@ -50,7 +49,7 @@ $renderer = $PAGE->get_renderer('format_ludimoodle');
 echo $OUTPUT->header();
 
 // If user has not already answered the questionnaire, redirect to the questionnaire page.
-$profile = $DB->record_exists('ludimoodle_profile', ['userid' => $USER->id]);
+$profile = $DB->record_exists('format_ludimoodle_profile', ['userid' => $USER->id]);
 if (!$profile) {
     redirect(new moodle_url("$CFG->wwwroot/course/format/ludimoodle/questionnaire.php", ['id' => $course->id]));
 }

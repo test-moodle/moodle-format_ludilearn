@@ -25,26 +25,43 @@
 
 /**
  * Custom code to be run on installing the plugin.
+ *
+ * Function xmldb_format_ludimoodle_install
+ *
+ * @return bool
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function xmldb_format_ludimoodle_install() {
     global $DB;
     // Insert question data.
-    // Insert question data.
     $questions = [];
-    $questions[] = ['content' => 'questionnaire:question1', 'label' => 'Philanthropist', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question2', 'label' => 'Socialiser', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question3', 'label' => 'Philanthropist', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question4', 'label' => 'Socialiser', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question5', 'label' => 'Achiever', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question6', 'label' => 'Achiever', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question7', 'label' => 'Free Spirit', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question8', 'label' => 'Disruptor', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question9', 'label' => 'Player', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question10', 'label' => 'Free Spirit', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question11', 'label' => 'Disruptor', 'type' => 'HEXAD'];
-    $questions[] = ['content' => 'questionnaire:question12', 'label' => 'Player', 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question1',
+        'label' => get_string('philanthropist', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question2',
+        'label' => get_string('socialiser', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question3',
+        'label' => get_string('philanthropist', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question4',
+        'label' => get_string('socialiser', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question5',
+        'label' => get_string('achiever', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question6',
+        'label' => get_string('achiever', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question7',
+        'label' => get_string('free_spirit', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question8',
+        'label' => get_string('disruptor', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question9',
+        'label' => get_string('player', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question10',
+        'label' => get_string('free_spirit', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question11',
+        'label' => get_string('disruptor', 'format_ludimoodle'), 'type' => 'HEXAD'];
+    $questions[] = ['content' => 'questionnaire:question12',
+        'label' => get_string('player', 'format_ludimoodle'), 'type' => 'HEXAD'];
 
-    $DB->insert_records('ludimoodle_questions', $questions);
+    $DB->insert_records('format_ludimoodle_questions', $questions);
 
     return true;
 }

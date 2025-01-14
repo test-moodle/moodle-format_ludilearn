@@ -43,12 +43,13 @@ class set_item_equiped extends external_api {
      * Execute the webservice.
      *
      * @param int $courseid Id of the course.
-     * @param int $slot Slot of the item.
-     * @param int $theme Theme of the item.
+     * @param int $slot     Slot of the item.
+     * @param int $theme    Theme of the item.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, int $slot, int $theme): array {
-        global $DB, $USER, $CFG;
+        global $USER;
 
         $context = context_course::instance($courseid);
         self::validate_context($context);
@@ -70,7 +71,7 @@ class set_item_equiped extends external_api {
                     }
                 }
                 $success = $success && $manager->update_gameelement_user($gameelement->get_id(),
-                    $USER->id, 'item-equiped-' . $slot, $theme);
+                        $USER->id, 'item-equiped-' . $slot, $theme);
             }
         }
 

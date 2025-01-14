@@ -56,7 +56,8 @@ class renderer extends section_renderer {
      * Generate the section title, wraps it in a link to the section page if page is to be displayed on a separate page.
      *
      * @param section_info|stdClass $section The course_section entry from DB
-     * @param stdClass $course The course entry from DB
+     * @param stdClass $course               The course entry from DB
+     *
      * @return string HTML to output.
      */
     public function section_title($section, $course): string {
@@ -67,7 +68,8 @@ class renderer extends section_renderer {
      * Generate the section title to be displayed on the section page, without a link.
      *
      * @param section_info|stdClass $section The course_section entry from DB
-     * @param int|stdClass $course The course entry from DB
+     * @param int|stdClass $course           The course entry from DB
+     *
      * @return string HTML to output.
      */
     public function section_title_without_link($section, $course): string {
@@ -78,12 +80,16 @@ class renderer extends section_renderer {
      * Render the questionnaire page.
      *
      * @param int $courseid Course ID.
+     *
      * @return string HTML to output.
+     * @throws \coding_exception
+     * @throws \core\exception\moodle_exception
+     * @throws \dml_exception
      */
     public function render_questionnaire(int $courseid): string {
         global $DB, $CFG;
 
-        $questions = $DB->get_records('ludimoodle_questions');
+        $questions = $DB->get_records('format_ludimoodle_questions');
 
         $data = new stdClass();
         $data->questionsHEXAD = [];
@@ -123,6 +129,7 @@ class renderer extends section_renderer {
      * Render the report page.
      *
      * @param int $courseid Course ID.
+     *
      * @return string HTML to output.
      */
     public function render_report(int $courseid): string {
@@ -139,12 +146,13 @@ class renderer extends section_renderer {
      * Render the game profile page.
      *
      * @param int $courseid Course ID.
+     *
      * @return string HTML to output.
+     * @throws \dml_exception
      */
     public function render_gameprofile(int $courseid): string {
         global $DB, $USER;
 
-        $profile = $DB->get_record('ludimoodle_profile', ['userid' => $USER->id]);
         $hexadscores = hexad_scores::from_database($USER->id);
 
         $data = new stdClass();

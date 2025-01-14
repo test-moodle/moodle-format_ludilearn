@@ -37,26 +37,24 @@ class stateactions extends stateactions_base {
      * Gamify coures module.
      *
      * @param stateupdates $updates the affected course elements track
-     * @param stdClass $course the course object
-     * @param int[] $ids cm ids
+     * @param stdClass $course      the course object
+     * @param int[] $ids            cm ids
+     *
+     * @throws \moodle_exception
      */
     public function cm_gamify(
         stateupdates $updates,
         stdClass $course,
-        array $ids = [],
+        array $ids = []
     ): void {
-        global $DB;
-
         // Validate the course and cm ids with manageactivities capability and admin capability.
         $this->validate_cms($course, $ids, __FUNCTION__, ['moodle/course:update']);
-        $coursecontext = context_course::instance($course->id);
         $modinfo = get_fast_modinfo($course);
 
         foreach ($ids as $id) {
             $cm = $modinfo->get_cm($id, MUST_EXIST);
             if ($cm) {
                 game_element::gamify($course->id, $cm->id);
-                $modcontext = context_module::instance($cm->id);
                 $updates->add_cm_put($cm->id);
             }
         }
@@ -66,25 +64,24 @@ class stateactions extends stateactions_base {
      * Not gamify coures module.
      *
      * @param stateupdates $updates the affected course elements track
-     * @param stdClass $course the course object
-     * @param int[] $ids optional extra cm ids to refresh
+     * @param stdClass $course      the course object
+     * @param int[] $ids            optional extra cm ids to refresh
+     *
+     * @throws \moodle_exception
      */
     public function cm_notgamify(
         stateupdates $updates,
         stdClass $course,
         array $ids = []
     ): void {
-        global $DB;
 
         $this->validate_cms($course, $ids, __FUNCTION__, ['moodle/course:update']);
-        $coursecontext = context_course::instance($course->id);
         $modinfo = get_fast_modinfo($course);
 
         foreach ($ids as $id) {
             $cm = $modinfo->get_cm($id, MUST_EXIST);
             if ($cm) {
                 game_element::not_gamify($course->id, $cm->id);
-                $modcontext = context_module::instance($cm->id);
                 $updates->add_cm_put($cm->id);
             }
         }

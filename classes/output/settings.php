@@ -64,7 +64,10 @@ class settings implements renderable, templatable {
      * Constructor.
      *
      * @param int $courseid The course id.
-     * @param string $type The game element type.
+     * @param string $type  The game element type.
+     *
+     * @throws \core\exception\moodle_exception
+     * @throws \dml_exception
      */
     public function __construct(int $courseid, string $type) {
         global $CFG, $DB;
@@ -94,7 +97,9 @@ class settings implements renderable, templatable {
      * Export for template.
      *
      * @param renderer_base $output Output renderer
+     *
      * @return stdClass The data.
+     * @throws coding_exception
      */
     public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
@@ -122,7 +127,9 @@ class settings implements renderable, templatable {
      * Return score data for template.
      *
      * @param stdClass $data The score data for template
+     *
      * @return stdClass The score data for template
+     * @throws \dml_exception
      */
     protected function get_data_score(stdClass $data): stdClass {
         global $DB;
@@ -154,10 +161,11 @@ class settings implements renderable, templatable {
      * Return badge data for template.
      *
      * @param stdClass $data The badge data for template
+     *
      * @return stdClass The badge data for template
+     * @throws \dml_exception
      */
     protected function get_data_badge(stdClass $data): stdClass {
-        global $DB;
 
         $courseparameters = game_element::get_course_parameters($this->courseid, 'badge');
 
@@ -186,10 +194,11 @@ class settings implements renderable, templatable {
      * Return progress data for template.
      *
      * @param stdClass $data The progress data for template
+     *
      * @return stdClass The progress data for template
+     * @throws \dml_exception
      */
     protected function get_data_progress(stdClass $data): stdClass {
-        $courseparameters = game_element::get_course_parameters($this->courseid, 'avatar');
 
         return $data;
     }
@@ -201,7 +210,6 @@ class settings implements renderable, templatable {
      * @return stdClass The timer data for template
      */
     protected function get_data_timer(stdClass $data): stdClass {
-        global $DB;
 
         $courseparameters = game_element::get_course_parameters($this->courseid, 'timer');
         if (isset($courseparameters->penalties)) {
@@ -233,7 +241,9 @@ class settings implements renderable, templatable {
      * Return avatar data for template.
      *
      * @param stdClass $data The avatar data for template
+     *
      * @return stdClass The avatar data for template
+     * @throws \dml_exception
      */
     protected function get_data_avatar(stdClass $data): stdClass {
         $courseparameters = game_element::get_course_parameters($this->courseid, 'avatar');
@@ -259,7 +269,10 @@ class settings implements renderable, templatable {
      * Get data for assignment by section.
      *
      * @param stdClass $data The data for assignment by section.
+     *
      * @return stdClass The data for assignment by section.
+     * @throws \dml_exception
+     * @throws coding_exception
      */
     protected function get_data_assignmentbysection(stdClass $data): stdClass {
         global $DB;
@@ -282,20 +295,20 @@ class settings implements renderable, templatable {
             }
 
             // Get the game element of the section.
-            $bysection = $DB->get_record('ludimoodle_bysection',
+            $bysection = $DB->get_record('format_ludimoodle_bysection',
                 ['courseid' => $this->courseid, 'sectionid' => $section->id]);
-            $gameelements = $DB->get_records('ludimoodle_gameelements',
+            $gameelements = $DB->get_records('format_ludimoodle_elements',
                 ['courseid' => $this->courseid, 'sectionid' => $section->id]);
 
             if ($bysection) {
                 $s->gameelementid = $bysection->gameelementid;
-                $gameelement = $DB->get_record('ludimoodle_gameelements',
+                $gameelement = $DB->get_record('format_ludimoodle_elements',
                     ['id' => $s->gameelementid]);
                 $s->type = $gameelement->type;
             } else {
                 // If no game element is set, set the default game element.
                 $defaultgameelement = $courseformat->get_format_options()['default_game_element'];
-                $gameelement = $DB->get_record('ludimoodle_gameelements',
+                $gameelement = $DB->get_record('format_ludimoodle_elements',
                     ['courseid' => $this->courseid, 'sectionid' => $section->id, 'type' => $defaultgameelement]);
                 $s->gameelementid = $gameelement->id;
                 $s->type = $gameelement->type;

@@ -45,12 +45,13 @@ class get_inventory extends external_api {
     /**
      * Execute the webservice.
      *
-     * @param int $courseid Id of the course.
+     * @param int $courseid  Id of the course.
      * @param int $sectionid Id of the section.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid, int $sectionid): array {
-        global $DB, $USER, $CFG;
+        global  $USER;
 
         $context = context_course::instance($courseid);
         self::validate_context($context);
@@ -67,7 +68,7 @@ class get_inventory extends external_api {
             $itemtoowncountbyslot[$s] = 0;
         }
         $t = 1;
-        while ($itemtoowncount > 0  && ($t <= $counttheme)) {
+        while ($itemtoowncount > 0 && ($t <= $counttheme)) {
             $countslotfortheme = $gameelement->get_count_slot_for_theme($t);
             for ($s = 1; $s <= $countslotfortheme; $s++) {
                 $itemtoowncountbyslot[$s]++;
@@ -85,7 +86,7 @@ class get_inventory extends external_api {
             $slot['slot'] = $s;
 
             // Get item slot name.
-            $slot['slotname'] = avatar::get_item_slot_name($s, $gameelement->get_world()); ;
+            $slot['slotname'] = avatar::get_item_slot_name($s, $gameelement->get_world());;
 
             $items = [];
             $countthemeforslot = $gameelement->get_count_theme_for_slot($s);
@@ -194,7 +195,7 @@ class get_inventory extends external_api {
                 ),
                 'Inventory of the user',
                 VALUE_REQUIRED,
-            ),
+                ),
         ];
 
         return new external_single_structure(

@@ -43,6 +43,7 @@ class update_updateprogression_parameters extends external_api {
      * Execute the webservice.
      *
      * @param int $courseid Id of the course.
+     *
      * @return array The web service return.
      */
     public static function execute(int $courseid): array {
