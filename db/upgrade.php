@@ -201,7 +201,7 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
     }
 
     if ($oldversion < 2025011200) {
-
+        $dbman = $DB->get_manager();
         $table = new xmldb_table('ludimoodle_gameelements');
         if ($dbman->table_exists($table)) {
             $dbman->rename_table($table, 'format_ludimoodle_elements');
