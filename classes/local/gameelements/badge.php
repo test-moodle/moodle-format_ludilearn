@@ -109,20 +109,20 @@ class badge extends game_element {
 
         // Set badge gold parameter.
         $this->sectionparameters['badgegold'] = $this->badgegold = self::DEFAULT_BADGE_GOLD;
-        if (isset($parameters['badgegold'])) {
-            $this->sectionparameters['badgegold'] = $this->badgegold = $parameters['badgegold'];
+        if (isset($paramaters['badgegold'])) {
+            $this->sectionparameters['badgegold'] = $this->badgegold = $paramaters['badgegold'];
         }
 
         // Set badge silver parameter.
         $this->sectionparameters['badgesilver'] = $this->badgesilver = self::DEFAULT_BADGE_SILVER;
-        if (isset($parameters['badgesilver'])) {
-            $this->sectionparameters['badgesilver'] = $this->badgesilver = $parameters['badgesilver'];
+        if (isset($paramaters['badgesilver'])) {
+            $this->sectionparameters['badgesilver'] = $this->badgesilver = $paramaters['badgesilver'];
         }
 
         // Set badge bronze parameter.
         $this->sectionparameters['badgebronze'] = $this->badgebronze = self::DEFAULT_BADGE_BRONZE;
-        if (isset($parameters['badgebronze'])) {
-            $this->sectionparameters['badgebronze'] = $this->badgebronze = $parameters['badgebronze'];
+        if (isset($paramaters['badgebronze'])) {
+            $this->sectionparameters['badgebronze'] = $this->badgebronze = $paramaters['badgebronze'];
         }
 
         // Calculate progression and completion.
