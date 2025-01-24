@@ -249,9 +249,20 @@ abstract class game_element {
      * @throws \dml_exception
      */
     public function get_grademax(int $cmid): float {
+        global $DB;
+
         $cm = get_coursemodule_from_id('', $cmid, $this->courseid);
         if (!$this->is_gradable($cmid)) {
             return 0;
+        }
+        // Check if the course module is a quiz and if it has questions.
+        if ($cm->modname == 'quiz') {
+            $hasquestion = $DB->record_exists('quiz_slots', ['quizid' => $cm->instance]);
+            // If it does not have questions, return 0 as grade max.
+            // Because usually Moodle give a default grade max of 10 and we don't want that.
+            if (!$hasquestion) {
+                return 0;
+            }
         }
         $grades = grade_get_grades($this->courseid, 'mod', $cm->modname, $cm->instance, $this->userid);
         if ($grades) {

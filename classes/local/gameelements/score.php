@@ -159,12 +159,7 @@ class score extends game_element {
 
                 // If the module is gradable.
                 if ($gradable) {
-                    if (isset($value['maxscore'])) {
-                        // Transform max score to maxscore * multplier.
-                        $cmparameters[$key]['maxscore'] = intval($value['maxscore'] * $this->multiplier);
-                    } else {
-                        $cmparameters[$key]['maxscore'] = intval($this->get_grademax($key) * $this->multiplier);
-                    }
+                    $cmparameters[$key]['maxscore'] = intval($this->get_grademax($key) * $this->multiplier);
                     $this->maxscore += $cmparameters[$key]['maxscore'];
 
                     // If the module is completed, the bonus completion is added to the score.
@@ -373,26 +368,6 @@ class score extends game_element {
                     'cmid' => $coursemodule->id,
                     'value' => $score]);
             }
-
-            // Update the maxscore or create it if it does not exist.
-            $usermaxscore = $DB->get_record('format_ludimoodle_cm_user',
-                ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'maxscore']);
-            if ($usermaxscore) {
-                // If the score is different from the previous one.
-                if ($maxscore != $usermaxscore->value) {
-                    // Update the score.
-                    $param = new stdClass();
-                    $param->id = $usermaxscore->id;
-                    $param->value = $maxscore;
-                    $DB->update_record('format_ludimoodle_cm_user', $param);
-                }
-            } else {
-                $DB->insert_record('format_ludimoodle_cm_user', [
-                    'attributionid' => $attribution->id,
-                    'name' => 'maxscore',
-                    'cmid' => $coursemodule->id,
-                    'value' => $maxscore]);
-            }
         }
     }
 
@@ -452,26 +427,6 @@ class score extends game_element {
                     'name' => 'score',
                     'cmid' => $coursemodule->id,
                     'value' => $score]);
-            }
-
-            // Update the maxscore or create it if it does not exist.
-            $usermaxscore = $DB->get_record('format_ludimoodle_cm_user',
-                ['cmid' => $coursemodule->id, 'attributionid' => $attribution->id, 'name' => 'maxscore']);
-            if ($usermaxscore) {
-                // If the score is different from the previous one.
-                if ($maxscore != $usermaxscore->value) {
-                    // Update the score.
-                    $param = new stdClass();
-                    $param->id = $userscore->id;
-                    $param->value = $maxscore;
-                    $DB->update_record('format_ludimoodle_cm_user', $param);
-                }
-            } else {
-                $DB->insert_record('format_ludimoodle_cm_user', [
-                    'attributionid' => $attribution->id,
-                    'name' => 'maxscore',
-                    'cmid' => $coursemodule->id,
-                    'value' => $maxscore]);
             }
         }
     }
