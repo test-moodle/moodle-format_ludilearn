@@ -610,14 +610,14 @@ class avatar extends game_element {
         $count->ownable = $avatar->get_items_ownable_count();
 
         // Get count of items owned in the game element.
-        $sql = 'SELECT COUNT(*) as count FROM {format_ludimoodle_ele_user} s
+        $sql = "SELECT COUNT(*) as count FROM {format_ludimoodle_ele_user} s
                 INNER JOIN {format_ludimoodle_attributio} a ON s.attributionid = a.id
                 INNER JOIN {format_ludimoodle_elements} g ON a.gameelementid = g.id
-                WHERE g.type = "avatar"
-                AND s.name LIKE "%item_owned-%"
+                WHERE g.type = 'avatar'
+                AND s.name LIKE '%item_owned-%'
                 AND s.value = 1
                 AND a.userid = :userid
-                AND g.id = :gameelementid';
+                AND g.id = :gameelementid";
         $params = ['userid' => $userid, 'gameelementid' => $avatar->get_id()];
         $res = $DB->get_record_sql($sql, $params);
         if ($res) {
@@ -912,14 +912,14 @@ class avatar extends game_element {
         }
 
         // Get all items owned in the course.
-        $sqlitemsowned = 'SELECT s.id, s.name, s.value
+        $sqlitemsowned = "SELECT s.id, s.name, s.value
                     FROM {format_ludimoodle_ele_user} s
                     INNER JOIN {format_ludimoodle_attributio} a ON s.attributionid = a.id
                     INNER JOIN {format_ludimoodle_elements} g ON a.gameelementid = g.id
-                    WHERE g.type = "avatar"
-                    AND s.name LIKE "item_owned-%"
+                    WHERE g.type = 'avatar'
+                    AND s.name LIKE 'item_owned-%'
                     AND a.userid = :userid
-                    AND g.courseid = :courseid';
+                    AND g.courseid = :courseid";
         $itemsownedreq = $DB->get_records_sql($sqlitemsowned, ['userid' => $userid, 'courseid' => $courseid]);
 
         // Set the world of the avatar.

@@ -600,15 +600,15 @@ class manager {
     public function get_attempt(int $attemptid): array {
         global $DB;
 
-        $query = 'SELECT qa.questionid as questionid, max(qas.fraction) AS fraction, max(qa.maxmark) as maxgrade,
+        $query = "SELECT qa.questionid as questionid, max(qas.fraction) AS fraction, max(qa.maxmark) as maxgrade,
                            max(qasd.value) as ludigrade, qas.state
                     FROM {quiz_attempts} za
                     JOIN {question_attempts} qa ON qa.questionusageid=za.uniqueid
                     JOIN {question_attempt_steps} qas ON qas.questionattemptid = qa.id AND qas.state
-                        IN ("complete", "gaveup", "gradedwrong", "gradedright", "gradedpartial")
-                    LEFT JOIN {question_attempt_step_data} qasd ON qasd.attemptstepid = qas.id AND qasd.name = "-ludigrade"
+                        IN ('complete', 'gaveup', 'gradedwrong', 'gradedright', 'gradedpartial')
+                    LEFT JOIN {question_attempt_step_data} qasd ON qasd.attemptstepid = qas.id AND qasd.name = '-ludigrade'
                     WHERE za.id=:attemptid
-                    GROUP BY qa.id';
+                    GROUP BY qa.id";
         $sqlresult = $DB->get_records_sql($query, ['attemptid' => $attemptid]);
 
         $result = [];

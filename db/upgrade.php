@@ -191,7 +191,7 @@ function xmldb_format_ludimoodle_upgrade($oldversion = 0) {
 
     if ($oldversion < 2025010700) {
         // Replace all data present the mistake of previous bug.
-        $sql = 'SELECT * FROM {ludimoodle_gameele_user} WHERE name LIKE "itemowned-%"';
+        $sql = "SELECT * FROM {ludimoodle_gameele_user} WHERE name LIKE 'itemowned-%'";
         $gameeleuser = $DB->get_records_sql($sql);
         foreach ($gameeleuser as $geu) {
             $geu->name = str_replace('itemowned', 'item_owned', $geu->name);

@@ -176,9 +176,11 @@ class format_ludimoodle_gameelement implements renderable, templatable {
             $sequence = explode(",", $this->section->sequence);
             $this->section->cms = [];
             foreach ($sequence as $cmidsequence) {
-                $cm = $DB->get_record('course_modules', ['id' => $cmidsequence]);
-                if ($cm) {
-                    $this->section->cms[] = $cm;
+                if (!empty($cmidsequence)) {
+                    $cm = $DB->get_record('course_modules', ['id' => $cmidsequence]);
+                    if ($cm) {
+                        $this->section->cms[] = $cm;
+                    }
                 }
             }
 
