@@ -728,29 +728,39 @@ class format_ludimoodle_gameelement implements renderable, templatable {
                     $gradable = $parentsection->gameelement->is_gradable($cminfo->id);
                     if ($gradable && $parameters->gamified) {
                         $parameters->score = intval($parameters->score);
-                        $before2 = $parameters->ranking->succeeding2_user_rank;
-                        if ($before2 != 0 && $before2 != null) {
-                            $parameters->before_2 = $before2;
-                            $parameters->before_2_th = $manager->get_postfix($before2);
+                        if (isset($parameters->ranking->succeeding2_user_rank)) {
+                            $before2 = $parameters->ranking->succeeding2_user_rank;
+                            if ($before2 != 0 && $before2 != null) {
+                                $parameters->before_2 = $before2;
+                                $parameters->before_2_th = $manager->get_postfix($before2);
+                            }
                         }
-                        $before1 = $parameters->ranking->succeeding_user_rank;
-                        if ($before1 != 0 && $before1 != null) {
-                            $parameters->before_1 = $before1;
-                            $parameters->before_1_th = $manager->get_postfix($before1);
+                        if (isset($parameters->ranking->succeeding_user_rank)) {
+                            $before1 = $parameters->ranking->succeeding_user_rank;
+                            if ($before1 != 0 && $before1 != null) {
+                                $parameters->before_1 = $before1;
+                                $parameters->before_1_th = $manager->get_postfix($before1);
+                            }
                         }
-                        $parameters->rank = $parameters->ranking->user_rank;
-                        if ($parameters->ranking->user_rank != 0 && $parameters->ranking->user_rank != null) {
-                            $parameters->postfix = $manager->get_postfix($parameters->ranking->user_rank);
+                        if (isset($parameters->ranking->user_rank)) {
+                            $parameters->rank = $parameters->ranking->user_rank;
+                            if ($parameters->ranking->user_rank != 0 && $parameters->ranking->user_rank != null) {
+                                $parameters->postfix = $manager->get_postfix($parameters->ranking->user_rank);
+                            }
                         }
-                        $after1 = $parameters->ranking->preceding_user_rank;
-                        if ($after1 != 0 && $after1 != null) {
-                            $parameters->after_1 = $after1;
-                            $parameters->after_1_th = $manager->get_postfix($after1);
+                        if (isset($parameters->ranking->preceding_user_rank)) {
+                            $after1 = $parameters->ranking->preceding_user_rank;
+                            if ($after1 != 0 && $after1 != null) {
+                                $parameters->after_1 = $after1;
+                                $parameters->after_1_th = $manager->get_postfix($after1);
+                            }
                         }
-                        $after2 = $parameters->ranking->preceding2_user_rank;
-                        if ($after2 != 0 && $after2 != null) {
-                            $parameters->after_2 = $after2;
-                            $parameters->after_2_th = $manager->get_postfix($after2);
+                        if (isset($parameters->ranking->preceding2_user_rank)) {
+                            $after2 = $parameters->ranking->preceding2_user_rank;
+                            if ($after2 != 0 && $after2 != null) {
+                                $parameters->after_2 = $after2;
+                                $parameters->after_2_th = $manager->get_postfix($after2);
+                            }
                         }
                     }
                     $parameters->uniqueid = uniqid('cm-summary-');

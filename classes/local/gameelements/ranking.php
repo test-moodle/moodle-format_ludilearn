@@ -539,7 +539,8 @@ class ranking extends game_element {
                 LEFT JOIN PrecedingUser p ON 1 = 1
                 LEFT JOIN PrecedingUser2 p2 ON 1 = 1
                 LEFT JOIN SucceedingUser s ON 1 = 1
-                LEFT JOIN SucceedingUser2 s2 ON 1 = 1";
+                LEFT JOIN SucceedingUser2 s2 ON 1 = 1
+            LIMIT 1";
 
         $params = [
             'gameelementid' => $this->get_id(),
@@ -606,7 +607,8 @@ class ranking extends game_element {
                 FROM
                     FirstUser f
                     LEFT JOIN SecondUser s ON 1 = 1
-                    LEFT JOIN ThirdUser s2 ON 1 = 1";
+                    LEFT JOIN ThirdUser s2 ON 1 = 1
+                LIMIT 1";
             $params = [
                 'gameelementid' => $this->get_id(),
                 'cmid' => $cmid,
@@ -742,7 +744,8 @@ class ranking extends game_element {
                     LEFT JOIN PrecedingUser2 p2 ON 1 = 1
                     LEFT JOIN SucceedingUser s ON 1 = 1
                     LEFT JOIN SucceedingUser2 s2 ON 1 = 1
-                    LEFT JOIN FirstUser f ON 1 = 1";
+                    LEFT JOIN FirstUser f ON 1 = 1
+                LIMIT 1";
 
         $ranking = $DB->get_record_sql($sql, ['gameelementid' => $this->get_id(), 'target_userid' => $this->userid]);
         if (!$ranking) {
@@ -801,7 +804,8 @@ class ranking extends game_element {
                     FROM
                         FirstUser f
                         LEFT JOIN SecondUser s ON 1 = 1
-                        LEFT JOIN ThirdUser s2 ON 1 = 1";
+                        LEFT JOIN ThirdUser s2 ON 1 = 1
+                    LIMIT 1";
             $ranking = $DB->get_record_sql($sql, ['gameelementid' => $this->get_id()]);
             if (!$ranking) {
                 $ranking = new stdClass();
