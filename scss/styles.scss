@@ -20,7 +20,7 @@
  * @copyright   2024 Pimenko <support@pimenko.com><pimenko.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+@use 'progress-rocket';
 .format-ludimoodle {
 
     .btn {
@@ -681,8 +681,9 @@
             background-image: url('[[pix:format_ludimoodle|highschool/progress/course-planet-bg]]');
             background-size: contain;
         }
-        .max {
+        .progression-planet-max {
             background-image: url('[[pix:format_ludimoodle|highschool/progress/course-planet-max-bg]]');
+            background-size: contain;
         }
 
         // Hide asteroid image because not exist in highschool world.
@@ -748,5 +749,3 @@
     }
 
 }
-
-@import 'progress-rocket';
