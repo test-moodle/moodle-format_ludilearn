@@ -650,7 +650,7 @@ class ranking extends game_element {
         $sql = "WITH UserScores AS (
                     SELECT
                         a.userid,
-                        SUM(cmu.value) as total_score
+                        SUM(CAST(cmu.value AS NUMERIC)) as total_score
                     FROM {format_ludimoodle_attributio} a
                     LEFT JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                     WHERE a.gameelementid = :gameelementid
@@ -753,7 +753,7 @@ class ranking extends game_element {
             $sql = "WITH UserScores AS (
                         SELECT
                             a.userid,
-                            SUM(cmu.value) as total_score
+                            SUM(CAST(cmu.value AS NUMERIC)) as total_score
                         FROM {format_ludimoodle_attributio} a
                         LEFT JOIN {format_ludimoodle_cm_user} cmu ON a.id = cmu.attributionid
                         WHERE a.gameelementid = :gameelementid

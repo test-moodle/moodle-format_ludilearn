@@ -615,7 +615,7 @@ class avatar extends game_element {
                 INNER JOIN {format_ludimoodle_elements} g ON a.gameelementid = g.id
                 WHERE g.type = 'avatar'
                 AND s.name LIKE '%item_owned-%'
-                AND s.value = 1
+                AND s.value = '1'
                 AND a.userid = :userid
                 AND g.id = :gameelementid";
         $params = ['userid' => $userid, 'gameelementid' => $avatar->get_id()];
