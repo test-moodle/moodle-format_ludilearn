@@ -507,11 +507,8 @@ class format_ludimoodle_observer {
         // Check if the quiz is in a ludimoodle course.
         $course = $DB->get_record('course', ['id' => $event->courseid]);
         if ($course->format == 'ludimoodle') {
-            // Ignore if quiz with defered feedback.
-            if ($quiz->preferredbehaviour == 'immediatefeedback') {
-                // Update timer element.
-                timer::submit_quiz_immediate_feedback($event->objectid, $quiz->id, $event->relateduserid);
-            }
+            // Update timer element.
+            timer::submit_quiz($event->objectid, $quiz->id, $event->relateduserid);
         }
     }
 

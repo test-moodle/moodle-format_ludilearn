@@ -349,7 +349,7 @@ class timer extends game_element {
     }
 
     /**
-     * Update game elements when quiz attempt has been submited with immediate feedback.
+     * Update game elements when quiz attempt.
      *
      * @param int $attemptid The attempt id.
      * @param int $quizid    The quiz id.
@@ -358,7 +358,7 @@ class timer extends game_element {
      * @return void
      * @throws \dml_exception
      */
-    public static function submit_quiz_immediate_feedback(int $attemptid, int $quizid, int $userid): void {
+    public static function submit_quiz(int $attemptid, int $quizid, int $userid): void {
         global $DB;
 
         $quiz = $DB->get_record('quiz', ['id' => $quizid]);
