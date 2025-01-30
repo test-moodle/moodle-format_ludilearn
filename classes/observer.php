@@ -186,7 +186,7 @@ class format_ludimoodle_observer {
                     $bysection = $DB->get_record('format_ludimoodle_bysection',
                         ['courseid' => $course->id, 'sectionid' => $event->objectid]);
                     if ($bysection) {
-                        $type = $bysection->type;
+                        $type = 'bysection';
                     } else {
                         $bysection = $manager->update_attribution_by_section($course->id, $event->objectid,
                             $gameelementbydefault->id);

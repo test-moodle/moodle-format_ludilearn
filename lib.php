@@ -575,13 +575,21 @@ class format_ludimoodle extends core_courseformat\base {
     public function course_content_header() {
         global $PAGE, $DB;
 
-        if ($PAGE->bodyid != 'page-course-view-ludimoodle' && $PAGE->cm == null) {
+        if (($PAGE->bodyid != 'page-course-view-ludimoodle' && $PAGE->bodyid != 'page-course-view-section-ludimoodle')
+            && $PAGE->cm == null) {
             return null;
         }
         $section = optional_param('section', -1, PARAM_INT);
         $hideheader = optional_param('hideheader', false, PARAM_BOOL);
         if ($hideheader) {
             return null;
+        }
+        // If we are on section view page.
+        if ($PAGE->bodyid == 'page-course-view-section-ludimoodle') {
+            $section = optional_param('id', -1, PARAM_INT);
+            if ($section >= 0) {
+                return new format_ludimoodle_gameelement($PAGE->course->id, $section);
+            }
         }
         if ($section >= 0) {
             $section = $DB->get_record('course_sections', ['course' => $this->courseid, 'section' => $section]);
