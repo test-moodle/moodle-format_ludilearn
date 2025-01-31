@@ -62,4 +62,20 @@ class section extends section_base {
 
         return $data;
     }
+
+    /**
+     * Add the section cm list to the data structure.
+     *
+     * @param stdClass $data the current cm data reference
+     * @param renderer_base $output typically, the renderer that's calling this function
+     * @return bool if the cm has name data
+     */
+    protected function add_cm_data(stdClass &$data, renderer_base $output): bool {
+        global $PAGE;
+        // Show activity data only when editing.
+        if ($PAGE->user_is_editing()) {
+            return parent::add_cm_data($data, $output);
+        }
+        return false;
+    }
 }
